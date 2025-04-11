@@ -11,7 +11,7 @@ const HeroSection = ({title, imageName}: HeroSectionProps) => {
         backgroundImage: `
           linear-gradient(0deg, rgba(28,36,42,0.5), rgba(28,36,42,0.5)),
           linear-gradient(180deg, rgba(249,238,235,0), rgba(28,36,42,0.1)),
-          url('/src/assets/heros/${imageName}.png')
+          url('/src/assets/projects/${imageName}.png')
         `,
       }}
     >
