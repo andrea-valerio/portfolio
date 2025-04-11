@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 type ProjectBoxProps = {
   name: string
@@ -13,7 +14,8 @@ const ProjectBox = ({ name, desc, imageName }: ProjectBoxProps) => {
   const overlayOpacity = isPressed ? 'opacity-80' : isHovered ? 'opacity-70' : 'opacity-30'
 
   return (
-    <div
+    <Link
+      to={`/${imageName}`}
       className="relative col-span-6 aspect-[16/9] overflow-hidden transition-all duration-[250ms] ease-out hover:scale-[0.95]"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
@@ -47,7 +49,7 @@ const ProjectBox = ({ name, desc, imageName }: ProjectBoxProps) => {
           {desc}
         </p>
       </div>
-    </div>
+    </Link>
   )
 }
 

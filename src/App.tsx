@@ -1,21 +1,24 @@
-import LayoutWrapper from './components/LayoutWrapper'
-import HeroSection from './components/HeroSection'
-import Index from './components/Index'
-import ProjectBox from './components/ProjectBox'
+import { Routes, Route } from 'react-router-dom'
+import HomePage from './pages/HomePage'
+import GroovePage from './pages/GroovePage'
+import OvenConfPage from './pages/OvenConfPage'
+import CitInstPage from './pages/CitInstPage'
+import EcomuseoPage from './pages/EcomuseoPage'
+import SustSmokPage from './pages/SustSmokPage'
+import ReelsFypPage from './pages/ReelsFypPage'
 
 function App() {
-  const header = <HeroSection title="Groove" imageName="groove" />
-
-  const content = (
-    <>
-      <div className="col-span-3 bg-secondary h-screen flex items-center justify-center text-black">
-        <Index item2="Item 2" item3="Item 3"/>
-      </div>
-      <ProjectBox name='Groove' desc='UX/UI Design' imageName='groove'/>
-    </>
+  return (
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/groove" element={<GroovePage />} />
+      <Route path="/ovenconf" element={<OvenConfPage />} />
+      <Route path="/citinst" element={<CitInstPage />} />
+      <Route path="/ecomuseo" element={<EcomuseoPage />} />
+      <Route path="/sustsmok" element={<SustSmokPage />} />
+      <Route path="/reelsfyp" element={<ReelsFypPage />} />
+    </Routes>
   )
-
-  return <LayoutWrapper header={header} content={content} />
 }
 
 export default App
