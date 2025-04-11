@@ -1,6 +1,7 @@
 import LayoutWrapper from './components/LayoutWrapper'
 import HeroSection from './components/HeroSection'
 import Index from './components/Index'
+import ProjectBox from './components/ProjectBox'
 
 function App() {
   const header = <HeroSection title="Groove" imageName="groove" />
@@ -10,9 +11,7 @@ function App() {
       <div className="col-span-3 bg-secondary h-screen flex items-center justify-center text-black">
         <Index item2="Item 2" item3="Item 3"/>
       </div>
-      <div className="col-span-9 bg-white h-screen flex items-center justify-center text-black">
-        <span className="body-1">Column 2</span>
-      </div>
+      <ProjectBox name='Groove' desc='UX/UI Design' imageName='groove'/>
     </>
   )
 
