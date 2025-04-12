@@ -1,12 +1,21 @@
+import LayoutWrapper from '../components/LayoutWrapper'
+import HeroSection from '../components/HeroSection'
+import Index from '../components/Index'
+import ProjectBox from '../components/ProjectBox'
+
 function GroovePage() {
-    return (
-      <div className="p-8 text-black">
-        <h1 className="title-1">Groove Project</h1>
-        <p className="body-1 mt-4">
-          This is the detailed page for the Groove project.
-        </p>
-      </div>
+    const header = <HeroSection title="Groove" imageName="groove" />
+
+    const content = (
+      <>
+        <div className="col-span-3 bg-secondary h-screen flex items-center justify-center text-black">
+          <Index item2="Item 2" item3="Item 3" />
+        </div>
+        <ProjectBox name="Groove" desc="UX/UI Design" imageName="groove" />
+      </>
     )
+
+    return <LayoutWrapper header={header} content={content} />
   }
   
   export default GroovePage
