@@ -23,7 +23,7 @@
 }
 
 .body-1 {
-  @apply text-body-1 font-body font-light;
+  @apply text-body-1 font-body font-extralight;
 }
 
 .ui {
@@ -31,7 +31,7 @@
 }
 
 .body-2 {
-  @apply text-body-2 font-body font-light;
+  @apply text-body-2 font-body font-extralight;
 }
 
 .caption {
