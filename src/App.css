@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Typography */
+
+.large-title {
+    @apply text-large-title font-title font-bold;
+}
+
+.title-1 {
+    @apply text-title-1 font-title font-semibold;
+}
+
+.title-2 {
+    @apply text-title-2 font-title font-semibold;
+}
+
+.subtitle-1 {
+    @apply text-subtitle-1 font-title font-medium;
+}
+
+.subtitle-2 {
+    @apply text-subtitle-2 font-title font-medium;
+}
+
+.body-1 {
+    @apply text-body-1 font-body font-extralight;
+}
+
+.ui {
+    @apply text-ui font-ui font-medium;
+}
+
+.body-2 {
+    @apply text-body-2 font-body font-extralight;
+}
+
+.caption {
+    @apply text-caption font-body font-extralight;
+}
+
+/* shadows */
+.shadow-light {
+    @apply shadow-[0_0_2px_rgba(28,36,42,0.15)]
+}
+
+/* Project styles */
+
+.project-content {
+    @apply col-span-9 flex flex-col py-[1.5rem] gap-[3rem] items-start justify-start text-black body-1;
+}
+
+.project-text-container {
+    @apply w-3/4 flex flex-col gap-[1rem]
+}
+
+.project-image-container {
+    @apply flex flex-col items-center w-full gap-[.5rem]
+}
+
+.project-text {
+   @apply flex flex-col gap-[.75rem] 
+}
+
+.project-image {
+    @apply w-full h-auto rounded-[1rem] shadow-light
+}
