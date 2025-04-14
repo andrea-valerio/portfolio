@@ -1,6 +1,6 @@
 import LayoutWrapper from '../components/LayoutWrapper'
 import HeroSection from '../components/HeroSection'
-import Index from '../components/Index'
+import Index from '../components/IndexList'
 
 function SustSmokPage() {
     return (

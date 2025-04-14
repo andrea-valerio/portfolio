@@ -29,7 +29,7 @@ function HomePage() {
   )
 
   const content = (
-    <>
+    <div className="flex flex-col gap-[6rem]">
       {/* Me and Contacts */}
       <div className="col-span-12 flex flex-col gap-[1.5rem] body-1 break-words w-full" style={{ fontSize: '1.875rem', maxWidth: '100%' }}>
         {/* Me */}
@@ -78,7 +78,7 @@ function HomePage() {
             <ProjectBox name="Instagram vs TikTok" desc="Quantitative Research" imageName="reelsfyp" />
         </div>
       </div>
-    </>
+    </div>
   )
 
   return <LayoutWrapper header={header} content={content} />

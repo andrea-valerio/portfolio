@@ -14,7 +14,7 @@ const LayoutWrapper = ({ header, content, className = '' }: LayoutWrapperProps) 
         {header}
       </div>
 
-      <div className="grid grid-cols-12 px-[128px] gap-[6rem] w-full">
+      <div className="px-[128px] w-full">
         {content}
         <div className="col-span-12">
           <Footer />

@@ -8,8 +8,13 @@ function GroovePage() {
     const header = <HeroSection title="Groove" imageName="groove" />
 
     const content = (
-      <>
+      <div className="col-span-12 flex justify-between">
+
+        {/* Left Side */}
         <LeftSide item2="Design process" item3="Final result" />
+
+        {/* Divider */}
+        <div className="w-px bg-grey-4" />
 
         {/* Right Side */}
         <div className="project-content">
@@ -109,7 +114,6 @@ function GroovePage() {
             </div>
           </div>
 
-          {/* Carousel */}
           <Carousel
             images={[
               './src/assets/projects/groove/results/Sign-up.png',
@@ -124,9 +128,8 @@ function GroovePage() {
             width={200}
             round={1.625}
           />
-
         </div>
-      </>
+      </div>
     )
 
     return <LayoutWrapper header={header} content={content} />

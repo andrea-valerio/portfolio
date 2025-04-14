@@ -48,7 +48,7 @@
 /* Project styles */
 
 .project-content {
-    @apply col-span-9 flex flex-col py-[1.5rem] gap-[3rem] items-start justify-start text-black body-1;
+    @apply max-w-[75%] flex flex-col py-[1.5rem] gap-[3rem] items-start text-black body-1;
 }
 
 .project-text-container {
