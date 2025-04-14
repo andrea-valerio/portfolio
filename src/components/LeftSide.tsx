@@ -8,7 +8,7 @@ type LeftSideProps = {
 
 const LeftSide = ({ item2, item3 }: LeftSideProps) => {
   return (
-    <div className="max-w-1/4 flex flex-col gap-[0.625rem] whitespace-nowrap overflow-visible">
+    <div className="sticky top-[6rem] self-start flex flex-col gap-[0.625rem] whitespace-nowrap overflow-visible">
       <Link
         to={`/`}
         className="flex flex-col justify-center items-center p-[0.5rem] box-content w-[4rem] h-[3rem] "

@@ -14,7 +14,7 @@ function GroovePage() {
         <LeftSide item2="Design process" item3="Final result" />
 
         {/* Divider */}
-        <div className="w-px bg-grey-4" />
+        <div className="w-[.5px] bg-black -translate-x-[.75rem]" />
 
         {/* Right Side */}
         <div className="project-content">
