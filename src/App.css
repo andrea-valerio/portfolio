@@ -66,3 +66,11 @@
 .project-image {
     @apply w-full h-auto rounded-[1rem] shadow-light
 }
+
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }

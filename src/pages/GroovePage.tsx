@@ -2,6 +2,7 @@ import LayoutWrapper from '../components/LayoutWrapper'
 import HeroSection from '../components/HeroSection'
 import LeftSide from '../components/LeftSide'
 import DetailsText from '../components/DetailsText'
+import Carousel from '../components/Carousel'
 
 function GroovePage() {
     const header = <HeroSection title="Groove" imageName="groove" />
@@ -107,6 +108,22 @@ function GroovePage() {
               </p>
             </div>
           </div>
+
+          {/* Carousel */}
+          <Carousel
+            images={[
+              './src/assets/projects/groove/results/Sign-up.png',
+              './src/assets/projects/groove/results/Home.png',
+              './src/assets/projects/groove/results/Ricerca.png',
+              './src/assets/projects/groove/results/Mappa.png',
+              './src/assets/projects/groove/results/Evento.png',
+              './src/assets/projects/groove/results/Locale.png',
+              './src/assets/projects/groove/results/Biglietti.png',
+              './src/assets/projects/groove/results/Biglietto.png',
+            ]}
+            width={200}
+            round={1.625}
+          />
 
         </div>
       </>
