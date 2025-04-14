@@ -4,6 +4,7 @@ import ProjectBox from '../components/ProjectBox'
 function HomePage() {
   const header = (
     <div
+      // Header
       className="h-[45vh] bg-cover bg-center flex items-center justify-center text-white pt-[6rem] pb-[4.5rem]"
       style={{
         backgroundImage: `

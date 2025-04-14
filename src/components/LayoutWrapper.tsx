@@ -14,12 +14,10 @@ const LayoutWrapper = ({ header, content, className = '' }: LayoutWrapperProps) 
         {header}
       </div>
 
-      <div className="px-[128px] w-full">
-        <div className="grid grid-cols-12 gap-[6rem] w-full">
-          {content}
-          <div className="col-span-12">
-            <Footer />
-          </div>
+      <div className="grid grid-cols-12 px-[128px] gap-[6rem] w-full">
+        {content}
+        <div className="col-span-12">
+          <Footer />
         </div>
       </div>
     </div>
