@@ -24,7 +24,7 @@ function GroovePage() {
           </DetailsText>
 
           {/* intro */}
-          <div className="project-text-container">
+          <div className="project-text-container" id="section-1">
             <p className="title-2">Introduction</p>
             <div className="project-text">
               <p>This project was developed for a <span className="font-semibold">start-up</span> based in Trento, focusing on creating a MVP for their investor pitch.</p>
@@ -34,7 +34,7 @@ function GroovePage() {
           </div>
 
           {/* process */}
-          <div className="project-text-container">
+          <div className="project-text-container" id="section-2">
             <p className="title-2">Design process</p>
             <div className="project-text">
               <p>A <span className="font-semibold">Double Diamond</span> methodology was applied.</p>
@@ -91,7 +91,7 @@ function GroovePage() {
           </div>
 
           {/* Final result */}
-          <div className="project-text-container">
+          <div className="project-text-container" id="section-3">
             <p className="title-2">Final result</p>
             <div className="project-text">
               <p>The final design featured three main sections:</p>
