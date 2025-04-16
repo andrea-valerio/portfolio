@@ -12,7 +12,9 @@ const Carousel = ({ images, width, round }: CarouselProps) => {
   const scrollBy = (direction: 'left' | 'right') => {
     if (!scrollRef.current) return
     const container = scrollRef.current
-    const scrollAmount = width + 48 // scroll by (px)
+    const scrollAmount = width > 0
+      ? width + 48
+      : (container.firstElementChild as HTMLElement)?.offsetWidth + 48
     container.scrollBy({
       left: direction === 'left' ? -scrollAmount : scrollAmount,
       behavior: 'smooth',
@@ -31,7 +33,10 @@ const Carousel = ({ images, width, round }: CarouselProps) => {
             key={idx}
             src={src}
             alt={`carousel-${idx}`}
-            style={{ width: `${width}px`, borderRadius: `${round}rem` }}
+            style={{
+              width: width > 0 ? `${width}px` : '100%',
+              borderRadius: `${round}rem`
+            }}
             className="shadow-light"
           />
         ))}
