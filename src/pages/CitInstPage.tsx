@@ -27,7 +27,7 @@ function CitInstPage() {
           <div className="project-text-container" id="section-1">
             <p className="title-2">Introduction</p>
             <div className="project-text">
-              <p>TThe project aimed to design the Help and Support services and the Appointment Booking section for a
+              <p>TThe project aimed to design the Help and Support services and the Appointment Booking section for a 
                 <span className="font-semibold">public website template</span>, soon being available to all Italian municipalities.</p>
             </div>
           </div>
