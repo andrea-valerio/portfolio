@@ -63,13 +63,16 @@
     @apply flex flex-col items-center w-2/3 gap-[.5rem]
 }
 
-
 .project-text {
    @apply flex flex-col gap-[.75rem] 
 }
 
 .project-image {
     @apply w-full h-auto rounded-[1rem] shadow-light
+}
+
+.project-image-small {
+    @apply w-full h-auto rounded-[.5rem] shadow-light
 }
 
 .hide-scrollbar::-webkit-scrollbar {
