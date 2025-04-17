@@ -93,12 +93,12 @@ function CitInstPage() {
           </div>
 
           {/* taxonomy (image) */}
-          <div className="project-image-container">
+          <div className="project-image-container-small">
             <span className="body-2">Sections taxonomy</span>
             <img
               src="./src/assets/projects/citinst/taxonomy.png"
               alt="Sections Taxonomy"
-              className="project-image"
+              className="project-image-small"
             />
           </div>
 

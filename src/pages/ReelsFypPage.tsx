@@ -19,7 +19,7 @@ function ReelsFypPage() {
         {/* Right Side */}
         <div className="project-content">
           <DetailsText>
-            April - june 2023, 4-member team<br />
+            April - June 2023, 4-member team<br />
             MSc in Human-Computer Interaction, course in Cognitive Ergonomics and Quantitative Research
           </DetailsText>
 
