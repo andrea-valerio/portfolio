@@ -67,6 +67,10 @@
     @apply flex flex-row items-start w-1/6 gap-[3rem]
 }
 
+.project-video-container {
+    @apply flex flex-col w-[216px] items-center gap-[.5rem]
+}
+
 .project-text {
    @apply flex flex-col gap-[.75rem] 
 }
@@ -77,6 +81,10 @@
 
 .project-image-small {
     @apply w-full h-auto rounded-[.5rem] shadow-light
+}
+
+.project-video {
+    @apply w-full h-auto rounded-[2.3125rem] shadow-light cursor-pointer
 }
 
 .hide-scrollbar::-webkit-scrollbar {

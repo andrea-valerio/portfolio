@@ -3,6 +3,7 @@ import HeroSection from '../components/HeroSection'
 import LeftSide from '../components/LeftSide'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
+import VideoAnimation from '../components/VideoAnimation'
 
 function GroovePage() {
     const header = <HeroSection title="Groove" imageName="groove" />
@@ -113,6 +114,8 @@ function GroovePage() {
               </p>
             </div>
           </div>
+
+          <VideoAnimation />
 
           <Carousel
             images={[

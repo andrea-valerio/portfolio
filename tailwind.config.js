@@ -51,6 +51,9 @@ export default {
         'body-2': ['0.8rem', { lineHeight: 'normal'}], // 12.80px
         'caption': ['0.64rem', { lineHeight: 'normal'}], // 10.24px
       },
+      opacity: {
+        '66': '0.66',
+      }
     },
   },
   plugins: [],
