@@ -1,5 +1,5 @@
 import './App.css'
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { Routes, Route, useLocation } from 'react-router-dom'
 import { useEffect, useRef, useLayoutEffect } from 'react'
 import HomePage from './pages/HomePage'
 import GroovePage from './pages/GroovePage'
