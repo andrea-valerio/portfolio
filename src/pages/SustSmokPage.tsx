@@ -37,7 +37,7 @@ function SustSmokPage() {
           </div>
 
           {/* location (image) */}
-          <div className="project-image-container flex-row gap-[3rem]">
+          <div className="project-image-container">
             <span className="body-2">Observation locations</span>
             <div className="flex items-center gap-[3rem] w-full">
               <div className="">
