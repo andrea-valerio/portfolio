@@ -4,8 +4,11 @@ import ProjectBox from '../components/ProjectBox'
 function HomePage() {
   const header = (
     <div
-      // Header
-      className="h-[45vh] bg-cover bg-center flex items-center justify-center text-white pt-[6rem] pb-[4.5rem]"
+      // Header: percentage height with responsive min-heights
+      className="
+        h-[200px] sm:h-[250px] md:h-[300px] lg:h-[350px]
+        bg-cover bg-center flex items-center justify-center text-white
+      "
       style={{
         backgroundImage: `
           linear-gradient(0deg, rgba(28, 36, 42, 0.20) 0%, rgba(28, 36, 42, 0.20) 100%),
@@ -14,12 +17,14 @@ function HomePage() {
         `,
       }}
     >
-      <div className="flex items-stretch gap-[2.75rem] text-center font-body text-[7.5rem] font-semibold leading-[0.91]">
+        <div className="w-full max-w-[1240px] mx-auto px-[20px] flex justify-center font-body font-bold leading-[0.91]
+          text-[2.4rem] sm:text-[4.3rem] md:text-[5.4rem] lg:text-[7.5rem]
+          gap-[0.875rem] sm:gap-[1.5rem] md:gap-[2rem] lg:gap-[2.75rem]">
         <span>“</span>
         <div>
           <p>Bridging minds</p>
           <div className="flex justify-between items-baseline">
-            <span className="text-[4.625rem]">and</span>
+            <span className="text-[1.47rem] sm:text-[2.688rem] md:text-[3.3125rem] lg:text-[4.625rem]">and</span>
             <span>technologies</span>
           </div>
         </div>
@@ -29,9 +34,10 @@ function HomePage() {
   )
 
   const content = (
-    <div className="flex flex-col gap-[6rem]">
+    <div className="flex flex-col
+    gap-[2rem] sm:gap-[3rem] md:gap-[4rem] lg:gap-[6rem]">
       {/* Me and Contacts */}
-      <div className="col-span-12 flex flex-col gap-[1.5rem] body-1 break-words w-full" style={{ fontSize: '1.875rem', maxWidth: '100%' }}>
+      <div className="col-span-12 flex flex-col gap-[1.5rem] body-1 break-words w-full max-w-full">
         {/* Me */}
         <div className="col-span-12 flex flex-col gap-[0.5rem]">
           <p>
@@ -54,7 +60,7 @@ function HomePage() {
         </div>
         {/* Contacts */}
         <div className="flex items-center gap-[3rem] pt-4">
-          <span>Contacts :</span>
+          {/* <span>Contacts :</span> */}
           <div className="flex items-center gap-[0.625rem]">
             <img src="/src/assets/icons/mail.png" alt="mail icon" className="w-[1.5rem] h-[1.5rem]" />
             <a href="mailto:andrea@icio.it" className="text-accent-shade3 underline">andrea@icio.it</a>
