@@ -1,5 +1,10 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+// load all project images as URLs
+const projectImages: Record<string, string> = import.meta.glob(
+  '../assets/projects/*.png',
+  { eager: true, query: '?url', import: 'default' }
+);
 
 type ProjectBoxProps = {
   name: string
@@ -13,6 +18,7 @@ const ProjectBox = ({ name, desc, imageName, ribbonSrc }: ProjectBoxProps) => {
   const [isHovered, setIsHovered] = useState(false)
 
   const overlayOpacity = isPressed ? 'opacity-80' : isHovered ? 'opacity-70' : 'opacity-30'
+  const bgUrl = projectImages[`../assets/projects/${imageName}.png`];
 
   return (
     <Link
@@ -39,7 +45,7 @@ const ProjectBox = ({ name, desc, imageName, ribbonSrc }: ProjectBoxProps) => {
           style={{
             backgroundImage: `
               linear-gradient(180deg, rgba(249,238,235,0), rgba(28,36,42,0.2)),
-              url('/src/assets/projects/${imageName}.png')
+              url('${bgUrl}')
             `,
             backgroundSize: 'cover',
             backgroundPosition: 'center',

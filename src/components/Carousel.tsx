@@ -1,4 +1,8 @@
 import { useRef, useState, useEffect, useLayoutEffect } from 'react'
+import leftArrow from '../assets/icons/left-arrow.svg'
+import leftArrowOff from '../assets/icons/left-arrow-inactive.svg'
+import rightArrow from '../assets/icons/right-arrow.svg'
+import rightArrowOff from '../assets/icons/right-arrow-inactive.svg'
 
 type CarouselProps = {
   images: string[] // array of image paths
@@ -79,11 +83,7 @@ const Carousel = ({ images, width, round }: CarouselProps) => {
         className={`absolute left-[-44px] top-1/2 -translate-y-1/2 ${!canScrollLeft ? 'pointer-events-none' : ''}`}
       >
         <img
-          src={
-            canScrollLeft
-              ? './src/assets/icons/left-arrow.svg'
-              : './src/assets/icons/left-arrow-inactive.svg'
-          }
+          src={canScrollLeft ? leftArrow : leftArrowOff}
           alt="Left arrow"
           className="w-[2rem] h-[2rem] p-1"
         />
@@ -94,11 +94,7 @@ const Carousel = ({ images, width, round }: CarouselProps) => {
         className={`absolute right-[-44px] top-1/2 -translate-y-1/2 ${!canScrollRight ? 'pointer-events-none' : ''}`}
       >
         <img
-          src={
-            canScrollRight
-              ? './src/assets/icons/right-arrow.svg'
-              : './src/assets/icons/right-arrow-inactive.svg'
-          }
+          src={canScrollRight ? rightArrow : rightArrowOff}
           alt="Right arrow"
           className="w-[2rem] h-[2rem] p-1"
         />

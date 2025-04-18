@@ -3,6 +3,16 @@ import HeroSection from '../components/HeroSection'
 import LeftSide from '../components/LeftSide'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
+import roveretoImg        from '../assets/projects/sustsmok/rovereto.png';
+import povoImg           from '../assets/projects/sustsmok/povo.png';
+import sociologyImg      from '../assets/projects/sustsmok/sociology.png';
+import cardsImg          from '../assets/projects/sustsmok/cards.png';
+import workshop1         from '../assets/projects/sustsmok/workshop-1.png';
+import workshop2         from '../assets/projects/sustsmok/workshop-2.png';
+import workshop3         from '../assets/projects/sustsmok/workshop-3.png';
+import workshop4         from '../assets/projects/sustsmok/workshop-4.png';
+import workshop5         from '../assets/projects/sustsmok/workshop-5.png';
+import workshop6         from '../assets/projects/sustsmok/workshop-6.png';
 
 function SustSmokPage() {
     const header = <HeroSection title="Sustainability & Smoking" imageName="sustsmok" />
@@ -42,21 +52,21 @@ function SustSmokPage() {
             <div className="flex items-center gap-[3rem] w-full">
               <div className="">
                 <img
-                  src="./src/assets/projects/sustsmok/rovereto.png"
+                  src={roveretoImg}
                   alt="Rovereto"
                   className="project-image-small"
                 />
               </div>
               <div className="">
                 <img
-                  src="./src/assets/projects/sustsmok/povo.png"
+                  src={povoImg}
                   alt="Povo"
                   className="project-image-small"
                 />
               </div>
               <div className="">
                 <img
-                  src="./src/assets/projects/sustsmok/sociology.png"
+                  src={sociologyImg}
                   alt="Sociology"
                   className="project-image-small"
                 />
@@ -84,7 +94,7 @@ function SustSmokPage() {
           <div className="project-image-container">
             <span className="body-2">Themes cards</span>
             <img
-              src="./src/assets/projects/sustsmok/cards.png"
+              src={cardsImg}
               alt="Themes cards"
               className="project-image"
             />
@@ -104,12 +114,12 @@ function SustSmokPage() {
             <span className="body-2">Participatory workshop</span>
             <Carousel
               images={[
-                './src/assets/projects/sustsmok/workshop-1.png',
-                './src/assets/projects/sustsmok/workshop-2.png',
-                './src/assets/projects/sustsmok/workshop-3.png',
-                './src/assets/projects/sustsmok/workshop-4.png',
-                './src/assets/projects/sustsmok/workshop-5.png',
-                './src/assets/projects/sustsmok/workshop-6.png',
+                workshop1,
+                workshop2,
+                workshop3,
+                workshop4,
+                workshop5,
+                workshop6,
               ]}
               width={250}
               round={1}

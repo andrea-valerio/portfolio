@@ -3,6 +3,15 @@ import HeroSection from '../components/HeroSection'
 import LeftSide from '../components/LeftSide'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
+import conceptMap from '../assets/projects/citinst/concept-map.png';
+import taxonomy from '../assets/projects/citinst/taxonomy.png';
+import sketches from '../assets/projects/citinst/sketches.png';
+import contact from '../assets/projects/citinst/results/contact.png';
+import help from '../assets/projects/citinst/results/help.png';
+import opinion from '../assets/projects/citinst/results/opinion.png';
+import booking from '../assets/projects/citinst/results/booking.png';
+import faq from '../assets/projects/citinst/results/faq.png';
+import feedback from '../assets/projects/citinst/results/feedback.png';
 
 function CitInstPage() {
     const header = <HeroSection title="Citizen-Institution Interaction" imageName="citinst" />
@@ -65,8 +74,8 @@ function CitInstPage() {
           {/* concept map (image) */}
           <div className="project-image-container">
             <span className="body-2">Concept map</span>
-            <img
-              src="./src/assets/projects/citinst/concept-map.png"
+          <img
+              src={conceptMap}
               alt="Concept map"
               className="project-image"
             />
@@ -96,7 +105,7 @@ function CitInstPage() {
           <div className="project-image-container-small">
             <span className="body-2">Sections taxonomy</span>
             <img
-              src="./src/assets/projects/citinst/taxonomy.png"
+              src={taxonomy}
               alt="Sections Taxonomy"
               className="project-image-small"
             />
@@ -115,7 +124,7 @@ function CitInstPage() {
           <div className="project-image-container">
             <span className="body-2">Sections taxonomy</span>
             <img
-              src="./src/assets/projects/citinst/sketches.png"
+              src={sketches}
               alt="Sketches"
               className="project-image"
             />
@@ -136,12 +145,12 @@ function CitInstPage() {
 
           <Carousel
             images={[
-              './src/assets/projects/citinst/results/contact.png',
-              './src/assets/projects/citinst/results/help.png',
-              './src/assets/projects/citinst/results/opinion.png',
-              './src/assets/projects/citinst/results/booking.png',
-              './src/assets/projects/citinst/results/faq.png',
-              './src/assets/projects/citinst/results/feedback.png',
+              contact,
+              help,
+              opinion,
+              booking,
+              faq,
+              feedback,
             ]}
             width={200}
             round={1}

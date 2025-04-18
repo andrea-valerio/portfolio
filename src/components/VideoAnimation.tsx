@@ -1,4 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react'
+import animationMp4     from '../assets/projects/groove/results/animation.mp4';
+import videoOverlayPng  from '../assets/projects/groove/results/video-overlay.png';
 
 const VideoAnimation: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null)
@@ -40,13 +42,13 @@ const VideoAnimation: React.FC = () => {
       <div className="relative">
         <video
           ref={videoRef}
-          src="./src/assets/projects/groove/results/animation.mp4"
+          src={animationMp4}
           className="project-video"
           muted
           onClick={handleClick}
         />
         <img
-          src="./src/assets/projects/groove/results/video-overlay.png"
+          src={videoOverlayPng}
           alt="Video paused"
           onClick={handleClick}
           className={

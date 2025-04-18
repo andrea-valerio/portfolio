@@ -4,6 +4,17 @@ import LeftSide from '../components/LeftSide'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
 import VideoAnimation from '../components/VideoAnimation'
+import stakeholderInterview from '../assets/projects/groove/stakeholder-interview.png'
+import userPersonas         from '../assets/projects/groove/personas.png'
+import experienceJourneys   from '../assets/projects/groove/journeys.png'
+import signUpImg            from '../assets/projects/groove/results/Sign-up.png'
+import homeImg              from '../assets/projects/groove/results/Home.png'
+import ricercaImg           from '../assets/projects/groove/results/Ricerca.png'
+import mappaImg             from '../assets/projects/groove/results/Mappa.png'
+import eventoImg            from '../assets/projects/groove/results/Evento.png'
+import localeImg            from '../assets/projects/groove/results/Locale.png'
+import bigliettiImg         from '../assets/projects/groove/results/Biglietti.png'
+import bigliettoImg         from '../assets/projects/groove/results/Biglietto.png'
 
 function GroovePage() {
     const header = <HeroSection title="Groove" imageName="groove" />
@@ -47,7 +58,7 @@ function GroovePage() {
           <div className="project-image-container">
             <span className="body-2">Stakeholder Interview Wrap-up</span>
             <img
-              src="./src/assets/projects/groove/stakeholder-interview.png"
+              src={stakeholderInterview}
               alt="Stakeholder interview"
               className="project-image"
             />
@@ -57,7 +68,7 @@ function GroovePage() {
           <div className="project-image-container">
             <span className="body-2">User Personas</span>
             <img
-              src="./src/assets/projects/groove/personas.png"
+              src={userPersonas}
               alt="User personas"
               className="project-image"
             />
@@ -67,7 +78,7 @@ function GroovePage() {
           <div className="project-image-container">
             <span className="body-2">Experience Journeys</span>
             <img
-              src="./src/assets/projects/groove/journeys.png"
+              src={experienceJourneys}
               alt="Experience journeys"
               className="project-image"
             />
@@ -119,14 +130,14 @@ function GroovePage() {
 
           <Carousel
             images={[
-              './src/assets/projects/groove/results/Sign-up.png',
-              './src/assets/projects/groove/results/Home.png',
-              './src/assets/projects/groove/results/Ricerca.png',
-              './src/assets/projects/groove/results/Mappa.png',
-              './src/assets/projects/groove/results/Evento.png',
-              './src/assets/projects/groove/results/Locale.png',
-              './src/assets/projects/groove/results/Biglietti.png',
-              './src/assets/projects/groove/results/Biglietto.png',
+              signUpImg,
+              homeImg,
+              ricercaImg,
+              mappaImg,
+              eventoImg,
+              localeImg,
+              bigliettiImg,
+              bigliettoImg,
             ]}
             width={200}
             round={1.625}

@@ -3,6 +3,13 @@ import HeroSection from '../components/HeroSection'
 import LeftSide from '../components/LeftSide'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
+import instagramImg       from '../assets/projects/reelsfyp/instagram.png';
+import tiktokImg          from '../assets/projects/reelsfyp/tiktok.png';
+import questionnaireImg   from '../assets/projects/reelsfyp/questionnaire.png';
+import kpiGeneral         from '../assets/projects/reelsfyp/results/kpi-general.png';
+import kpiInstagram       from '../assets/projects/reelsfyp/results/kpi-instagram.png';
+import kpiTikTok          from '../assets/projects/reelsfyp/results/kpi-tiktok.png';
+import kpiAge             from '../assets/projects/reelsfyp/results/kpi-age.png';
 
 function ReelsFypPage() {
     const header = <HeroSection title="Instagram vs TikTok" imageName="reelsfyp" />
@@ -41,16 +48,16 @@ function ReelsFypPage() {
 
           {/* comparison (image) */}
           <div className="project-image-container-xsmall">
-            <img
-              src="./src/assets/projects/reelsfyp/instagram.png"
-              alt="Instagram"
-              className="project-image"
-            />
-            <img
-              src="./src/assets/projects/reelsfyp/tiktok.png"
-              alt="TikTok"
-              className="project-image"
-            />
+          <img
+            src={instagramImg}
+            alt="Instagram"
+            className="project-image"
+          />
+          <img
+            src={tiktokImg}
+            alt="TikTok"
+            className="project-image"
+          />
           </div>
 
           {/* process */}
@@ -75,7 +82,7 @@ function ReelsFypPage() {
           <div className="project-image-container-small">
             <span className="body-2">Questionnaire</span>
             <img
-              src="./src/assets/projects/reelsfyp/questionnaire.png"
+              src={questionnaireImg}
               alt="Questionnaire"
               className="project-image"
             />
@@ -100,10 +107,10 @@ function ReelsFypPage() {
 
           <Carousel
             images={[
-              './src/assets/projects/reelsfyp/results/kpi-general.png',
-              './src/assets/projects/reelsfyp/results/kpi-instagram.png',
-              './src/assets/projects/reelsfyp/results/kpi-tiktok.png',
-              './src/assets/projects/reelsfyp/results/kpi-age.png',
+              kpiGeneral,
+              kpiInstagram,
+              kpiTikTok,
+              kpiAge,
             ]}
             width={400}
             round={1}

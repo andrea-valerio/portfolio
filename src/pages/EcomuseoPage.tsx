@@ -3,6 +3,17 @@ import HeroSection from '../components/HeroSection'
 import LeftSide from '../components/LeftSide'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
+// Asset imports
+import personas1 from '../assets/projects/ecomuseo/personas-1.png';
+import personas2 from '../assets/projects/ecomuseo/personas-2.png';
+import personas3 from '../assets/projects/ecomuseo/personas-3.png';
+import taxonomyImg from '../assets/projects/ecomuseo/taxonomy.png';
+import sketchesImg from '../assets/projects/ecomuseo/sketches.png';
+import ecomHome from '../assets/projects/ecomuseo/results/home.png';
+import ecomOrrido from '../assets/projects/ecomuseo/results/orrido.png';
+import ecomCiucioi from '../assets/projects/ecomuseo/results/ciucioi.png';
+import ecomTicket from '../assets/projects/ecomuseo/results/ticket.png';
+import ecomPayment from '../assets/projects/ecomuseo/results/payment.png';
 
 function EcomuseoPage() {
     const header = <HeroSection title="Ecomuseo Argentario" imageName="ecomuseo" />
@@ -52,25 +63,13 @@ function EcomuseoPage() {
             <span className="body-2">Personas</span>
             <div className="flex items-center gap-[3rem] w-full">
               <div className="">
-                <img
-                  src="./src/assets/projects/ecomuseo/personas-1.png"
-                  alt="Personas 1"
-                  className="project-image-small"
-                />
+                <img src={personas1} alt="Personas 1" className="project-image-small" />
               </div>
               <div className="">
-                <img
-                  src="./src/assets/projects/ecomuseo/personas-2.png"
-                  alt="Personas 2"
-                  className="project-image-small"
-                />
+                <img src={personas2} alt="Personas 2" className="project-image-small" />
               </div>
               <div className="">
-                <img
-                  src="./src/assets/projects/ecomuseo/personas-3.png"
-                  alt="Personas 3"
-                  className="project-image-small"
-                />
+                <img src={personas3} alt="Personas 3" className="project-image-small" />
               </div>
             </div>
           </div>
@@ -90,21 +89,13 @@ function EcomuseoPage() {
           {/* taxonomy (image) */}
           <div className="project-image-container">
             <span className="body-2">Taxonomy</span>
-            <img
-              src="./src/assets/projects/ecomuseo/taxonomy.png"
-              alt="Taxonomy"
-              className="project-image"
-            />
+            <img src={taxonomyImg} alt="Taxonomy" className="project-image" />
           </div>
 
           {/* sketches (image) */}
           <div className="project-image-container">
             <span className="body-2">Sketches</span>
-            <img
-              src="./src/assets/projects/ecomuseo/sketches.png"
-              alt="Sketches"
-              className="project-image"
-            />
+            <img src={sketchesImg} alt="Sketches" className="project-image" />
           </div>
 
           {/* Final result */}
@@ -137,11 +128,11 @@ function EcomuseoPage() {
 
           <Carousel
             images={[
-              './src/assets/projects/ecomuseo/results/home.png',
-              './src/assets/projects/ecomuseo/results/orrido.png',
-              './src/assets/projects/ecomuseo/results/ciucioi.png',
-              './src/assets/projects/ecomuseo/results/ticket.png',
-              './src/assets/projects/ecomuseo/results/payment.png',
+              ecomHome,
+              ecomOrrido,
+              ecomCiucioi,
+              ecomTicket,
+              ecomPayment,
             ]}
             width={0}
             round={1}

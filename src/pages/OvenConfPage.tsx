@@ -3,6 +3,14 @@ import HeroSection from '../components/HeroSection'
 import LeftSide from '../components/LeftSide'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
+import accessFlow from '../assets/projects/ovenconf/access-flow.png';
+import configurationFlow from '../assets/projects/ovenconf/configuration-flow.png';
+import ovenHome from '../assets/projects/ovenconf/results/home.png';
+import ovensImg from '../assets/projects/ovenconf/results/ovens.png';
+import secondOvenImg from '../assets/projects/ovenconf/results/second-oven.png';
+import placementImg from '../assets/projects/ovenconf/results/placement.png';
+import accessoryImg from '../assets/projects/ovenconf/results/accessory.png';
+import reviewImg from '../assets/projects/ovenconf/results/review.png';
 
 function OvenConfPage() {
     const header = <HeroSection title="Oven Configurator" imageName="ovenconf" />
@@ -55,7 +63,7 @@ function OvenConfPage() {
           <div className="project-image-container">
             <span className="body-2">Access flow</span>
             <img
-              src="./src/assets/projects/ovenconf/access-flow.png"
+              src={accessFlow}
               alt="Access flow"
               className="project-image"
             />
@@ -65,7 +73,7 @@ function OvenConfPage() {
           <div className="project-image-container-small">
             <span className="body-2">Configuration flow</span>
             <img
-              src="./src/assets/projects/ovenconf/configuration-flow.png"
+              src={configurationFlow}
               alt="Configuration flow"
               className="project-image"
             />
@@ -97,12 +105,12 @@ function OvenConfPage() {
 
           <Carousel
             images={[
-              './src/assets/projects/ovenconf/results/home.png',
-              './src/assets/projects/ovenconf/results/ovens.png',
-              './src/assets/projects/ovenconf/results/second-oven.png',
-              './src/assets/projects/ovenconf/results/placement.png',
-              './src/assets/projects/ovenconf/results/accessory.png',
-              './src/assets/projects/ovenconf/results/review.png',
+              ovenHome,
+              ovensImg,
+              secondOvenImg,
+              placementImg,
+              accessoryImg,
+              reviewImg,
             ]}
             width={0}
             round={1}
