@@ -6,7 +6,8 @@ type HeroSectionProps = {
 const HeroSection = ({title, imageName}: HeroSectionProps) => {
     return (
     <div
-      className="h-[45vh] w-full bg-cover bg-center flex items-center justify-center"
+      className="w-full bg-cover bg-center flex items-center justify-center
+        h-[100px] sm:h-[150px] md:h-[200px] lg:h-[250px]"
       style={{
         backgroundImage: `
           linear-gradient(0deg, rgba(28,36,42,0.5), rgba(28,36,42,0.5)),
@@ -15,7 +16,7 @@ const HeroSection = ({title, imageName}: HeroSectionProps) => {
         `,
       }}
     >
-      <h1 className="title-1 text-white z-10">{title}</h1>
+      <h1 className="title-1 sm:text-title-2 md:text-title-1 lg:text-title-1 text-white">{title}</h1>
     </div>
   )
 }
