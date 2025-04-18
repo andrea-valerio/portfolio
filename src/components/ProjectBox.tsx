@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-// load all project images as URLs
+
 const projectImages: Record<string, string> = import.meta.glob(
   '../assets/projects/*.png',
   { eager: true, query: '?url', import: 'default' }

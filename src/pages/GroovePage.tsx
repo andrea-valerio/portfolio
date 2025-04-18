@@ -7,6 +7,7 @@ import VideoAnimation from '../components/VideoAnimation'
 import stakeholderInterview from '../assets/projects/groove/stakeholder-interview.png'
 import userPersonas         from '../assets/projects/groove/personas.png'
 import experienceJourneys   from '../assets/projects/groove/journeys.png'
+import crazyEight           from '../assets/projects/groove/crazy8.png'
 import signUpImg            from '../assets/projects/groove/results/Sign-up.png'
 import homeImg              from '../assets/projects/groove/results/Home.png'
 import ricercaImg           from '../assets/projects/groove/results/Ricerca.png'
@@ -96,7 +97,7 @@ function GroovePage() {
           <div className="project-image-container">
             <span className="body-2">Crazy8 with Stakeholders</span>
             <img
-              src="./src/assets/projects/groove/crazy8.png"
+              src={crazyEight}
               alt="Crazy 8 brainstorming"
               className="project-image"
             />

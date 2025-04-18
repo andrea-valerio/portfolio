@@ -1,10 +1,16 @@
+const projectImages: Record<string, string> = import.meta.glob(
+  '../assets/projects/*.png',
+  { eager: true, query: '?url', import: 'default' }
+);
+
 type HeroSectionProps = {
   title: string
   imageName: string
 }
 
 const HeroSection = ({title, imageName}: HeroSectionProps) => {
-    return (
+  const bgUrl = projectImages[`../assets/projects/${imageName}.png`];
+  return (
     <div
       className="w-full bg-cover bg-center flex items-center justify-center
         h-[100px] sm:h-[150px] md:h-[200px] lg:h-[250px]"
@@ -12,7 +18,7 @@ const HeroSection = ({title, imageName}: HeroSectionProps) => {
         backgroundImage: `
           linear-gradient(0deg, rgba(28,36,42,0.5), rgba(28,36,42,0.5)),
           linear-gradient(180deg, rgba(249,238,235,0), rgba(28,36,42,0.1)),
-          url('/src/assets/projects/${imageName}.png')
+          url('${bgUrl}')
         `,
       }}
     >
