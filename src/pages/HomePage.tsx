@@ -1,5 +1,9 @@
 import LayoutWrapper from '../components/LayoutWrapper'
 import ProjectBox from '../components/ProjectBox'
+import homeBg from '../assets/projects/home.png'
+import mailIcon from '../assets/icons/mail.png'
+import inIcon from '../assets/icons/in.png'
+import ribbonStartup from '../assets/projects/ribbon-startup.png'
 
 function HomePage() {
   const header = (
@@ -13,7 +17,7 @@ function HomePage() {
         backgroundImage: `
           linear-gradient(0deg, rgba(28, 36, 42, 0.20) 0%, rgba(28, 36, 42, 0.20) 100%),
           linear-gradient(180deg, rgba(249, 238, 235, 0.00) 0%, rgba(28, 36, 42, 0.30) 100%),
-          url('/src/assets/projects/home.png')
+          url('${homeBg}')
         `,
       }}
     >
@@ -62,11 +66,11 @@ function HomePage() {
         <div className="flex items-center gap-[3rem] pt-4">
           {/* <span>Contacts :</span> */}
           <div className="flex items-center gap-[0.625rem]">
-            <img src="/src/assets/icons/mail.png" alt="mail icon" className="w-[1.5rem] h-[1.5rem]" />
+            <img src={mailIcon} alt="mail icon" className="w-[1.5rem] h-[1.5rem]" />
             <a href="mailto:andrea@icio.it" className="text-accent-shade3 underline">andrea@icio.it</a>
           </div>
           <div className="flex items-center gap-[0.625rem]">
-            <img src="/src/assets/icons/in.png" alt="linkedin icon" className="w-[1.5rem] h-[1.5rem]" />
+            <img src={inIcon} alt="linkedin icon" className="w-[1.5rem] h-[1.5rem]" />
             <a href="https://www.linkedin.com/in/andreavalerio1" target="_blank" className="text-accent-shade3 underline">andreavalerio1</a>
           </div>
         </div>
@@ -76,7 +80,7 @@ function HomePage() {
       <div className="col-span-12 flex flex-col gap-[1.5rem]">
         <p className="title-1">Projects</p>
         <div className="col-span-12 grid grid-cols-12 gap-[3rem]">
-            <ProjectBox name="Groove" desc="UX / UI Design" imageName="groove" ribbonSrc="./src/assets/projects/ribbon-startup.png" />
+            <ProjectBox name="Groove" desc="UX / UI Design" imageName="groove" ribbonSrc={ribbonStartup} />
             <ProjectBox name="Oven Configurator" desc="UX Research & Design" imageName="ovenconf" />
             <ProjectBox name="Citizen-Institution Interaction" desc="UX Research & Design" imageName="citinst" />
             <ProjectBox name="Ecomuseo Argentario" desc="UX / UI Design" imageName="ecomuseo" />
