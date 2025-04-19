@@ -16,7 +16,9 @@ const LeftSide = ({ item2, item3 }: LeftSideProps) => {
       >
         <img src={backArrow} alt="Back arrow" className="w-[2.625rem] h-[1.5rem]" />
       </Link>
-      <IndexList item2={item2} item3={item3} />
+      <div className="hidden md:block">
+        <IndexList item2={item2} item3={item3} />
+      </div>
     </div>
   )
 }

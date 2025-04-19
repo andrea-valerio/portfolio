@@ -22,7 +22,7 @@ function OvenConfPage() {
         <LeftSide item2="Research" item3="Final results" />
 
         {/* Divider */}
-        <div className="w-[.5px] bg-black -translate-x-[.75rem]" />
+        <div className="hidden lg:block w-[.5px] bg-black -translate-x-[.75rem]" />
 
         {/* Right Side */}
         <div className="project-content">
