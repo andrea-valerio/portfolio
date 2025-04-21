@@ -11,7 +11,9 @@ type LogoProps = {
 
 const Logo = ({ logoName, className = '' }: LogoProps) => {
   return (
-    <div className={`w-[8rem] h-[3.125rem] flex items-center justify-center ${className}`}>
+    <div className={`flex items-center justify-center 
+      w-[4rem] h-[1.5625rem] sm:w-[8rem] sm:h-[3.125rem]
+      ${className}`}>
       <img
         src={logoImages[`../assets/logos/${logoName}.png`]}
         className="w-[6rem] h-auto"

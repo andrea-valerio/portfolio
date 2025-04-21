@@ -79,7 +79,7 @@ function HomePage() {
       {/* Projects */}
       <div className="col-span-12 flex flex-col gap-[1.5rem]">
         <p className="title-1">Projects</p>
-        <div className="col-span-12 grid grid-cols-12 gap-[3rem]">
+        <div className="col-span-12 grid grid-cols-2 gap-[3rem]">
             <ProjectBox name="Groove" desc="UX / UI Design" imageName="groove" ribbonSrc={ribbonStartup} />
             <ProjectBox name="Oven Configurator" desc="UX Research & Design" imageName="ovenconf" />
             <ProjectBox name="Citizen-Institution Interaction" desc="UX Research & Design" imageName="citinst" />

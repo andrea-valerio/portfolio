@@ -48,11 +48,11 @@
 /* Project styles */
 
 .project-content {
-    @apply max-w-[75%] flex flex-col py-[1.5rem] gap-[3rem] items-start text-black body-1;
+    @apply max-w-[100%] w-full sm:max-w-[80%] md:max-w-[75%] flex flex-col py-[1.5rem] gap-[3rem] items-start text-black body-1;
 }
 
 .project-text-container {
-    @apply w-3/4 flex flex-col gap-[1rem]
+    @apply w-full sm:w-4/5 md:w-3/4 flex flex-col gap-[1rem]
 }
 
 .project-image-container {

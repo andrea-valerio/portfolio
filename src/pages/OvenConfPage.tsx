@@ -28,7 +28,7 @@ function OvenConfPage() {
         <div className="project-content">
           <DetailsText>
             May - July 2022, 3-member team<br />
-            UX Design and research Intern at UNOX, Internship project
+            UX Design and Research Intern at UNOX, Internship project
           </DetailsText>
 
           {/* intro */}

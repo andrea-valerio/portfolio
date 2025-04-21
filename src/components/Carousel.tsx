@@ -80,7 +80,7 @@ const Carousel = ({ images, width, round }: CarouselProps) => {
       <button
         onClick={() => scrollBy('left')}
         disabled={!canScrollLeft}
-        className={`absolute left-[-32px] top-1/2 -translate-y-1/2 ${!canScrollLeft ? 'pointer-events-none' : ''}`}
+        className={`hidden sm:block absolute left-[-32px] top-1/2 -translate-y-1/2 ${!canScrollLeft ? 'pointer-events-none' : ''}`}
       >
         <img
           src={canScrollLeft ? leftArrow : leftArrowOff}
@@ -91,7 +91,7 @@ const Carousel = ({ images, width, round }: CarouselProps) => {
       <button
         onClick={() => scrollBy('right')}
         disabled={!canScrollRight}
-        className={`absolute right-[-32px] top-1/2 -translate-y-1/2 ${!canScrollRight ? 'pointer-events-none' : ''}`}
+        className={`hidden sm:block absolute right-[-32px] top-1/2 -translate-y-1/2 ${!canScrollRight ? 'pointer-events-none' : ''}`}
       >
         <img
           src={canScrollRight ? rightArrow : rightArrowOff}

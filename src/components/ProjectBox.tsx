@@ -23,7 +23,7 @@ const ProjectBox = ({ name, desc, imageName, ribbonSrc }: ProjectBoxProps) => {
   return (
     <Link
       to={`/${imageName}`}
-      className="relative col-span-12 md:col-span-6 aspect-[16/9] overflow-hidden group"
+      className="relative col-span-2 md:col-span-1 aspect-[16/9] overflow-hidden group"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
         setIsHovered(false)
