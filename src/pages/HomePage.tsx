@@ -3,6 +3,7 @@ import ProjectBox from '../components/ProjectBox'
 import homeBg from '../assets/projects/home.png'
 import mailIcon from '../assets/icons/mail.png'
 import inIcon from '../assets/icons/in.png'
+import ghIcon from '../assets/icons/github.png'
 import ribbonStartup from '../assets/projects/ribbon-startup.png'
 
 function HomePage() {
@@ -63,15 +64,19 @@ function HomePage() {
           </p>
         </div>
         {/* Contacts */}
-        <div className="flex items-center gap-[3rem] pt-4">
-          {/* <span>Contacts :</span> */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-[1.5rem] sm:gap-[3rem] pt-4">
+          <span className="subtitle-2">Contacts :</span>
           <div className="flex items-center gap-[0.625rem]">
             <img src={mailIcon} alt="mail icon" className="w-[1.5rem] h-[1.5rem]" />
-            <a href="mailto:andrea@icio.it" className="text-accent-shade3 underline">andrea@icio.it</a>
+            <a href="mailto:andrea@icio.it" className="text-accent-shade3 underline">Email</a>
           </div>
           <div className="flex items-center gap-[0.625rem]">
             <img src={inIcon} alt="linkedin icon" className="w-[1.5rem] h-[1.5rem]" />
-            <a href="https://www.linkedin.com/in/andreavalerio1" target="_blank" className="text-accent-shade3 underline">andreavalerio1</a>
+            <a href="https://www.linkedin.com/in/andreavalerio1" target="_blank" className="text-accent-shade3 underline">LinkedIn</a>
+          </div>
+          <div className="flex items-center gap-[0.625rem]">
+            <img src={ghIcon} alt="github icon" className="w-[1.5rem] h-[1.5rem]" />
+            <a href="https://github.com/andrea-valerio" target="_blank" className="text-accent-shade3 underline">GitHub</a>
           </div>
         </div>
       </div>
