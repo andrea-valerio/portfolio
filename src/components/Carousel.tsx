@@ -399,22 +399,14 @@ function LightboxSlide({ src, alt, layout, maxWidthPx, roundRem = 1 }: LightboxS
   return (
     <div className="flex h-full w-full min-h-0 min-w-0 items-center justify-center overflow-visible">
       <div
-        className={`overflow-hidden shadow-light ${
-          layout === 'landscape'
-            ? 'flex h-full w-full min-h-0 max-h-full max-w-full items-center justify-center'
-            : 'inline-block max-h-full max-w-full'
-        }`}
+        className="flex h-full w-full min-h-0 max-h-full max-w-full items-center justify-center overflow-hidden shadow-light"
         style={{ borderRadius: radius, ...portraitMax }}
       >
         <img
           src={src}
           alt={alt}
-          className={
-            layout === 'landscape'
-              ? 'block h-auto w-auto max-h-full max-w-full object-contain'
-              : 'block h-auto w-auto max-h-full max-w-full object-contain'
-          }
-          style={{ display: 'block' }}
+          className="block h-auto w-auto max-h-full max-w-full object-contain"
+          style={{ display: 'block', borderRadius: radius }}
           draggable={false}
         />
       </div>

@@ -58,40 +58,18 @@ function EcomuseoPage() {
             </div>
           </div>
 
-          {/* personas (image) */}
-          <div className="project-image-container flex-row gap-[3rem]">
-            <span className="body-2">Personas</span>
-            <div className="flex items-center gap-[3rem] w-full">
-              <div className="min-w-0 flex-1">
-                <Carousel
-                  images={[personas1]}
-                  width={0}
-                  round={0.5}
-                  lightbox
-                  lightboxLayout="portrait"
-                  imageAlts={['Personas 1']}
-                />
-              </div>
-              <div className="min-w-0 flex-1">
-                <Carousel
-                  images={[personas2]}
-                  width={0}
-                  round={0.5}
-                  lightbox
-                  lightboxLayout="portrait"
-                  imageAlts={['Personas 2']}
-                />
-              </div>
-              <div className="min-w-0 flex-1">
-                <Carousel
-                  images={[personas3]}
-                  width={0}
-                  round={0.5}
-                  lightbox
-                  lightboxLayout="portrait"
-                  imageAlts={['Personas 3']}
-                />
-              </div>
+          {/* personas (image): 300px-wide cards; scroll when needed; one lightbox with pill across all three */}
+          <div className="project-image-container flex-row items-start gap-[3rem] w-full">
+            <span className="body-2 shrink-0">Personas</span>
+            <div className="min-w-0 flex-1 w-full">
+              <Carousel
+                images={[personas1, personas2, personas3]}
+                width={300}
+                round={0.5}
+                lightbox
+                lightboxLayout="portrait"
+                imageAlts={['Personas 1', 'Personas 2', 'Personas 3']}
+              />
             </div>
           </div>
 

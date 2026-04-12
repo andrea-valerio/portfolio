@@ -65,6 +65,7 @@ function OvenConfPage() {
             <Carousel
               images={[accessFlow]}
               width={0}
+              round={1.25}
               lightbox
               lightboxLayout="landscape"
               imageAlts={['Access flow']}
@@ -77,6 +78,7 @@ function OvenConfPage() {
             <Carousel
               images={[configurationFlow]}
               width={0}
+              round={1.25}
               lightbox
               lightboxLayout="landscape"
               imageAlts={['Configuration flow']}
@@ -117,6 +119,7 @@ function OvenConfPage() {
               reviewImg,
             ]}
             width={0}
+            round={1.25}
             lightbox
             lightboxLayout="landscape"
             imageAlts={[
