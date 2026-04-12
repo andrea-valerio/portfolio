@@ -9,6 +9,7 @@ import EcomuseoPage from './pages/EcomuseoPage'
 import SustSmokPage from './pages/SustSmokPage'
 import ReelsFypPage from './pages/ReelsFypPage'
 import MeetupPage from './pages/MeetupPage'
+import ThesisPage from './pages/ThesisPage'
 
 function App() {
   const location = useLocation()
@@ -41,6 +42,7 @@ function App() {
       <Route path="/sustsmok" element={<SustSmokPage />} />
       <Route path="/reelsfyp" element={<ReelsFypPage />} />
       <Route path="/meetup" element={<MeetupPage />} />
+      <Route path="/thesis" element={<ThesisPage />} />
     </Routes>
   )
 }

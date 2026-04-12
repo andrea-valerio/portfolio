@@ -32,13 +32,6 @@ const ProjectBox = ({ name, desc, imageName, ribbonSrc }: ProjectBoxProps) => {
       onMouseDown={() => setIsPressed(true)}
       onMouseUp={() => setIsPressed(false)}
       >
-      {ribbonSrc && (
-        <img
-          src={ribbonSrc}
-          alt="Ribbon"
-          className="absolute top-0 left-0 w-[5rem] h-[5rem] z-20 pointer-events-none shadow-light"
-        />
-      )}
       <div className="absolute inset-0 overflow-hidden rounded-[20px] transition-transform duration-[250ms] ease-out group-hover:scale-[0.95]">
         <div
           className="absolute inset-0 bg-cover bg-center"
@@ -64,6 +57,13 @@ const ProjectBox = ({ name, desc, imageName, ribbonSrc }: ProjectBoxProps) => {
             {desc}
           </p>
         </div>
+        {ribbonSrc && (
+          <img
+            src={ribbonSrc}
+            alt="Ribbon"
+            className="absolute top-0 left-0 w-[5rem] h-[5rem] z-20 pointer-events-none shadow-light"
+          />
+        )}
       </div>
     </Link>
   )

@@ -6,6 +6,7 @@ import mailIcon from '../assets/icons/mail.png'
 import inIcon from '../assets/icons/in.png'
 import ghIcon from '../assets/icons/github.png'
 import ribbonStartup from '../assets/projects/ribbon-startup.png'
+import ribbonMscThesis from '../assets/projects/ribbon-msc-thesis.png'
 import pillChevronRight from '../assets/icons/right-arrow-overlay-dark.svg'
 import profilePhoto from '../assets/mypicture/Mid.JPG'
 
@@ -174,6 +175,12 @@ function HomePage() {
         <div className="col-span-12 grid grid-cols-2 gap-[3rem]">
             <ProjectBox name="Meetup" desc="Product Design" imageName="meetup" />
             <ProjectBox name="Groove" desc="UX / UI Design" imageName="groove" ribbonSrc={ribbonStartup} />
+            <ProjectBox
+              name="Teleoperators' Workload"
+              desc="HCI Research & Data Analysis"
+              imageName="thesis"
+              ribbonSrc={ribbonMscThesis}
+            />
             <ProjectBox name="Oven Configurator" desc="UX Research & Design" imageName="ovenconf" />
             <ProjectBox name="Citizen-Institution Interaction" desc="UX Research & Design" imageName="citinst" />
             <ProjectBox name="Ecomuseo Argentario" desc="UX / UI Design" imageName="ecomuseo" />
