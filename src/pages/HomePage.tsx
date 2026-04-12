@@ -13,7 +13,7 @@ import profilePhoto from '../assets/mypicture/Mid.JPG'
 const SHOW_SUSTSMOK_REELSFYP_ON_HOME = false
 
 function HomePage() {
-  const [previouslyOpen, setPreviouslyOpen] = useState(true)
+  const [previouslyOpen, setPreviouslyOpen] = useState(false)
 
   const header = (
     <div
@@ -89,7 +89,9 @@ function HomePage() {
         </div>
         {/* Contacts */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-[1.5rem] sm:gap-[3rem] pt-4">
-          <span className="subtitle-2">Contacts :</span>
+          <span className="text-body-1 font-body font-medium md:text-subtitle-2 md:font-title">
+            Contacts :
+          </span>
           <div className="flex items-center gap-[0.625rem]">
             <img src={mailIcon} alt="mail icon" className="w-[1.5rem] h-[1.5rem]" />
             <a href="mailto:andrea@icio.it" className="link-accent">Email</a>
@@ -158,7 +160,7 @@ function HomePage() {
                 >
                   <p>Product Designer for Meetup @ Bending Spoons</p>
                   <p>Research Assistant @ German Aerospace Center (DLR)</p>
-                  <p>UX/UI Design Intern @ UNOX S.p.A.</p>
+                  <p>UX/UI Design Intern @ UNOX</p>
                 </div>
               </div>
             </div>
