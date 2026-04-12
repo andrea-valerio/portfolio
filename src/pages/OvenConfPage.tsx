@@ -5,15 +5,15 @@ import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
 import { ProjectPageSkeleton } from '../components/ProjectPageSkeleton'
 import { useAssetsReady } from '../hooks/useAssetsReady'
-import ovenconfHero from '../assets/projects/ovenconf.png'
-import accessFlow from '../assets/projects/ovenconf/access-flow.png';
-import configurationFlow from '../assets/projects/ovenconf/configuration-flow.png';
-import ovenHome from '../assets/projects/ovenconf/results/home.png';
-import ovensImg from '../assets/projects/ovenconf/results/ovens.png';
-import secondOvenImg from '../assets/projects/ovenconf/results/second-oven.png';
-import placementImg from '../assets/projects/ovenconf/results/placement.png';
-import accessoryImg from '../assets/projects/ovenconf/results/accessory.png';
-import reviewImg from '../assets/projects/ovenconf/results/review.png';
+import ovenconfHero from '../assets/projects/ovenconf.webp'
+import accessFlow from '../assets/projects/ovenconf/access-flow.webp';
+import configurationFlow from '../assets/projects/ovenconf/configuration-flow.webp';
+import ovenHome from '../assets/projects/ovenconf/results/home.webp';
+import ovensImg from '../assets/projects/ovenconf/results/ovens.webp';
+import secondOvenImg from '../assets/projects/ovenconf/results/second-oven.webp';
+import placementImg from '../assets/projects/ovenconf/results/placement.webp';
+import accessoryImg from '../assets/projects/ovenconf/results/accessory.webp';
+import reviewImg from '../assets/projects/ovenconf/results/review.webp';
 
 const OVENCONF_PRELOAD_IMAGES: readonly string[] = [
   ovenconfHero,

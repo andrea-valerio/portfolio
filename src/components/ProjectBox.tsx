@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 const projectImages: Record<string, string> = import.meta.glob(
-  '../assets/projects/*.png',
+  '../assets/projects/*.webp',
   { eager: true, query: '?url', import: 'default' }
 );
 
@@ -18,7 +18,7 @@ const ProjectBox = ({ name, desc, imageName, ribbonSrc }: ProjectBoxProps) => {
   const [isHovered, setIsHovered] = useState(false)
 
   const overlayOpacity = isPressed ? 'opacity-80' : isHovered ? 'opacity-70' : 'opacity-30'
-  const bgUrl = projectImages[`../assets/projects/${imageName}.png`];
+  const bgUrl = projectImages[`../assets/projects/${imageName}.webp`];
 
   return (
     <Link

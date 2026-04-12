@@ -1,5 +1,5 @@
 const projectImages: Record<string, string> = import.meta.glob(
-  '../assets/projects/*.png',
+  '../assets/projects/*.webp',
   { eager: true, query: '?url', import: 'default' }
 );
 
@@ -9,7 +9,7 @@ type HeroSectionProps = {
 }
 
 const HeroSection = ({title, imageName}: HeroSectionProps) => {
-  const bgUrl = projectImages[`../assets/projects/${imageName}.png`];
+  const bgUrl = projectImages[`../assets/projects/${imageName}.webp`];
   return (
     <div
       className="w-full bg-cover bg-center flex items-center justify-center

@@ -1,6 +1,6 @@
 // dynamically import all logo images as URLs
 const logoImages: Record<string, string> = import.meta.glob(
-  '../assets/logos/*.png',
+  '../assets/logos/*.webp',
   { eager: true, query: '?url', import: 'default' }
 );
 
@@ -15,7 +15,7 @@ const Logo = ({ logoName, className = '' }: LogoProps) => {
       w-[4rem] h-[1.5625rem] sm:w-[8rem] sm:h-[3.125rem]
       ${className}`}>
       <img
-        src={logoImages[`../assets/logos/${logoName}.png`]}
+        src={logoImages[`../assets/logos/${logoName}.webp`]}
         className="w-[6rem] h-auto"
       />
     </div>

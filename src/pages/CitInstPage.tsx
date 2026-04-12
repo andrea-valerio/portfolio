@@ -5,16 +5,16 @@ import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
 import { ProjectPageSkeleton } from '../components/ProjectPageSkeleton'
 import { useAssetsReady } from '../hooks/useAssetsReady'
-import citinstHero from '../assets/projects/citinst.png'
-import conceptMap from '../assets/projects/citinst/concept-map.png';
-import taxonomy from '../assets/projects/citinst/taxonomy.png';
-import sketches from '../assets/projects/citinst/sketches.png';
-import contact from '../assets/projects/citinst/results/contact.png';
-import help from '../assets/projects/citinst/results/help.png';
-import opinion from '../assets/projects/citinst/results/opinion.png';
-import booking from '../assets/projects/citinst/results/booking.png';
-import faq from '../assets/projects/citinst/results/faq.png';
-import feedback from '../assets/projects/citinst/results/feedback.png';
+import citinstHero from '../assets/projects/citinst.webp'
+import conceptMap from '../assets/projects/citinst/concept-map.webp';
+import taxonomy from '../assets/projects/citinst/taxonomy.webp';
+import sketches from '../assets/projects/citinst/sketches.webp';
+import contact from '../assets/projects/citinst/results/contact.webp';
+import help from '../assets/projects/citinst/results/help.webp';
+import opinion from '../assets/projects/citinst/results/opinion.webp';
+import booking from '../assets/projects/citinst/results/booking.webp';
+import faq from '../assets/projects/citinst/results/faq.webp';
+import feedback from '../assets/projects/citinst/results/feedback.webp';
 
 const CITINST_PRELOAD_IMAGES: readonly string[] = [
   citinstHero,

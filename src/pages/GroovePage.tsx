@@ -6,25 +6,25 @@ import Carousel from '../components/Carousel'
 import VideoAnimation from '../components/VideoAnimation'
 import { ProjectPageSkeleton } from '../components/ProjectPageSkeleton'
 import { useAssetsReady } from '../hooks/useAssetsReady'
-import grooveHero from '../assets/projects/groove.png'
+import grooveHero from '../assets/projects/groove.webp'
 import animationMp4 from '../assets/projects/groove/results/animation.mp4'
-import videoOverlayPng from '../assets/projects/groove/results/video-overlay.png'
-import stakeholderInterview from '../assets/projects/groove/stakeholder-interview.png'
-import userPersonas         from '../assets/projects/groove/personas.png'
-import experienceJourneys   from '../assets/projects/groove/journeys.png'
-import crazyEight           from '../assets/projects/groove/crazy8.png'
-import signUpImg            from '../assets/projects/groove/results/Sign-up.png'
-import homeImg              from '../assets/projects/groove/results/Home.png'
-import ricercaImg           from '../assets/projects/groove/results/Ricerca.png'
-import mappaImg             from '../assets/projects/groove/results/Mappa.png'
-import eventoImg            from '../assets/projects/groove/results/Evento.png'
-import localeImg            from '../assets/projects/groove/results/Locale.png'
-import bigliettiImg         from '../assets/projects/groove/results/Biglietti.png'
-import bigliettoImg         from '../assets/projects/groove/results/Biglietto.png'
+import videoOverlay from '../assets/projects/groove/results/video-overlay.webp'
+import stakeholderInterview from '../assets/projects/groove/stakeholder-interview.webp'
+import userPersonas         from '../assets/projects/groove/personas.webp'
+import experienceJourneys   from '../assets/projects/groove/journeys.webp'
+import crazyEight           from '../assets/projects/groove/crazy8.webp'
+import signUpImg            from '../assets/projects/groove/results/Sign-up.webp'
+import homeImg              from '../assets/projects/groove/results/Home.webp'
+import ricercaImg           from '../assets/projects/groove/results/Ricerca.webp'
+import mappaImg             from '../assets/projects/groove/results/Mappa.webp'
+import eventoImg            from '../assets/projects/groove/results/Evento.webp'
+import localeImg            from '../assets/projects/groove/results/Locale.webp'
+import bigliettiImg         from '../assets/projects/groove/results/Biglietti.webp'
+import bigliettoImg         from '../assets/projects/groove/results/Biglietto.webp'
 
 const GROOVE_PRELOAD_IMAGES: readonly string[] = [
   grooveHero,
-  videoOverlayPng,
+  videoOverlay,
   stakeholderInterview,
   userPersonas,
   experienceJourneys,

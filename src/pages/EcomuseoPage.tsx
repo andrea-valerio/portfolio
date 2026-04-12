@@ -5,18 +5,18 @@ import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
 import { ProjectPageSkeleton } from '../components/ProjectPageSkeleton'
 import { useAssetsReady } from '../hooks/useAssetsReady'
-import ecomuseoHero from '../assets/projects/ecomuseo.png'
+import ecomuseoHero from '../assets/projects/ecomuseo.webp'
 // Asset imports
-import personas1 from '../assets/projects/ecomuseo/personas-1.png';
-import personas2 from '../assets/projects/ecomuseo/personas-2.png';
-import personas3 from '../assets/projects/ecomuseo/personas-3.png';
-import taxonomyImg from '../assets/projects/ecomuseo/taxonomy.png';
-import sketchesImg from '../assets/projects/ecomuseo/sketches.png';
-import ecomHome from '../assets/projects/ecomuseo/results/home.png';
-import ecomOrrido from '../assets/projects/ecomuseo/results/orrido.png';
-import ecomCiucioi from '../assets/projects/ecomuseo/results/ciucioi.png';
-import ecomTicket from '../assets/projects/ecomuseo/results/ticket.png';
-import ecomPayment from '../assets/projects/ecomuseo/results/payment.png';
+import personas1 from '../assets/projects/ecomuseo/personas-1.webp';
+import personas2 from '../assets/projects/ecomuseo/personas-2.webp';
+import personas3 from '../assets/projects/ecomuseo/personas-3.webp';
+import taxonomyImg from '../assets/projects/ecomuseo/taxonomy.webp';
+import sketchesImg from '../assets/projects/ecomuseo/sketches.webp';
+import ecomHome from '../assets/projects/ecomuseo/results/home.webp';
+import ecomOrrido from '../assets/projects/ecomuseo/results/orrido.webp';
+import ecomCiucioi from '../assets/projects/ecomuseo/results/ciucioi.webp';
+import ecomTicket from '../assets/projects/ecomuseo/results/ticket.webp';
+import ecomPayment from '../assets/projects/ecomuseo/results/payment.webp';
 
 const ECOMUSEO_PRELOAD_IMAGES: readonly string[] = [
   ecomuseoHero,
