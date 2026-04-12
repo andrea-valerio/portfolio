@@ -37,7 +37,7 @@ function CitInstPage() {
             <p className="title-2">Introduction</p>
             <div className="project-text">
               <p>TThe project aimed to design the Help and Support services and the Appointment Booking section for a 
-                <span className="font-semibold">public website template</span>, soon being available to all Italian municipalities.</p>
+                <span className="font-medium">public website template</span>, soon being available to all Italian municipalities.</p>
             </div>
           </div>
 
@@ -49,23 +49,23 @@ function CitInstPage() {
                 The aim of the research is to understand how Italian citizens conceptualize the “Help and Support” sections, in order to better present it digitally.
               </p>
               <p>
-                Following a preliminary <span className="font-semibold">benchmarking</span> phase on both the public and private sectors,
-                the main research part has been conducted through <span className="font-semibold">interviews</span>.
+                Following a preliminary <span className="font-medium">benchmarking</span> phase on both the public and private sectors,
+                the main research part has been conducted through <span className="font-medium">interviews</span>.
                 The goal was to understand how citizens get in touch with their municipality, past problematic cases and possible expectations.
               </p>
               <p>The emerged data highlighted:</p>
               <ul className="list-disc pl-[1.5rem] space-y-[0.375rem]">
-                <li>Citizens prefer <span className="font-semibold">traditional communication</span> channels over online assistance.</li>
-                <li><span className="font-semibold">Big companies</span> like Amazon and Apple are perceived differently due to their swift
+                <li>Citizens prefer <span className="font-medium">traditional communication</span> channels over online assistance.</li>
+                <li><span className="font-medium">Big companies</span> like Amazon and Apple are perceived differently due to their swift
                   feedback and solutions.</li>
-                <li><span className="font-semibold">FAQs</span> are appreciated, even though the term itself is not widely recognized.</li>
-                <li>Most appointments are booked <span className="font-semibold">in person</span> due to the lack of an online service.</li>
-                <li>There is interest in an <span className="font-semibold">online booking</span> tool, influenced by increased comfort with online
+                <li><span className="font-medium">FAQs</span> are appreciated, even though the term itself is not widely recognized.</li>
+                <li>Most appointments are booked <span className="font-medium">in person</span> due to the lack of an online service.</li>
+                <li>There is interest in an <span className="font-medium">online booking</span> tool, influenced by increased comfort with online
                   systems post-pandemic.</li>
               </ul>
               <p>
-                As following steps, <span className="font-semibold">user personas</span>, <span className="font-semibold">experience maps</span>,
-                <span className="font-semibold">conceptual maps</span> and <span className="font-semibold">taxonomy</span> have been used to develop
+                As following steps, <span className="font-medium">user personas</span>, <span className="font-medium">experience maps</span>,
+                <span className="font-medium">conceptual maps</span> and <span className="font-medium">taxonomy</span> have been used to develop
                 more on the insights.
               </p>
             </div>
@@ -74,10 +74,13 @@ function CitInstPage() {
           {/* concept map (image) */}
           <div className="project-image-container">
             <span className="body-2">Concept map</span>
-          <img
-              src={conceptMap}
-              alt="Concept map"
-              className="project-image"
+            <Carousel
+              images={[conceptMap]}
+              width={0}
+              round={1}
+              lightbox
+              lightboxLayout="landscape"
+              imageAlts={['Concept map']}
             />
           </div>
 
@@ -88,9 +91,9 @@ function CitInstPage() {
                 The conceptual map is structured around key themes related to citizen feedback and support. It includes the following main components:
               </p>
               <ul className="list-disc pl-[1.5rem] space-y-[0.375rem]">
-                <li><span className="font-semibold">Actors:</span> key stakeholders involved in citizen communication.</li>
-                <li><span className="font-semibold">Feedback:</span> methods and channels through which citizens provide input</li>
-                <li><span className="font-semibold">Support:</span> assistance provided to citizens, like help channels, FAQs, and resources.</li>
+                <li><span className="font-medium">Actors:</span> key stakeholders involved in citizen communication.</li>
+                <li><span className="font-medium">Feedback:</span> methods and channels through which citizens provide input</li>
+                <li><span className="font-medium">Support:</span> assistance provided to citizens, like help channels, FAQs, and resources.</li>
               </ul>
               <p>
                 Each section is further broken down into subcategories, illustrating different communication methods, issues, and solutions.
@@ -104,10 +107,13 @@ function CitInstPage() {
           {/* taxonomy (image) */}
           <div className="project-image-container-small">
             <span className="body-2">Sections taxonomy</span>
-            <img
-              src={taxonomy}
-              alt="Sections Taxonomy"
-              className="project-image-small"
+            <Carousel
+              images={[taxonomy]}
+              width={0}
+              round={0.5}
+              lightbox
+              lightboxLayout="landscape"
+              imageAlts={['Sections taxonomy']}
             />
           </div>
 
@@ -123,10 +129,13 @@ function CitInstPage() {
           {/* sketches (image) */}
           <div className="project-image-container">
             <span className="body-2">Sections taxonomy</span>
-            <img
-              src={sketches}
-              alt="Sketches"
-              className="project-image"
+            <Carousel
+              images={[sketches]}
+              width={0}
+              round={1}
+              lightbox
+              lightboxLayout="landscape"
+              imageAlts={['Sketches']}
             />
           </div>
 
@@ -135,9 +144,9 @@ function CitInstPage() {
             <p className="title-2">Final result</p>
             <div className="project-text">
               <p>
-                The final version is a <span className="font-semibold">dynamic contact hub</span>, segmented into two main functionalities, Supporting and Reporting.
+                The final version is a <span className="font-medium">dynamic contact hub</span>, segmented into two main functionalities, Supporting and Reporting.
                 Supporting communication channels includes: FAQs, chatbot, email, phone and appointments. The latter has been designed following the already
-                <span className="font-semibold">familiar covid-related booking systems</span>.
+                <span className="font-medium">familiar covid-related booking systems</span>.
                 The Reporting section gathers opinions about online services and reports on the municipality land.
               </p>
             </div>
@@ -153,7 +162,9 @@ function CitInstPage() {
               feedback,
             ]}
             width={200}
-            round={1}
+            lightbox
+            lightboxLayout="landscape"
+            imageAlts={['Contact hub', 'Help', 'Opinion', 'Booking', 'FAQ', 'Feedback']}
           />
         </div>
       </div>

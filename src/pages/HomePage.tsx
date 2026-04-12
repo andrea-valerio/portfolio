@@ -46,21 +46,21 @@ function HomePage() {
         {/* Me */}
         <div className="col-span-12 flex flex-col gap-[0.5rem]">
           <p>
-            Hi! 👋🏼 I am a passionate <span className="font-semibold">Human–Computer Interaction</span> graduate with a unique blend of skills and interests spanning <span className="font-semibold">UX/UI Design</span>, <span className="font-semibold">UX Research</span>, and <span className="font-semibold">HCI Research</span>.
+            Hi! 👋🏼 I am a passionate <span className="font-medium">Human–Computer Interaction</span> graduate with a unique blend of skills and interests spanning <span className="font-medium">UX/UI Design</span>, <span className="font-medium">UX Research</span>, and <span className="font-medium">HCI Research</span>.
           </p>
           <div>
             <p>
-              As a <span className="font-semibold italic text-accent">UX/UI Designer</span>, I craft intuitive and impactful interfaces.
+              As a <span className="font-medium italic text-accent">UX/UI Designer</span>, I craft intuitive and impactful interfaces.
             </p>
             <p>
-              As a <span className="font-semibold italic text-accent">UX Researcher</span>, I uncover user insights to drive solutions.
+              As a <span className="font-medium italic text-accent">UX Researcher</span>, I uncover user insights to drive solutions.
             </p>
             <p>
-              As an <span className="font-semibold italic text-accent">aspiring HCI researcher</span>, I explore the boundaries of cognitive and social systems in technology.
+              As an <span className="font-medium italic text-accent">aspiring HCI researcher</span>, I explore the boundaries of cognitive and social systems in technology.
             </p>
           </div>
           <p>
-            These roles mutually complement and fuel my <span className="font-semibold">multidisciplinary approach</span>. Whether it’s designing, researching, or innovating, I thrive on enhancing human experiences by bridging minds and technologies.
+            These roles mutually complement and fuel my <span className="font-medium">multidisciplinary approach</span>. Whether it’s designing, researching, or innovating, I thrive on enhancing human experiences by bridging minds and technologies.
           </p>
         </div>
         {/* Contacts */}
@@ -68,15 +68,15 @@ function HomePage() {
           <span className="subtitle-2">Contacts :</span>
           <div className="flex items-center gap-[0.625rem]">
             <img src={mailIcon} alt="mail icon" className="w-[1.5rem] h-[1.5rem]" />
-            <a href="mailto:andrea@icio.it" className="text-accent-shade3 underline">Email</a>
+            <a href="mailto:andrea@icio.it" className="link-accent">Email</a>
           </div>
           <div className="flex items-center gap-[0.625rem]">
             <img src={inIcon} alt="linkedin icon" className="w-[1.5rem] h-[1.5rem]" />
-            <a href="https://www.linkedin.com/in/andreavalerio1" target="_blank" className="text-accent-shade3 underline">LinkedIn</a>
+            <a href="https://www.linkedin.com/in/andreavalerio1" target="_blank" className="link-accent">LinkedIn</a>
           </div>
           <div className="flex items-center gap-[0.625rem]">
             <img src={ghIcon} alt="github icon" className="w-[1.5rem] h-[1.5rem]" />
-            <a href="https://github.com/andrea-valerio" target="_blank" className="text-accent-shade3 underline">GitHub</a>
+            <a href="https://github.com/andrea-valerio" target="_blank" className="link-accent">GitHub</a>
           </div>
         </div>
       </div>
@@ -93,6 +93,50 @@ function HomePage() {
             <ProjectBox name="Instagram vs TikTok" desc="Quantitative Research" imageName="reelsfyp" />
         </div>
       </div>
+
+      <section aria-labelledby="publications-heading" className="col-span-12 w-full max-w-full">
+        <div className="flex flex-col gap-[24px]">
+          <h2 id="publications-heading" className="title-1">
+            Publications
+          </h2>
+          <ul className="body-1 list-disc pl-[1.5rem] flex flex-col gap-[12px] break-words text-black marker:text-black">
+            <li>
+              <span className="italic">[submitted]</span> Walocha, F., Valerio, A., Nguyen, P., Ihme, K. (2025, September). The Role of Task Frequency
+              and Complexity in Remote Assistance for Highly Automated Vehicles: Assessing Mental Load based on Eyetracking and Physiology. In Proceedings
+              of the 18th International Conference on Automotive User Interfaces and Interactive Vehicular Applications.
+            </li>
+            <li>
+              <span className="italic">[magazine]</span> Petersen, M., Le, D. H., Valerio, A., Dotzauer, M., & Wasić, C. (2026, April).
+              Fahrgastinformationen am Bahnsteig: Ergebnisse einer VR-Studie. EI – Der Eisenbahningenieur, 4/26, 22–25.
+            </li>
+            <li>
+              Valerio, A., Nguyen, H. P., Ihme, K., & Walocha, F. (2025). Assessment and Prediction of Remote Operators’ Mental Workload Through AoI Data
+              in AV Scenarios. In Proceedings of the 2025 Mensch und Computer 2025 (pp. 482-487).{' '}
+              <a
+                href="https://doi.org/10.1145/3743049.374858"
+                className="link-accent"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                https://doi.org/10.1145/3743049.374858
+              </a>
+            </li>
+            <li>
+              Walocha, F., Valerio, A., Nguyen, P., Ihme, K. (2025). Understanding Effects and Physiological Correlates of Operator Workload Across
+              Remote Assistance Scenarios for Automated Vehicles - Results from a User Study. In: Stephanidis, C., Antona, M., Ntoa, S., Salvendy, G. (eds)
+              HCI International 2025 Posters. HCII 2025. Communications in Computer and Information Science, vol 2523. Springer, Cham.{' '}
+              <a
+                href="https://doi.org/10.1007/978-3-031-94153-5_10"
+                className="link-accent"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                https://doi.org/10.1007/978-3-031-94153-5_10
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
     </div>
   )
 

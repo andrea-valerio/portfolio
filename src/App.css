@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .link-accent {
+    @apply text-accent-shade3 no-underline hover:underline hover:decoration-1 hover:underline-offset-2;
+  }
+}
+
 /* Typography */
 
 .large-title {
@@ -9,19 +15,19 @@
 }
 
 .title-1 {
-    @apply text-title-1 font-title font-semibold;
+    @apply text-subtitle-1 md:text-title-1 font-title font-semibold;
 }
 
 .title-2 {
-    @apply text-title-2 font-title font-semibold;
+    @apply text-subtitle-2 md:text-title-2 font-title font-semibold;
 }
 
 .subtitle-1 {
-    @apply text-subtitle-1 font-title font-medium;
+    @apply text-body-1 font-body font-medium md:text-subtitle-1 md:font-title;
 }
 
 .subtitle-2 {
-    @apply text-subtitle-2 font-title font-medium;
+    @apply text-body-2 font-body font-medium md:text-subtitle-2 md:font-title;
 }
 
 .body-1 {

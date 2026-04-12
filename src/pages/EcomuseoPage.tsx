@@ -39,9 +39,9 @@ function EcomuseoPage() {
             <p className="title-2">Introduction</p>
             <div className="project-text">
               <p>
-                The project was a <span className="font-semibold">real-world case study</span> aiming to consolidate multiple museum websites while ensuring 
-                that each museum’s unique <span className="font-semibold">brand identity</span> is preserved. The prototype was limited to two museums, mainly
-                focusing on the <span className="font-semibold">visual design</span>.
+                The project was a <span className="font-medium">real-world case study</span> aiming to consolidate multiple museum websites while ensuring 
+                that each museum’s unique <span className="font-medium">brand identity</span> is preserved. The prototype was limited to two museums, mainly
+                focusing on the <span className="font-medium">visual design</span>.
               </p>
             </div>
           </div>
@@ -50,7 +50,7 @@ function EcomuseoPage() {
           <div className="project-text-container" id="section-2">
             <p className="title-2">Design process</p>
             <div className="project-text">
-              <p>A quick <span className="font-semibold">Double Diamond</span> approach was followed.</p>
+              <p>A quick <span className="font-medium">Double Diamond</span> approach was followed.</p>
               <p>
                 The team began with stakeholder interviews, benchmark analysis, and interaction research to gather more knowledge on the domain. In terms of UX, 
                 the gathered insights can be summarized through the user personas:
@@ -62,14 +62,35 @@ function EcomuseoPage() {
           <div className="project-image-container flex-row gap-[3rem]">
             <span className="body-2">Personas</span>
             <div className="flex items-center gap-[3rem] w-full">
-              <div className="">
-                <img src={personas1} alt="Personas 1" className="project-image-small" />
+              <div className="min-w-0 flex-1">
+                <Carousel
+                  images={[personas1]}
+                  width={0}
+                  round={0.5}
+                  lightbox
+                  lightboxLayout="portrait"
+                  imageAlts={['Personas 1']}
+                />
               </div>
-              <div className="">
-                <img src={personas2} alt="Personas 2" className="project-image-small" />
+              <div className="min-w-0 flex-1">
+                <Carousel
+                  images={[personas2]}
+                  width={0}
+                  round={0.5}
+                  lightbox
+                  lightboxLayout="portrait"
+                  imageAlts={['Personas 2']}
+                />
               </div>
-              <div className="">
-                <img src={personas3} alt="Personas 3" className="project-image-small" />
+              <div className="min-w-0 flex-1">
+                <Carousel
+                  images={[personas3]}
+                  width={0}
+                  round={0.5}
+                  lightbox
+                  lightboxLayout="portrait"
+                  imageAlts={['Personas 3']}
+                />
               </div>
             </div>
           </div>
@@ -78,24 +99,38 @@ function EcomuseoPage() {
           <div className="project-text-container">
             <div className="project-text">
               <p>
-                These results led to the the first definition of the UX of the website, represented by <span className="font-semibold">sketches</span> and
-                a <span className="font-semibold">taxonomy graph</span>. Moreover, a comprehensive multi-brand <span className="font-semibold">design system</span> is
+                These results led to the the first definition of the UX of the website, represented by <span className="font-medium">sketches</span> and
+                a <span className="font-medium">taxonomy graph</span>. Moreover, a comprehensive multi-brand <span className="font-medium">design system</span> is
                 created to fit the requirement.
               </p>
-              <p>Finally, mock-ups and an <span className="font-semibold">interactive prototype</span> were built and tested with users to refine the solution.</p>
+              <p>Finally, mock-ups and an <span className="font-medium">interactive prototype</span> were built and tested with users to refine the solution.</p>
             </div>
           </div>
 
           {/* taxonomy (image) */}
           <div className="project-image-container">
             <span className="body-2">Taxonomy</span>
-            <img src={taxonomyImg} alt="Taxonomy" className="project-image" />
+            <Carousel
+              images={[taxonomyImg]}
+              width={0}
+              round={1}
+              lightbox
+              lightboxLayout="landscape"
+              imageAlts={['Taxonomy']}
+            />
           </div>
 
           {/* sketches (image) */}
           <div className="project-image-container">
             <span className="body-2">Sketches</span>
-            <img src={sketchesImg} alt="Sketches" className="project-image" />
+            <Carousel
+              images={[sketchesImg]}
+              width={0}
+              round={1}
+              lightbox
+              lightboxLayout="landscape"
+              imageAlts={['Sketches']}
+            />
           </div>
 
           {/* Final result */}
@@ -103,24 +138,24 @@ function EcomuseoPage() {
             <p className="title-2">Final result</p>
             <div className="project-text">
               <p>
-                <span className="font-semibold">User personas</span> were instrumental in shaping the design, summarizing insights related to internationality, family
+                <span className="font-medium">User personas</span> were instrumental in shaping the design, summarizing insights related to internationality, family
                 and school discounts, resources, and information required.
               </p>
               <p>
-                The final design consisted of <span className="font-semibold">three sections</span> on the website: a shared homepage for general information and one
+                The final design consisted of <span className="font-medium">three sections</span> on the website: a shared homepage for general information and one
                 dedicated sub-page for each museum.
                 </p>
               <ul className="list-disc pl-[1.5rem] space-y-[0.375rem]">
-                <li>The <span className="font-semibold">museum-specific pages</span> provided detailed descriptions, including practical information like timings,
+                <li>The <span className="font-medium">museum-specific pages</span> provided detailed descriptions, including practical information like timings,
                   accessibility, group sizes, and ticket types.
                 </li>
                 <li>
-                  The <span className="font-semibold">general section</span> offered an overview of the area, redirecting users to the museums’ sub-pages and highlighting news and events.
+                  The <span className="font-medium">general section</span> offered an overview of the area, redirecting users to the museums’ sub-pages and highlighting news and events.
                 </li>
               </ul>
               <p>
-                <span className="font-semibold">Consistency</span> was achieved across the platform through cohesive design elements such as shared navigation, identical
-                top bars, and a unified footer. While colour schemes reflected each <span className="font-semibold">museum’s identity</span>, the layout remained uniform,
+                <span className="font-medium">Consistency</span> was achieved across the platform through cohesive design elements such as shared navigation, identical
+                top bars, and a unified footer. While colour schemes reflected each <span className="font-medium">museum’s identity</span>, the layout remained uniform,
                 ensuring a seamless experience for users.
               </p>
             </div>
@@ -135,7 +170,9 @@ function EcomuseoPage() {
               ecomPayment,
             ]}
             width={0}
-            round={1}
+            lightbox
+            lightboxLayout="landscape"
+            imageAlts={['Home', 'Orrido museum', 'Ciucioi museum', 'Ticket', 'Payment']}
           />
         </div>
       </div>

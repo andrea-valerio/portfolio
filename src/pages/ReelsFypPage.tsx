@@ -41,23 +41,31 @@ function ReelsFypPage() {
                 We hypothesize that the <em>FYP</em> is more compelling than the Reels. Moreover, age differences may play a significant role.
               </p>
               <p>
-                <span className="font-semibold">Quantitative research methods</span> have been used for this study.
+                <span className="font-medium">Quantitative research methods</span> have been used for this study.
               </p>
             </div>
           </div>
 
           {/* comparison (image) */}
           <div className="project-image-container-xsmall">
-          <img
-            src={instagramImg}
-            alt="Instagram"
-            className="project-image"
-          />
-          <img
-            src={tiktokImg}
-            alt="TikTok"
-            className="project-image"
-          />
+            <Carousel
+              images={[instagramImg]}
+              width={0}
+              round={1}
+              lightbox
+              lightboxLayout="portrait"
+              lightboxPortraitMaxWidth={400}
+              imageAlts={['Instagram Reels']}
+            />
+            <Carousel
+              images={[tiktokImg]}
+              width={0}
+              round={1}
+              lightbox
+              lightboxLayout="portrait"
+              lightboxPortraitMaxWidth={400}
+              imageAlts={['TikTok For You Page']}
+            />
           </div>
 
           {/* process */}
@@ -65,15 +73,15 @@ function ReelsFypPage() {
             <p className="title-2">Research</p>
             <div className="project-text">
               <p>
-                The research design implied a <span className="font-semibold">within-subject questionnaire</span> using a revisited <em>UEQ+</em> standard.
+                The research design implied a <span className="font-medium">within-subject questionnaire</span> using a revisited <em>UEQ+</em> standard.
                 Both Reels and <em>FYP</em> sections covered 8 engagement areas. Moreover, demographic questions are present at the beginning,
-                as well as open-ended questions at the end. Furthermore, the <span className="font-semibold">order</span> effect has been counterbalanced
+                as well as open-ended questions at the end. Furthermore, the <span className="font-medium">order</span> effect has been counterbalanced
                 by mixing the order in which the sections were given.
               </p>
               <p>
-                Before the data collection, a <span className="font-semibold">pilot test</span> allowed us to check and take minor fixes.
+                Before the data collection, a <span className="font-medium">pilot test</span> allowed us to check and take minor fixes.
                 After the data collection, responses were cleaned, elaborated on the given <em>UEQ+</em> analysis tool and then used to perform
-                a <span className="font-semibold">descriptive-inferential analysis</span> in the software R.
+                a <span className="font-medium">descriptive-inferential analysis</span> in the software R.
               </p>
             </div>
           </div>
@@ -81,10 +89,13 @@ function ReelsFypPage() {
           {/* questionnaire (image) */}
           <div className="project-image-container-small">
             <span className="body-2">Questionnaire</span>
-            <img
-              src={questionnaireImg}
-              alt="Questionnaire"
-              className="project-image"
+            <Carousel
+              images={[questionnaireImg]}
+              width={0}
+              round={1}
+              lightbox
+              lightboxLayout="landscape"
+              imageAlts={['Questionnaire']}
             />
           </div>
 
@@ -93,7 +104,7 @@ function ReelsFypPage() {
             <p className="title-2">Results</p>
             <div className="project-text">
               <p>
-                As a final result, our primary research hypothesis was <span className="font-semibold">not substantiated</span>.
+                As a final result, our primary research hypothesis was <span className="font-medium">not substantiated</span>.
                 However, a statistically significant decrease in <em>TikTok</em> engagement was observed in the older group (25-34)
                 compared to the younger (16-24). More precisely, the quality of content seemed to play a key role in the judgement
                 differences between the two groups.
@@ -113,7 +124,9 @@ function ReelsFypPage() {
               kpiAge,
             ]}
             width={400}
-            round={1}
+            lightbox
+            lightboxLayout="landscape"
+            imageAlts={['KPI overview', 'KPI Instagram', 'KPI TikTok', 'KPI by age group']}
           />
         </div>
       </div>
