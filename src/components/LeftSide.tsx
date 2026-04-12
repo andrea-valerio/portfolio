@@ -3,11 +3,13 @@ import backArrow from '../assets/icons/back-arrow.svg'
 import IndexList from './IndexList'
 
 type LeftSideProps = {
+  item1?: string
   item2: string
   item3: string
+  item4?: string
 }
 
-const LeftSide = ({ item2, item3 }: LeftSideProps) => {
+const LeftSide = ({ item1, item2, item3, item4 }: LeftSideProps) => {
   return (
     <div className="hidden sticky top-[6rem] self-start sm:flex flex-col gap-[0.625rem] whitespace-nowrap overflow-visible">
       <Link
@@ -17,7 +19,7 @@ const LeftSide = ({ item2, item3 }: LeftSideProps) => {
         <img src={backArrow} alt="Back arrow" className="w-[2.625rem] h-[1.5rem]" />
       </Link>
       <div className="hidden md:block">
-        <IndexList item2={item2} item3={item3} />
+        <IndexList item1={item1} item2={item2} item3={item3} item4={item4} />
       </div>
     </div>
   )

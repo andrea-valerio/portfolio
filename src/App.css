@@ -6,6 +6,11 @@
   .link-accent {
     @apply text-accent-shade3 no-underline hover:underline hover:decoration-1 hover:underline-offset-2;
   }
+
+  /** Same hover underline as `.link-accent`, but text stays black (e.g. project page index). */
+  .link-nav {
+    @apply text-black no-underline hover:underline hover:decoration-1 hover:underline-offset-2;
+  }
 }
 
 /* Typography */

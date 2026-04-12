@@ -6,6 +6,9 @@ import inIcon from '../assets/icons/in.png'
 import ghIcon from '../assets/icons/github.png'
 import ribbonStartup from '../assets/projects/ribbon-startup.png'
 
+/** Set to `true` to show these two projects on the home grid again (`/sustsmok` and `/reelsfyp` routes stay available). */
+const SHOW_SUSTSMOK_REELSFYP_ON_HOME = false
+
 function HomePage() {
   const header = (
     <div
@@ -86,11 +89,16 @@ function HomePage() {
         <p className="title-1">Projects</p>
         <div className="col-span-12 grid grid-cols-2 gap-[3rem]">
             <ProjectBox name="Groove" desc="UX / UI Design" imageName="groove" ribbonSrc={ribbonStartup} />
+            <ProjectBox name="Meetup" desc="Product Design" imageName="meetup" />
             <ProjectBox name="Oven Configurator" desc="UX Research & Design" imageName="ovenconf" />
             <ProjectBox name="Citizen-Institution Interaction" desc="UX Research & Design" imageName="citinst" />
             <ProjectBox name="Ecomuseo Argentario" desc="UX / UI Design" imageName="ecomuseo" />
-            <ProjectBox name="Sustainability & Smoking" desc="Qualitative Research" imageName="sustsmok" />
-            <ProjectBox name="Instagram vs TikTok" desc="Quantitative Research" imageName="reelsfyp" />
+            {SHOW_SUSTSMOK_REELSFYP_ON_HOME && (
+              <>
+                <ProjectBox name="Sustainability & Smoking" desc="Qualitative Research" imageName="sustsmok" />
+                <ProjectBox name="Instagram vs TikTok" desc="Quantitative Research" imageName="reelsfyp" />
+              </>
+            )}
         </div>
       </div>
 

@@ -400,7 +400,9 @@ function LightboxSlide({ src, alt, layout, maxWidthPx, roundRem = 1 }: LightboxS
     <div className="flex h-full w-full min-h-0 min-w-0 items-center justify-center overflow-visible">
       <div
         className={`overflow-hidden shadow-light ${
-          layout === 'landscape' ? 'max-h-full w-full' : 'inline-block max-h-full max-w-full'
+          layout === 'landscape'
+            ? 'flex h-full w-full min-h-0 max-h-full max-w-full items-center justify-center'
+            : 'inline-block max-h-full max-w-full'
         }`}
         style={{ borderRadius: radius, ...portraitMax }}
       >
@@ -409,7 +411,7 @@ function LightboxSlide({ src, alt, layout, maxWidthPx, roundRem = 1 }: LightboxS
           alt={alt}
           className={
             layout === 'landscape'
-              ? 'block h-auto max-h-full min-h-0 w-full max-w-full object-contain'
+              ? 'block h-auto w-auto max-h-full max-w-full object-contain'
               : 'block h-auto w-auto max-h-full max-w-full object-contain'
           }
           style={{ display: 'block' }}
