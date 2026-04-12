@@ -3,6 +3,9 @@ import HeroSection from '../components/HeroSection'
 import LeftSide from '../components/LeftSide'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
+import { ProjectPageSkeleton } from '../components/ProjectPageSkeleton'
+import { useAssetsReady } from '../hooks/useAssetsReady'
+import reelsfypHero from '../assets/projects/reelsfyp.png'
 import instagramImg       from '../assets/projects/reelsfyp/instagram.png';
 import tiktokImg          from '../assets/projects/reelsfyp/tiktok.png';
 import questionnaireImg   from '../assets/projects/reelsfyp/questionnaire.png';
@@ -11,7 +14,23 @@ import kpiInstagram       from '../assets/projects/reelsfyp/results/kpi-instagra
 import kpiTikTok          from '../assets/projects/reelsfyp/results/kpi-tiktok.png';
 import kpiAge             from '../assets/projects/reelsfyp/results/kpi-age.png';
 
+const REELSFYP_PRELOAD_IMAGES: readonly string[] = [
+  reelsfypHero,
+  instagramImg,
+  tiktokImg,
+  questionnaireImg,
+  kpiGeneral,
+  kpiInstagram,
+  kpiTikTok,
+  kpiAge,
+]
+
 function ReelsFypPage() {
+    const assetsReady = useAssetsReady({ images: REELSFYP_PRELOAD_IMAGES })
+    if (!assetsReady) {
+      return <LayoutWrapper header={<ProjectPageSkeleton.Header />} content={<ProjectPageSkeleton.Body />} />
+    }
+
     const header = <HeroSection title="Instagram vs TikTok" imageName="reelsfyp" />
 
     const content = (

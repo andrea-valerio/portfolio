@@ -3,6 +3,9 @@ import HeroSection from '../components/HeroSection'
 import LeftSide from '../components/LeftSide'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
+import { ProjectPageSkeleton } from '../components/ProjectPageSkeleton'
+import { useAssetsReady } from '../hooks/useAssetsReady'
+import thesisHero from '../assets/projects/thesis.png'
 import comparisonWeb from '../assets/projects/meetup/redesign/comparison-web.png'
 import comparisonMobile from '../assets/projects/meetup/redesign/comparison-mobile.png'
 import groupCreation from '../assets/projects/meetup/redesign/group-creation.png'
@@ -31,7 +34,20 @@ const redesignAlts = [
   'Additional screens',
 ]
 
+const THESIS_PRELOAD_IMAGES: readonly string[] = [
+  thesisHero,
+  ...redesignImages,
+  personas1,
+  personas2,
+  personas3,
+]
+
 function ThesisPage() {
+  const assetsReady = useAssetsReady({ images: THESIS_PRELOAD_IMAGES })
+  if (!assetsReady) {
+    return <LayoutWrapper header={<ProjectPageSkeleton.Header />} content={<ProjectPageSkeleton.Body />} />
+  }
+
   const header = <HeroSection title="Teleoperators' Workload" imageName="thesis" />
 
   const content = (

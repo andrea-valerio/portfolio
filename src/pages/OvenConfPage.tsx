@@ -3,6 +3,9 @@ import HeroSection from '../components/HeroSection'
 import LeftSide from '../components/LeftSide'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
+import { ProjectPageSkeleton } from '../components/ProjectPageSkeleton'
+import { useAssetsReady } from '../hooks/useAssetsReady'
+import ovenconfHero from '../assets/projects/ovenconf.png'
 import accessFlow from '../assets/projects/ovenconf/access-flow.png';
 import configurationFlow from '../assets/projects/ovenconf/configuration-flow.png';
 import ovenHome from '../assets/projects/ovenconf/results/home.png';
@@ -12,7 +15,24 @@ import placementImg from '../assets/projects/ovenconf/results/placement.png';
 import accessoryImg from '../assets/projects/ovenconf/results/accessory.png';
 import reviewImg from '../assets/projects/ovenconf/results/review.png';
 
+const OVENCONF_PRELOAD_IMAGES: readonly string[] = [
+  ovenconfHero,
+  accessFlow,
+  configurationFlow,
+  ovenHome,
+  ovensImg,
+  secondOvenImg,
+  placementImg,
+  accessoryImg,
+  reviewImg,
+]
+
 function OvenConfPage() {
+    const assetsReady = useAssetsReady({ images: OVENCONF_PRELOAD_IMAGES })
+    if (!assetsReady) {
+      return <LayoutWrapper header={<ProjectPageSkeleton.Header />} content={<ProjectPageSkeleton.Body />} />
+    }
+
     const header = <HeroSection title="Oven Configurator" imageName="ovenconf" />
 
     const content = (

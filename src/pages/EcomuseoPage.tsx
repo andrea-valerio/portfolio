@@ -3,6 +3,9 @@ import HeroSection from '../components/HeroSection'
 import LeftSide from '../components/LeftSide'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
+import { ProjectPageSkeleton } from '../components/ProjectPageSkeleton'
+import { useAssetsReady } from '../hooks/useAssetsReady'
+import ecomuseoHero from '../assets/projects/ecomuseo.png'
 // Asset imports
 import personas1 from '../assets/projects/ecomuseo/personas-1.png';
 import personas2 from '../assets/projects/ecomuseo/personas-2.png';
@@ -15,7 +18,26 @@ import ecomCiucioi from '../assets/projects/ecomuseo/results/ciucioi.png';
 import ecomTicket from '../assets/projects/ecomuseo/results/ticket.png';
 import ecomPayment from '../assets/projects/ecomuseo/results/payment.png';
 
+const ECOMUSEO_PRELOAD_IMAGES: readonly string[] = [
+  ecomuseoHero,
+  personas1,
+  personas2,
+  personas3,
+  taxonomyImg,
+  sketchesImg,
+  ecomHome,
+  ecomOrrido,
+  ecomCiucioi,
+  ecomTicket,
+  ecomPayment,
+]
+
 function EcomuseoPage() {
+    const assetsReady = useAssetsReady({ images: ECOMUSEO_PRELOAD_IMAGES })
+    if (!assetsReady) {
+      return <LayoutWrapper header={<ProjectPageSkeleton.Header />} content={<ProjectPageSkeleton.Body />} />
+    }
+
     const header = <HeroSection title="Ecomuseo Argentario" imageName="ecomuseo" />
 
     const content = (

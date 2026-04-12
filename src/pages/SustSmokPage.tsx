@@ -3,6 +3,9 @@ import HeroSection from '../components/HeroSection'
 import LeftSide from '../components/LeftSide'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
+import { ProjectPageSkeleton } from '../components/ProjectPageSkeleton'
+import { useAssetsReady } from '../hooks/useAssetsReady'
+import sustsmokHero from '../assets/projects/sustsmok.png'
 import roveretoImg        from '../assets/projects/sustsmok/rovereto.png';
 import povoImg           from '../assets/projects/sustsmok/povo.png';
 import sociologyImg      from '../assets/projects/sustsmok/sociology.png';
@@ -14,7 +17,26 @@ import workshop4         from '../assets/projects/sustsmok/workshop-4.png';
 import workshop5         from '../assets/projects/sustsmok/workshop-5.png';
 import workshop6         from '../assets/projects/sustsmok/workshop-6.png';
 
+const SUSTSMOK_PRELOAD_IMAGES: readonly string[] = [
+  sustsmokHero,
+  roveretoImg,
+  povoImg,
+  sociologyImg,
+  cardsImg,
+  workshop1,
+  workshop2,
+  workshop3,
+  workshop4,
+  workshop5,
+  workshop6,
+]
+
 function SustSmokPage() {
+    const assetsReady = useAssetsReady({ images: SUSTSMOK_PRELOAD_IMAGES })
+    if (!assetsReady) {
+      return <LayoutWrapper header={<ProjectPageSkeleton.Header />} content={<ProjectPageSkeleton.Body />} />
+    }
+
     const header = <HeroSection title="Sustainability & Smoking" imageName="sustsmok" />
 
     const content = (

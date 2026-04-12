@@ -10,7 +10,6 @@ import SustSmokPage from './pages/SustSmokPage'
 import ReelsFypPage from './pages/ReelsFypPage'
 import MeetupPage from './pages/MeetupPage'
 import ThesisPage from './pages/ThesisPage'
-
 function App() {
   const location = useLocation()
   const scrollPos = useRef<{ [path: string]: number }>({})

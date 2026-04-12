@@ -3,6 +3,9 @@ import HeroSection from '../components/HeroSection'
 import LeftSide from '../components/LeftSide'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
+import { ProjectPageSkeleton } from '../components/ProjectPageSkeleton'
+import { useAssetsReady } from '../hooks/useAssetsReady'
+import citinstHero from '../assets/projects/citinst.png'
 import conceptMap from '../assets/projects/citinst/concept-map.png';
 import taxonomy from '../assets/projects/citinst/taxonomy.png';
 import sketches from '../assets/projects/citinst/sketches.png';
@@ -13,7 +16,25 @@ import booking from '../assets/projects/citinst/results/booking.png';
 import faq from '../assets/projects/citinst/results/faq.png';
 import feedback from '../assets/projects/citinst/results/feedback.png';
 
+const CITINST_PRELOAD_IMAGES: readonly string[] = [
+  citinstHero,
+  conceptMap,
+  taxonomy,
+  sketches,
+  contact,
+  help,
+  opinion,
+  booking,
+  faq,
+  feedback,
+]
+
 function CitInstPage() {
+    const assetsReady = useAssetsReady({ images: CITINST_PRELOAD_IMAGES })
+    if (!assetsReady) {
+      return <LayoutWrapper header={<ProjectPageSkeleton.Header />} content={<ProjectPageSkeleton.Body />} />
+    }
+
     const header = <HeroSection title="Citizen-Institution Interaction" imageName="citinst" />
 
     const content = (

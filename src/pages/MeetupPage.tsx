@@ -3,6 +3,9 @@ import HeroSection from '../components/HeroSection'
 import LeftSide from '../components/LeftSide'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
+import { ProjectPageSkeleton } from '../components/ProjectPageSkeleton'
+import { useAssetsReady } from '../hooks/useAssetsReady'
+import meetupHero from '../assets/projects/meetup.png'
 import comparisonWeb from '../assets/projects/meetup/redesign/comparison-web.png'
 import comparisonMobile from '../assets/projects/meetup/redesign/comparison-mobile.png'
 import groupCreation from '../assets/projects/meetup/redesign/group-creation.png'
@@ -33,7 +36,18 @@ const redesignAlts = [
 const growthImages = [sms, paywalls]
 const growthAlts = ['SMS reminders experiment', 'Subscription paywalls']
 
+const MEETUP_PRELOAD_IMAGES: readonly string[] = [
+  meetupHero,
+  ...redesignImages,
+  ...growthImages,
+]
+
 function MeetupPage() {
+  const assetsReady = useAssetsReady({ images: MEETUP_PRELOAD_IMAGES })
+  if (!assetsReady) {
+    return <LayoutWrapper header={<ProjectPageSkeleton.Header />} content={<ProjectPageSkeleton.Body />} />
+  }
+
   const header = <HeroSection title="Meetup" imageName="meetup" />
 
   const content = (

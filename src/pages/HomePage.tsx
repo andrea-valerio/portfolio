@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import LayoutWrapper from '../components/LayoutWrapper'
 import ProjectBox from '../components/ProjectBox'
+import { HomePageSkeleton } from '../components/HomePageSkeleton'
 import homeBg from '../assets/projects/home.png'
 import mailIcon from '../assets/icons/mail.png'
 import inIcon from '../assets/icons/in.png'
@@ -9,12 +10,45 @@ import ribbonStartup from '../assets/projects/ribbon-startup.png'
 import ribbonMscThesis from '../assets/projects/ribbon-msc-thesis.png'
 import pillChevronRight from '../assets/icons/right-arrow-overlay-dark.svg'
 import profilePhoto from '../assets/mypicture/Mid.JPG'
+import meetupCover from '../assets/projects/meetup.png'
+import grooveCover from '../assets/projects/groove.png'
+import thesisCover from '../assets/projects/thesis.png'
+import ovenconfCover from '../assets/projects/ovenconf.png'
+import citinstCover from '../assets/projects/citinst.png'
+import ecomuseoCover from '../assets/projects/ecomuseo.png'
+import sustsmokCover from '../assets/projects/sustsmok.png'
+import reelsfypCover from '../assets/projects/reelsfyp.png'
+import { useAssetsReady } from '../hooks/useAssetsReady'
 
 /** Set to `true` to show these two projects on the home grid again (`/sustsmok` and `/reelsfyp` routes stay available). */
 const SHOW_SUSTSMOK_REELSFYP_ON_HOME = false
 
+const HOME_PRELOAD_URLS: readonly string[] = [
+  homeBg,
+  profilePhoto,
+  mailIcon,
+  inIcon,
+  ghIcon,
+  ribbonStartup,
+  ribbonMscThesis,
+  meetupCover,
+  grooveCover,
+  thesisCover,
+  ovenconfCover,
+  citinstCover,
+  ecomuseoCover,
+  ...(SHOW_SUSTSMOK_REELSFYP_ON_HOME ? [sustsmokCover, reelsfypCover] : []),
+]
+
 function HomePage() {
   const [previouslyOpen, setPreviouslyOpen] = useState(false)
+  const assetsReady = useAssetsReady({ images: HOME_PRELOAD_URLS })
+
+  if (!assetsReady) {
+    return (
+      <LayoutWrapper header={<HomePageSkeleton.Header />} content={<HomePageSkeleton.Content />} />
+    )
+  }
 
   const header = (
     <div
