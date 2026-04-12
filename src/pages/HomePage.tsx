@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import LayoutWrapper from '../components/LayoutWrapper'
 import ProjectBox from '../components/ProjectBox'
 import homeBg from '../assets/projects/home.png'
@@ -5,11 +6,15 @@ import mailIcon from '../assets/icons/mail.png'
 import inIcon from '../assets/icons/in.png'
 import ghIcon from '../assets/icons/github.png'
 import ribbonStartup from '../assets/projects/ribbon-startup.png'
+import pillChevronRight from '../assets/icons/right-arrow-overlay-dark.svg'
+import profilePhoto from '../assets/mypicture/Mid.JPG'
 
 /** Set to `true` to show these two projects on the home grid again (`/sustsmok` and `/reelsfyp` routes stay available). */
 const SHOW_SUSTSMOK_REELSFYP_ON_HOME = false
 
 function HomePage() {
+  const [previouslyOpen, setPreviouslyOpen] = useState(true)
+
   const header = (
     <div
       // Header: percentage height with responsive min-heights
@@ -47,24 +52,40 @@ function HomePage() {
       {/* Me and Contacts */}
       <div className="col-span-12 flex flex-col gap-[1.5rem] body-1 break-words w-full max-w-full">
         {/* Me */}
-        <div className="col-span-12 flex flex-col gap-[0.5rem]">
-          <p>
-            Hi! 👋🏼 I am a passionate <span className="font-medium">Human–Computer Interaction</span> graduate with a unique blend of skills and interests spanning <span className="font-medium">UX/UI Design</span>, <span className="font-medium">UX Research</span>, and <span className="font-medium">HCI Research</span>.
-          </p>
-          <div>
-            <p>
-              As a <span className="font-medium italic text-accent">UX/UI Designer</span>, I craft intuitive and impactful interfaces.
-            </p>
-            <p>
-              As a <span className="font-medium italic text-accent">UX Researcher</span>, I uncover user insights to drive solutions.
-            </p>
-            <p>
-              As an <span className="font-medium italic text-accent">aspiring HCI researcher</span>, I explore the boundaries of cognitive and social systems in technology.
+        <div className="col-span-12 flex flex-col lg:flex-row lg:gap-16 lg:items-stretch gap-8">
+          <div className="flex flex-col items-center gap-4 shrink-0 w-full max-w-[260px] mx-auto lg:mx-0 lg:w-full lg:max-w-[260px] lg:min-h-0 lg:self-stretch lg:h-full">
+            <div className="w-full flex justify-center lg:flex-1 lg:min-h-0 lg:items-center lg:justify-center min-h-0">
+              <div className="relative w-full max-w-[260px] max-h-full aspect-square shrink-0">
+                <img
+                  src={profilePhoto}
+                  alt="Andrea Valerio"
+                  className="absolute inset-0 h-full w-full rounded-full object-cover border-4 border-accent-shade1 box-border"
+                />
+              </div>
+            </div>
+            <p className="shrink-0 text-[42px] font-medium italic text-black font-body text-center">
+              Andrea Valerio
             </p>
           </div>
-          <p>
-            These roles mutually complement and fuel my <span className="font-medium">multidisciplinary approach</span>. Whether it’s designing, researching, or innovating, I thrive on enhancing human experiences by bridging minds and technologies.
-          </p>
+          <div className="flex-1 min-w-0 flex flex-col gap-[0.5rem] body-1 lg:min-h-0 lg:justify-center">
+            <p>
+              Hi! 👋🏼 I am a passionate <span className="font-medium">Human–Computer Interaction</span> graduate with a unique blend of skills and interests spanning <span className="font-medium">UX/UI Design</span>, <span className="font-medium">UX Research</span>, and <span className="font-medium">HCI Research</span>.
+            </p>
+            <div>
+              <p>
+                As a <span className="font-medium italic text-accent">UX/UI Designer</span>, I craft intuitive and impactful interfaces.
+              </p>
+              <p>
+                As a <span className="font-medium italic text-accent">UX Researcher</span>, I uncover user insights to drive solutions.
+              </p>
+              <p>
+                As an <span className="font-medium italic text-accent">aspiring HCI researcher</span>, I explore the boundaries of cognitive and social systems in technology.
+              </p>
+            </div>
+            <p>
+              These roles mutually complement and fuel my <span className="font-medium">multidisciplinary approach</span>. Whether it’s designing, researching, or innovating, I thrive on enhancing human experiences by bridging minds and technologies.
+            </p>
+          </div>
         </div>
         {/* Contacts */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-[1.5rem] sm:gap-[3rem] pt-4">
@@ -83,6 +104,67 @@ function HomePage() {
           </div>
         </div>
       </div>
+
+      <section aria-labelledby="current-position-heading" className="col-span-12 w-full max-w-full">
+        <div className="flex flex-col">
+          <h2 id="current-position-heading" className="title-1">
+            Current position
+          </h2>
+          <p className="body-1 mt-[24px] text-black">
+            <span className="font-medium">Product Designer</span> for Loomly and Issuu @{' '}
+            <a
+              href="https://www.bendingspoons.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="link-accent"
+            >
+              Bending Spoons
+            </a>
+          </p>
+          <div className="mt-[8px]">
+            <button
+              id="previously-trigger"
+              type="button"
+              aria-expanded={previouslyOpen}
+              aria-controls="previously-panel"
+              onClick={() => setPreviouslyOpen((open) => !open)}
+              className="body-1 flex items-center gap-2 text-left text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            >
+              Previously
+              <img
+                src={pillChevronRight}
+                alt=""
+                width={12}
+                height={12}
+                draggable={false}
+                className={`pointer-events-none h-3 w-3 shrink-0 translate-y-[2px] transition-transform duration-200 ${
+                  previouslyOpen ? '-rotate-90' : 'rotate-90'
+                }`}
+                aria-hidden
+              />
+            </button>
+            <div
+              className={`grid overflow-hidden transition-[grid-template-rows] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] ${
+                previouslyOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
+              }`}
+            >
+              <div className="min-h-0 overflow-hidden">
+                <div
+                  id="previously-panel"
+                  role="region"
+                  aria-labelledby="previously-trigger"
+                  aria-hidden={!previouslyOpen}
+                  className="body-1 mt-2 flex flex-col gap-[4px] pl-[1.5rem] text-grey-5"
+                >
+                  <p>Product Designer for Meetup @ Bending Spoons</p>
+                  <p>Research Assistant @ German Aerospace Center (DLR)</p>
+                  <p>UX/UI Design Intern @ UNOX S.p.A.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Projects */}
       <div className="col-span-12 flex flex-col gap-[1.5rem]">
@@ -121,12 +203,12 @@ function HomePage() {
               Valerio, A., Nguyen, H. P., Ihme, K., & Walocha, F. (2025). Assessment and Prediction of Remote Operators’ Mental Workload Through AoI Data
               in AV Scenarios. In Proceedings of the 2025 Mensch und Computer 2025 (pp. 482-487).{' '}
               <a
-                href="https://doi.org/10.1145/3743049.374858"
+                href="https://doi.org/10.1145/3743049.3748583"
                 className="link-accent"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                https://doi.org/10.1145/3743049.374858
+                https://doi.org/10.1145/3743049.3748583
               </a>
             </li>
             <li>

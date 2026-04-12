@@ -23,7 +23,7 @@ const ProjectBox = ({ name, desc, imageName, ribbonSrc }: ProjectBoxProps) => {
   return (
     <Link
       to={`/${imageName}`}
-      className="relative col-span-2 md:col-span-1 aspect-[16/9] overflow-hidden group"
+      className="relative col-span-2 md:col-span-1 aspect-[16/9] overflow-hidden rounded-[20px] group"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => {
         setIsHovered(false)
@@ -39,7 +39,7 @@ const ProjectBox = ({ name, desc, imageName, ribbonSrc }: ProjectBoxProps) => {
           className="absolute top-0 left-0 w-[5rem] h-[5rem] z-20 pointer-events-none shadow-light"
         />
       )}
-      <div className="absolute inset-0 transition-transform duration-[250ms] ease-out group-hover:scale-[0.95]">
+      <div className="absolute inset-0 overflow-hidden rounded-[20px] transition-transform duration-[250ms] ease-out group-hover:scale-[0.95]">
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
