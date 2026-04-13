@@ -5,7 +5,7 @@ import ProjectMetaStart from '../components/ProjectMetaStart'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
 import { ProjectPageSkeleton } from '../components/ProjectPageSkeleton'
-import { useAssetsReady } from '../hooks/useAssetsReady'
+import { buildFetchPriorities, useImagesPaintReady } from '../hooks/useImagesPaintReady'
 import meetupHero from '../assets/projects/meetup.webp'
 import comparisonWeb from '../assets/projects/meetup/redesign/comparison-web.webp'
 import comparisonMobile from '../assets/projects/meetup/redesign/comparison-mobile.webp'
@@ -37,11 +37,13 @@ const redesignAlts = [
 const growthImages = [sms, paywalls]
 const growthAlts = ['SMS reminders experiment', 'Subscription paywalls']
 
-const MEETUP_PRELOAD_IMAGES: readonly string[] = [meetupHero]
+const MEETUP_ORDERED_IMAGES: readonly string[] = [meetupHero, ...redesignImages, ...growthImages]
+
+const MEETUP_PRIORITIES = buildFetchPriorities(MEETUP_ORDERED_IMAGES.length)
 
 function MeetupPage() {
-  const assetsReady = useAssetsReady({ images: MEETUP_PRELOAD_IMAGES })
-  if (!assetsReady) {
+  const paintReady = useImagesPaintReady(MEETUP_ORDERED_IMAGES)
+  if (!paintReady) {
     return <LayoutWrapper header={<ProjectPageSkeleton.Header />} content={<ProjectPageSkeleton.Body />} />
   }
 
@@ -120,6 +122,7 @@ function MeetupPage() {
             lightbox
             lightboxLayout="landscape"
             imageAlts={redesignAlts}
+            imageFetchPriorities={MEETUP_PRIORITIES.slice(1, 7)}
           />
         </div>
 
@@ -146,7 +149,14 @@ function MeetupPage() {
         </div>
 
         <div className="project-image-container">
-          <Carousel images={growthImages} width={0} lightbox lightboxLayout="landscape" imageAlts={growthAlts} />
+          <Carousel
+            images={growthImages}
+            width={0}
+            lightbox
+            lightboxLayout="landscape"
+            imageAlts={growthAlts}
+            imageFetchPriorities={MEETUP_PRIORITIES.slice(7, 9)}
+          />
         </div>
 
         <div className="project-text-container" id="section-4">

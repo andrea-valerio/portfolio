@@ -5,7 +5,7 @@ import ProjectMetaStart from '../components/ProjectMetaStart'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
 import { ProjectPageSkeleton } from '../components/ProjectPageSkeleton'
-import { useAssetsReady } from '../hooks/useAssetsReady'
+import { buildFetchPriorities, useImagesPaintReady } from '../hooks/useImagesPaintReady'
 import ovenconfHero from '../assets/projects/ovenconf.webp'
 import accessFlow from '../assets/projects/ovenconf/access-flow.webp';
 import configurationFlow from '../assets/projects/ovenconf/configuration-flow.webp';
@@ -16,11 +16,23 @@ import placementImg from '../assets/projects/ovenconf/results/placement.webp';
 import accessoryImg from '../assets/projects/ovenconf/results/accessory.webp';
 import reviewImg from '../assets/projects/ovenconf/results/review.webp';
 
-const OVENCONF_PRELOAD_IMAGES: readonly string[] = [ovenconfHero]
+const OVENCONF_ORDERED_IMAGES: readonly string[] = [
+  ovenconfHero,
+  accessFlow,
+  configurationFlow,
+  ovenHome,
+  ovensImg,
+  secondOvenImg,
+  placementImg,
+  accessoryImg,
+  reviewImg,
+]
+
+const OVEN_PRIORITIES = buildFetchPriorities(OVENCONF_ORDERED_IMAGES.length)
 
 function OvenConfPage() {
-    const assetsReady = useAssetsReady({ images: OVENCONF_PRELOAD_IMAGES })
-    if (!assetsReady) {
+    const paintReady = useImagesPaintReady(OVENCONF_ORDERED_IMAGES)
+    if (!paintReady) {
       return <LayoutWrapper header={<ProjectPageSkeleton.Header />} content={<ProjectPageSkeleton.Body />} />
     }
 
@@ -82,6 +94,7 @@ function OvenConfPage() {
               lightbox
               lightboxLayout="landscape"
               imageAlts={['Access flow']}
+              imageFetchPriorities={OVEN_PRIORITIES.slice(1, 2)}
             />
           </div>
 
@@ -95,6 +108,7 @@ function OvenConfPage() {
               lightbox
               lightboxLayout="landscape"
               imageAlts={['Configuration flow']}
+              imageFetchPriorities={OVEN_PRIORITIES.slice(2, 3)}
             />
           </div>
 
@@ -143,6 +157,7 @@ function OvenConfPage() {
               'Accessory',
               'Review',
             ]}
+            imageFetchPriorities={OVEN_PRIORITIES.slice(3, 9)}
           />
         </div>
       </div>

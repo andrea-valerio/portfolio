@@ -5,7 +5,7 @@ import ProjectMetaStart from '../components/ProjectMetaStart'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
 import { ProjectPageSkeleton } from '../components/ProjectPageSkeleton'
-import { useAssetsReady } from '../hooks/useAssetsReady'
+import { buildFetchPriorities, useImagesPaintReady } from '../hooks/useImagesPaintReady'
 import citinstHero from '../assets/projects/citinst.webp'
 import conceptMap from '../assets/projects/citinst/concept-map.webp';
 import taxonomy from '../assets/projects/citinst/taxonomy.webp';
@@ -17,11 +17,24 @@ import booking from '../assets/projects/citinst/results/booking.webp';
 import faq from '../assets/projects/citinst/results/faq.webp';
 import feedback from '../assets/projects/citinst/results/feedback.webp';
 
-const CITINST_PRELOAD_IMAGES: readonly string[] = [citinstHero]
+const CITINST_ORDERED_IMAGES: readonly string[] = [
+  citinstHero,
+  conceptMap,
+  taxonomy,
+  sketches,
+  contact,
+  help,
+  opinion,
+  booking,
+  faq,
+  feedback,
+]
+
+const CIT_PRIORITIES = buildFetchPriorities(CITINST_ORDERED_IMAGES.length)
 
 function CitInstPage() {
-    const assetsReady = useAssetsReady({ images: CITINST_PRELOAD_IMAGES })
-    if (!assetsReady) {
+    const paintReady = useImagesPaintReady(CITINST_ORDERED_IMAGES)
+    if (!paintReady) {
       return <LayoutWrapper header={<ProjectPageSkeleton.Header />} content={<ProjectPageSkeleton.Body />} />
     }
 
@@ -94,6 +107,7 @@ function CitInstPage() {
               lightbox
               lightboxLayout="landscape"
               imageAlts={['Concept map']}
+              imageFetchPriorities={CIT_PRIORITIES.slice(1, 2)}
             />
           </div>
 
@@ -127,6 +141,7 @@ function CitInstPage() {
               lightbox
               lightboxLayout="landscape"
               imageAlts={['Sections taxonomy']}
+              imageFetchPriorities={CIT_PRIORITIES.slice(2, 3)}
             />
           </div>
 
@@ -149,6 +164,7 @@ function CitInstPage() {
               lightbox
               lightboxLayout="landscape"
               imageAlts={['Sketches']}
+              imageFetchPriorities={CIT_PRIORITIES.slice(3, 4)}
             />
           </div>
 
@@ -178,6 +194,7 @@ function CitInstPage() {
             lightbox
             lightboxLayout="landscape"
             imageAlts={['Contact hub', 'Help', 'Opinion', 'Booking', 'FAQ', 'Feedback']}
+            imageFetchPriorities={CIT_PRIORITIES.slice(4, 10)}
           />
         </div>
       </div>

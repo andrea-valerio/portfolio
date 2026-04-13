@@ -10,19 +10,48 @@ import ribbonStartup from '../assets/projects/ribbon-startup.webp'
 import ribbonMscThesis from '../assets/projects/ribbon-msc-thesis.webp'
 import pillChevronRight from '../assets/icons/right-arrow-overlay-dark.svg'
 import profilePhoto from '../assets/mypicture/Mid.webp'
-import { useAssetsReady } from '../hooks/useAssetsReady'
+import meetupCover from '../assets/projects/meetup.webp'
+import grooveCover from '../assets/projects/groove.webp'
+import thesisCover from '../assets/projects/thesis.webp'
+import ovenconfCover from '../assets/projects/ovenconf.webp'
+import citinstCover from '../assets/projects/citinst.webp'
+import ecomuseoCover from '../assets/projects/ecomuseo.webp'
+import {
+  buildFetchPriorities,
+  useImagesPaintReady,
+} from '../hooks/useImagesPaintReady'
 
 /** Set to `true` to show these two projects on the home grid again (`/sustsmok` and `/reelsfyp` routes stay available). */
 const SHOW_SUSTSMOK_REELSFYP_ON_HOME = false
 
-/** Above-the-fold / LCP only; project tiles load cover art lazily via ProjectBox. */
-const HOME_PRELOAD_URLS: readonly string[] = [homeBg, profilePhoto, mailIcon, inIcon, ghIcon]
+/**
+ * Top-to-bottom visual order for paint gate + fetch priority.
+ * Includes CSS background URLs so they participate in the 80% gate.
+ */
+const HOME_ORDERED_IMAGES: readonly string[] = [
+  homeBg,
+  profilePhoto,
+  mailIcon,
+  inIcon,
+  ghIcon,
+  pillChevronRight,
+  meetupCover,
+  grooveCover,
+  ribbonStartup,
+  thesisCover,
+  ribbonMscThesis,
+  ovenconfCover,
+  citinstCover,
+  ecomuseoCover,
+]
+
+const HOME_FETCH_PRIORITIES = buildFetchPriorities(HOME_ORDERED_IMAGES.length)
 
 function HomePage() {
   const [previouslyOpen, setPreviouslyOpen] = useState(false)
-  const assetsReady = useAssetsReady({ images: HOME_PRELOAD_URLS })
+  const paintReady = useImagesPaintReady(HOME_ORDERED_IMAGES)
 
-  if (!assetsReady) {
+  if (!paintReady) {
     return (
       <LayoutWrapper
         header={<HomePageSkeleton.Header />}
@@ -34,7 +63,6 @@ function HomePage() {
 
   const header = (
     <div
-      // Header: percentage height with responsive min-heights
       className="
         h-[200px] sm:h-[250px] md:h-[300px] lg:h-[350px]
         bg-cover bg-center flex items-center justify-center text-white
@@ -47,7 +75,7 @@ function HomePage() {
         `,
       }}
     >
-        <div className="w-full max-w-[1240px] mx-auto px-[20px] flex justify-center font-body font-bold leading-[0.91]
+      <div className="w-full max-w-[1240px] mx-auto px-[20px] flex justify-center font-body font-bold leading-[0.91]
           text-[2.4rem] sm:text-[4.3rem] md:text-[5.4rem] lg:text-[7.5rem]
           gap-[0.875rem] sm:gap-[1.5rem] md:gap-[2rem] lg:gap-[2.75rem]">
         <span>“</span>
@@ -65,9 +93,7 @@ function HomePage() {
 
   const content = (
     <div className="flex flex-col gap-[4rem] lg:gap-[6rem]">
-      {/* Me and Contacts */}
       <div className="col-span-12 flex flex-col gap-[1.5rem] body-1 break-words w-full max-w-full">
-        {/* Me */}
         <div className="col-span-12 flex flex-col lg:flex-row lg:gap-16 lg:items-stretch gap-8">
           <div className="flex flex-col items-center gap-4 shrink-0 w-full max-w-[260px] mx-auto lg:mx-0 lg:w-full lg:max-w-[260px] lg:min-h-0 lg:self-stretch lg:h-full">
             <div className="w-full flex justify-center lg:flex-1 lg:min-h-0 lg:items-center lg:justify-center min-h-0">
@@ -75,6 +101,7 @@ function HomePage() {
                 <img
                   src={profilePhoto}
                   alt="Andrea Valerio"
+                  fetchPriority={HOME_FETCH_PRIORITIES[1]}
                   className="absolute inset-0 h-full w-full rounded-full object-cover border-4 border-accent-shade1 box-border"
                 />
               </div>
@@ -103,21 +130,20 @@ function HomePage() {
             </p>
           </div>
         </div>
-        {/* Contacts */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-[1.5rem] sm:gap-[3rem] pt-4">
           <span className="text-body-1 font-title font-medium">
             Contacts :
           </span>
           <div className="flex items-center gap-[0.625rem]">
-            <img src={mailIcon} alt="mail icon" className="w-[1.5rem] h-[1.5rem]" />
+            <img src={mailIcon} alt="mail icon" fetchPriority={HOME_FETCH_PRIORITIES[2]} className="w-[1.5rem] h-[1.5rem]" />
             <a href="mailto:andrea@icio.it" className="link-accent">Email</a>
           </div>
           <div className="flex items-center gap-[0.625rem]">
-            <img src={inIcon} alt="linkedin icon" className="w-[1.5rem] h-[1.5rem]" />
+            <img src={inIcon} alt="linkedin icon" fetchPriority={HOME_FETCH_PRIORITIES[3]} className="w-[1.5rem] h-[1.5rem]" />
             <a href="https://www.linkedin.com/in/andreavalerio1" target="_blank" className="link-accent">LinkedIn</a>
           </div>
           <div className="flex items-center gap-[0.625rem]">
-            <img src={ghIcon} alt="github icon" className="w-[1.5rem] h-[1.5rem]" />
+            <img src={ghIcon} alt="github icon" fetchPriority={HOME_FETCH_PRIORITIES[4]} className="w-[1.5rem] h-[1.5rem]" />
             <a href="https://github.com/andrea-valerio" target="_blank" className="link-accent">GitHub</a>
           </div>
         </div>
@@ -155,6 +181,7 @@ function HomePage() {
                 width={12}
                 height={12}
                 draggable={false}
+                fetchPriority={HOME_FETCH_PRIORITIES[5]}
                 className={`pointer-events-none h-3 w-3 shrink-0 translate-y-[2px] transition-transform duration-200 ${
                   previouslyOpen ? '-rotate-90' : 'rotate-90'
                 }`}
@@ -184,27 +211,33 @@ function HomePage() {
         </div>
       </section>
 
-      {/* Projects */}
       <div className="col-span-12 flex flex-col gap-[1.5rem]">
         <p className="title-1">Projects</p>
         <div className="col-span-12 grid grid-cols-2 gap-[3rem]">
-            <ProjectBox name="Meetup" desc="Product Design" imageName="meetup" />
-            <ProjectBox name="Groove" desc="UX / UI Design" imageName="groove" ribbonSrc={ribbonStartup} />
-            <ProjectBox
-              name="Teleoperators' Workload"
-              desc="HCI Research & Data Analysis"
-              imageName="thesis"
-              ribbonSrc={ribbonMscThesis}
-            />
-            <ProjectBox name="Oven Configurator" desc="UX Research & Design" imageName="ovenconf" />
-            <ProjectBox name="Citizen-Institution Interaction" desc="UX Research & Design" imageName="citinst" />
-            <ProjectBox name="Ecomuseo Argentario" desc="UX / UI Design" imageName="ecomuseo" />
-            {SHOW_SUSTSMOK_REELSFYP_ON_HOME && (
-              <>
-                <ProjectBox name="Sustainability & Smoking" desc="Qualitative Research" imageName="sustsmok" />
-                <ProjectBox name="Instagram vs TikTok" desc="Quantitative Research" imageName="reelsfyp" />
-              </>
-            )}
+          <ProjectBox name="Meetup" desc="Product Design" imageName="meetup" />
+          <ProjectBox
+            name="Groove"
+            desc="UX / UI Design"
+            imageName="groove"
+            ribbonSrc={ribbonStartup}
+            ribbonFetchPriority={HOME_FETCH_PRIORITIES[8]}
+          />
+          <ProjectBox
+            name="Teleoperators' Workload"
+            desc="HCI Research & Data Analysis"
+            imageName="thesis"
+            ribbonSrc={ribbonMscThesis}
+            ribbonFetchPriority={HOME_FETCH_PRIORITIES[10]}
+          />
+          <ProjectBox name="Oven Configurator" desc="UX Research & Design" imageName="ovenconf" />
+          <ProjectBox name="Citizen-Institution Interaction" desc="UX Research & Design" imageName="citinst" />
+          <ProjectBox name="Ecomuseo Argentario" desc="UX / UI Design" imageName="ecomuseo" />
+          {SHOW_SUSTSMOK_REELSFYP_ON_HOME && (
+            <>
+              <ProjectBox name="Sustainability & Smoking" desc="Qualitative Research" imageName="sustsmok" />
+              <ProjectBox name="Instagram vs TikTok" desc="Quantitative Research" imageName="reelsfyp" />
+            </>
+          )}
         </div>
       </div>
 
@@ -258,5 +291,5 @@ function HomePage() {
     <LayoutWrapper header={header} content={content} className="!gap-[4rem] lg:!gap-[6rem]" />
   )
 }
-  
+
 export default HomePage

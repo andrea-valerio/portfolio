@@ -1,0 +1,97 @@
+import { useEffect, useState } from 'react'
+
+/** Portion of images that must have loaded (or errored) before showing real UI. */
+export const IMAGE_PAINT_THRESHOLD = 0.8
+
+export type ImageFetchPriorityLevel = 'high' | 'auto' | 'low'
+
+/** `ceil(n * threshold)` images must complete; 0 when `n === 0`. */
+export function requiredLoadedCountForPaint(
+  total: number,
+  threshold: number = IMAGE_PAINT_THRESHOLD
+): number {
+  if (total <= 0) return 0
+  return Math.ceil(total * threshold)
+}
+
+/** Top third → high, middle → auto, bottom → low (vertical priority). */
+export function fetchPriorityForVerticalIndex(
+  index: number,
+  total: number
+): ImageFetchPriorityLevel {
+  if (total <= 0) return 'auto'
+  if (total === 1) return 'high'
+  const t = index / total
+  if (t < 1 / 3) return 'high'
+  if (t < 2 / 3) return 'auto'
+  return 'low'
+}
+
+/** One entry per image URL in top-to-bottom order. */
+export function buildFetchPriorities(total: number): ImageFetchPriorityLevel[] {
+  return Array.from({ length: total }, (_, i) => fetchPriorityForVerticalIndex(i, total))
+}
+
+function preloadImageWithPriority(
+  src: string,
+  priority: ImageFetchPriorityLevel
+): Promise<void> {
+  return new Promise((resolve) => {
+    const img = new Image()
+    if ('fetchPriority' in img) {
+      try {
+        ;(img as HTMLImageElement & { fetchPriority?: string }).fetchPriority = priority
+      } catch {
+        /* ignore */
+      }
+    }
+    img.onload = () => resolve()
+    img.onerror = () => resolve()
+    img.src = src
+  })
+}
+
+/**
+ * Becomes `true` when at least `ceil(images.length * threshold)` images have loaded or errored.
+ * All preloads start in parallel; `fetchPriority` follows `images` order (top = higher).
+ */
+export function useImagesPaintReady(
+  images: readonly string[],
+  threshold: number = IMAGE_PAINT_THRESHOLD
+): boolean {
+  const [ready, setReady] = useState(false)
+
+  useEffect(() => {
+    setReady(false)
+
+    if (images.length === 0) {
+      setReady(true)
+      return
+    }
+
+    const required = requiredLoadedCountForPaint(images.length, threshold)
+    let loaded = 0
+    let cancelled = false
+
+    const bump = () => {
+      loaded++
+      if (!cancelled && loaded >= required) {
+        setReady(true)
+      }
+    }
+
+    const priorities = buildFetchPriorities(images.length)
+
+    images.forEach((src, i) => {
+      void preloadImageWithPriority(src, priorities[i]).then(() => {
+        if (!cancelled) bump()
+      })
+    })
+
+    return () => {
+      cancelled = true
+    }
+  }, [images, threshold])
+
+  return ready
+}

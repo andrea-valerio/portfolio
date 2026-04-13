@@ -3,6 +3,7 @@ import { lazy, Suspense, useEffect, useRef, useLayoutEffect } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import LayoutWrapper from './components/LayoutWrapper'
 import { ProjectPageSkeleton } from './components/ProjectPageSkeleton'
+import { scheduleRoutePrefetch } from './navigation/routePrefetch'
 
 const HomePage = lazy(() => import('./pages/HomePage'))
 const GroovePage = lazy(() => import('./pages/GroovePage'))
@@ -21,6 +22,7 @@ const routeFallback = (
 function App() {
   const location = useLocation()
   const scrollPos = useRef<{ [path: string]: number }>({})
+  const routePrefetchGen = useRef(0)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -38,6 +40,11 @@ function App() {
       window.scrollTo(0, 0)
     }
   }, [location.pathname])
+
+  useEffect(() => {
+    const g = ++routePrefetchGen.current
+    scheduleRoutePrefetch(location.pathname, routePrefetchGen, g)
+  }, [location.pathname, location.key])
 
   return (
     <Suspense fallback={routeFallback}>

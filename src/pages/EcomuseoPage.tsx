@@ -5,7 +5,7 @@ import ProjectMetaStart from '../components/ProjectMetaStart'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
 import { ProjectPageSkeleton } from '../components/ProjectPageSkeleton'
-import { useAssetsReady } from '../hooks/useAssetsReady'
+import { buildFetchPriorities, useImagesPaintReady } from '../hooks/useImagesPaintReady'
 import ecomuseoHero from '../assets/projects/ecomuseo.webp'
 // Asset imports
 import personas1 from '../assets/projects/ecomuseo/personas-1.webp';
@@ -19,11 +19,25 @@ import ecomCiucioi from '../assets/projects/ecomuseo/results/ciucioi.webp';
 import ecomTicket from '../assets/projects/ecomuseo/results/ticket.webp';
 import ecomPayment from '../assets/projects/ecomuseo/results/payment.webp';
 
-const ECOMUSEO_PRELOAD_IMAGES: readonly string[] = [ecomuseoHero]
+const ECOMUSEO_ORDERED_IMAGES: readonly string[] = [
+  ecomuseoHero,
+  personas1,
+  personas2,
+  personas3,
+  taxonomyImg,
+  sketchesImg,
+  ecomHome,
+  ecomOrrido,
+  ecomCiucioi,
+  ecomTicket,
+  ecomPayment,
+]
+
+const ECOM_PRIORITIES = buildFetchPriorities(ECOMUSEO_ORDERED_IMAGES.length)
 
 function EcomuseoPage() {
-    const assetsReady = useAssetsReady({ images: ECOMUSEO_PRELOAD_IMAGES })
-    if (!assetsReady) {
+    const paintReady = useImagesPaintReady(ECOMUSEO_ORDERED_IMAGES)
+    if (!paintReady) {
       return <LayoutWrapper header={<ProjectPageSkeleton.Header />} content={<ProjectPageSkeleton.Body />} />
     }
 
@@ -82,6 +96,7 @@ function EcomuseoPage() {
                 lightbox
                 lightboxLayout="portrait"
                 imageAlts={['Personas 1', 'Personas 2', 'Personas 3']}
+                imageFetchPriorities={ECOM_PRIORITIES.slice(1, 4)}
               />
             </div>
           </div>
@@ -108,6 +123,7 @@ function EcomuseoPage() {
               lightbox
               lightboxLayout="landscape"
               imageAlts={['Taxonomy']}
+              imageFetchPriorities={ECOM_PRIORITIES.slice(4, 5)}
             />
           </div>
 
@@ -121,6 +137,7 @@ function EcomuseoPage() {
               lightbox
               lightboxLayout="landscape"
               imageAlts={['Sketches']}
+              imageFetchPriorities={ECOM_PRIORITIES.slice(5, 6)}
             />
           </div>
 
@@ -164,6 +181,7 @@ function EcomuseoPage() {
             lightbox
             lightboxLayout="landscape"
             imageAlts={['Home', 'Orrido museum', 'Ciucioi museum', 'Ticket', 'Payment']}
+            imageFetchPriorities={ECOM_PRIORITIES.slice(6, 11)}
           />
         </div>
       </div>

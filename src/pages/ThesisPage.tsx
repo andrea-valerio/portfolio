@@ -5,7 +5,7 @@ import ProjectMetaStart from '../components/ProjectMetaStart'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
 import { ProjectPageSkeleton } from '../components/ProjectPageSkeleton'
-import { useAssetsReady } from '../hooks/useAssetsReady'
+import { buildFetchPriorities, useImagesPaintReady } from '../hooks/useImagesPaintReady'
 import thesisHero from '../assets/projects/thesis.webp'
 import comparisonWeb from '../assets/projects/meetup/redesign/comparison-web.webp'
 import comparisonMobile from '../assets/projects/meetup/redesign/comparison-mobile.webp'
@@ -35,11 +35,13 @@ const redesignAlts = [
   'Additional screens',
 ]
 
-const THESIS_PRELOAD_IMAGES: readonly string[] = [thesisHero]
+const THESIS_ORDERED_IMAGES: readonly string[] = [thesisHero, ...redesignImages, personas1, personas2, personas3]
+
+const THESIS_PRIORITIES = buildFetchPriorities(THESIS_ORDERED_IMAGES.length)
 
 function ThesisPage() {
-  const assetsReady = useAssetsReady({ images: THESIS_PRELOAD_IMAGES })
-  if (!assetsReady) {
+  const paintReady = useImagesPaintReady(THESIS_ORDERED_IMAGES)
+  if (!paintReady) {
     return <LayoutWrapper header={<ProjectPageSkeleton.Header />} content={<ProjectPageSkeleton.Body />} />
   }
 
@@ -102,6 +104,7 @@ function ThesisPage() {
             lightbox
             lightboxLayout="landscape"
             imageAlts={redesignAlts}
+            imageFetchPriorities={THESIS_PRIORITIES.slice(1, 7)}
           />
         </div>
 
@@ -138,6 +141,7 @@ function ThesisPage() {
             lightbox
             lightboxLayout="portrait"
             imageAlts={['Personas 1', 'Personas 2', 'Personas 3']}
+            imageFetchPriorities={THESIS_PRIORITIES.slice(7, 10)}
           />
         </div>
 

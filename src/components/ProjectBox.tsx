@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import type { ImageFetchPriorityHint } from './Carousel'
 
 const projectImages: Record<string, string> = import.meta.glob(
   '../assets/projects/*.webp',
@@ -11,9 +12,11 @@ type ProjectBoxProps = {
   desc: string
   imageName: string
   ribbonSrc?: string
+  /** Optional: vertical priority for the ribbon `<img>` when present */
+  ribbonFetchPriority?: ImageFetchPriorityHint
 }
 
-const ProjectBox = ({ name, desc, imageName, ribbonSrc }: ProjectBoxProps) => {
+const ProjectBox = ({ name, desc, imageName, ribbonSrc, ribbonFetchPriority }: ProjectBoxProps) => {
   const [isPressed, setIsPressed] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
 
@@ -64,6 +67,7 @@ const ProjectBox = ({ name, desc, imageName, ribbonSrc }: ProjectBoxProps) => {
             src={ribbonSrc}
             alt="Ribbon"
             loading="lazy"
+            {...(ribbonFetchPriority ? { fetchPriority: ribbonFetchPriority } : {})}
             className="absolute top-0 left-0 w-[5rem] h-[5rem] z-20 pointer-events-none shadow-light"
           />
         )}

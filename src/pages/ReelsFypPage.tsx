@@ -5,7 +5,7 @@ import ProjectMetaStart from '../components/ProjectMetaStart'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
 import { ProjectPageSkeleton } from '../components/ProjectPageSkeleton'
-import { useAssetsReady } from '../hooks/useAssetsReady'
+import { buildFetchPriorities, useImagesPaintReady } from '../hooks/useImagesPaintReady'
 import reelsfypHero from '../assets/projects/reelsfyp.webp'
 import instagramImg       from '../assets/projects/reelsfyp/instagram.webp';
 import tiktokImg          from '../assets/projects/reelsfyp/tiktok.webp';
@@ -15,11 +15,22 @@ import kpiInstagram       from '../assets/projects/reelsfyp/results/kpi-instagra
 import kpiTikTok          from '../assets/projects/reelsfyp/results/kpi-tiktok.webp';
 import kpiAge             from '../assets/projects/reelsfyp/results/kpi-age.webp';
 
-const REELSFYP_PRELOAD_IMAGES: readonly string[] = [reelsfypHero]
+const REELSFYP_ORDERED_IMAGES: readonly string[] = [
+  reelsfypHero,
+  instagramImg,
+  tiktokImg,
+  questionnaireImg,
+  kpiGeneral,
+  kpiInstagram,
+  kpiTikTok,
+  kpiAge,
+]
+
+const REELS_PRIORITIES = buildFetchPriorities(REELSFYP_ORDERED_IMAGES.length)
 
 function ReelsFypPage() {
-    const assetsReady = useAssetsReady({ images: REELSFYP_PRELOAD_IMAGES })
-    if (!assetsReady) {
+    const paintReady = useImagesPaintReady(REELSFYP_ORDERED_IMAGES)
+    if (!paintReady) {
       return <LayoutWrapper header={<ProjectPageSkeleton.Header />} content={<ProjectPageSkeleton.Body />} />
     }
 
@@ -69,6 +80,7 @@ function ReelsFypPage() {
               lightboxLayout="portrait"
               lightboxPortraitMaxWidth={400}
               imageAlts={['Instagram Reels']}
+              imageFetchPriorities={REELS_PRIORITIES.slice(1, 2)}
             />
             <Carousel
               images={[tiktokImg]}
@@ -78,6 +90,7 @@ function ReelsFypPage() {
               lightboxLayout="portrait"
               lightboxPortraitMaxWidth={400}
               imageAlts={['TikTok For You Page']}
+              imageFetchPriorities={REELS_PRIORITIES.slice(2, 3)}
             />
           </div>
 
@@ -109,6 +122,7 @@ function ReelsFypPage() {
               lightbox
               lightboxLayout="landscape"
               imageAlts={['Questionnaire']}
+              imageFetchPriorities={REELS_PRIORITIES.slice(3, 4)}
             />
           </div>
 
@@ -140,6 +154,7 @@ function ReelsFypPage() {
             lightbox
             lightboxLayout="landscape"
             imageAlts={['KPI overview', 'KPI Instagram', 'KPI TikTok', 'KPI by age group']}
+            imageFetchPriorities={REELS_PRIORITIES.slice(4, 8)}
           />
         </div>
       </div>

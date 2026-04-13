@@ -5,7 +5,7 @@ import ProjectMetaStart from '../components/ProjectMetaStart'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
 import { ProjectPageSkeleton } from '../components/ProjectPageSkeleton'
-import { useAssetsReady } from '../hooks/useAssetsReady'
+import { buildFetchPriorities, useImagesPaintReady } from '../hooks/useImagesPaintReady'
 import sustsmokHero from '../assets/projects/sustsmok.webp'
 import roveretoImg        from '../assets/projects/sustsmok/rovereto.webp';
 import povoImg           from '../assets/projects/sustsmok/povo.webp';
@@ -18,11 +18,25 @@ import workshop4         from '../assets/projects/sustsmok/workshop-4.webp';
 import workshop5         from '../assets/projects/sustsmok/workshop-5.webp';
 import workshop6         from '../assets/projects/sustsmok/workshop-6.webp';
 
-const SUSTSMOK_PRELOAD_IMAGES: readonly string[] = [sustsmokHero]
+const SUSTSMOK_ORDERED_IMAGES: readonly string[] = [
+  sustsmokHero,
+  roveretoImg,
+  povoImg,
+  sociologyImg,
+  cardsImg,
+  workshop1,
+  workshop2,
+  workshop3,
+  workshop4,
+  workshop5,
+  workshop6,
+]
+
+const SUST_PRIORITIES = buildFetchPriorities(SUSTSMOK_ORDERED_IMAGES.length)
 
 function SustSmokPage() {
-    const assetsReady = useAssetsReady({ images: SUSTSMOK_PRELOAD_IMAGES })
-    if (!assetsReady) {
+    const paintReady = useImagesPaintReady(SUSTSMOK_ORDERED_IMAGES)
+    if (!paintReady) {
       return <LayoutWrapper header={<ProjectPageSkeleton.Header />} content={<ProjectPageSkeleton.Body />} />
     }
 
@@ -71,6 +85,7 @@ function SustSmokPage() {
                   lightbox
                   lightboxLayout="landscape"
                   imageAlts={['Rovereto']}
+                  imageFetchPriorities={SUST_PRIORITIES.slice(1, 2)}
                 />
               </div>
               <div className="min-w-0 flex-1">
@@ -81,6 +96,7 @@ function SustSmokPage() {
                   lightbox
                   lightboxLayout="landscape"
                   imageAlts={['Povo']}
+                  imageFetchPriorities={SUST_PRIORITIES.slice(2, 3)}
                 />
               </div>
               <div className="min-w-0 flex-1">
@@ -91,6 +107,7 @@ function SustSmokPage() {
                   lightbox
                   lightboxLayout="landscape"
                   imageAlts={['Sociology']}
+                  imageFetchPriorities={SUST_PRIORITIES.slice(3, 4)}
                 />
               </div>
             </div>
@@ -122,6 +139,7 @@ function SustSmokPage() {
               lightbox
               lightboxLayout="landscape"
               imageAlts={['Themes cards']}
+              imageFetchPriorities={SUST_PRIORITIES.slice(4, 5)}
             />
           </div>
 
@@ -157,6 +175,7 @@ function SustSmokPage() {
                 'Workshop 5',
                 'Workshop 6',
               ]}
+              imageFetchPriorities={SUST_PRIORITIES.slice(5, 11)}
             />
           </div>
 

@@ -61,7 +61,14 @@ const LB = {
     icon: (32 * 32) / 48,
   },
   wheelMinDeltaX: 28,
-  wheelNewGestureGapMs: 100,
+  /** Time (ms) without a wheel event before treating the next one as a new trackpad gesture */
+  wheelNewGestureGapMs: 550,
+  /**
+   * After a wheel-driven slide change, ignore further navigations for this long (ms).
+   * Must be >= `wheelNewGestureGapMs` so the burst lock can clear once cooldown ends (spam during
+   * cooldown must not strand `wheelSwipeLockedRef` with a stale `lastHorizontalWheelAtRef`).
+   */
+  wheelNavCooldownMs: 550,
 } as const
 
 /** Below Tailwind `md` (768px): tighter insets so the lightbox image stage matches phone viewports. */
@@ -92,6 +99,35 @@ const IC = {
 
 /** Pixels: treat scroll position within this distance of an edge as “at” that edge (sub-pixel + snap). */
 const INLINE_SCROLL_EDGE_EPS = 3
+
+/** Marks the rounded image card; scopes horizontal trackpad handling so gallery wins over browser history. */
+const LIGHTBOX_IMAGE_HIT_ATTR = 'data-lightbox-image-hit'
+
+function wheelEventOverLightboxImageHit(e: WheelEvent): boolean {
+  if (typeof document === 'undefined') return false
+  let node: Element | null = null
+  if (Number.isFinite(e.clientX) && Number.isFinite(e.clientY)) {
+    node = document.elementFromPoint(e.clientX, e.clientY)
+  }
+  if (!node && e.target instanceof Element) {
+    node = e.target
+  }
+  return node != null && node.closest(`[${LIGHTBOX_IMAGE_HIT_ATTR}]`) != null
+}
+
+/** When the cursor is over a lightbox image, block Safari/Chrome horizontal swipe-to-navigate. */
+function preventBrowserHistoryOnHorizontalWheelOverLightboxImage(
+  e: WheelEvent,
+  opts: { zoomed: boolean }
+): void {
+  if (opts.zoomed) return
+  if (!wheelEventOverLightboxImageHit(e)) return
+  const absX = Math.abs(e.deltaX)
+  const absY = Math.abs(e.deltaY)
+  if (absX >= absY && absX > 0) {
+    e.preventDefault()
+  }
+}
 
 function closestSlideIndexToCenter(container: HTMLDivElement): number {
   const children = Array.from(container.children) as HTMLElement[]
@@ -436,6 +472,9 @@ function lightboxWheelZoomActivationKeys(activeKeys: string[]): boolean {
   return activeKeys.includes('Control') || activeKeys.includes('Meta')
 }
 
+/** Matches `HTMLImageElement.fetchPriority` hint values for vertical loading priority. */
+export type ImageFetchPriorityHint = 'high' | 'auto' | 'low'
+
 type LightboxSlideProps = {
   src: string
   alt: string
@@ -444,9 +483,10 @@ type LightboxSlideProps = {
   maxWidthPx?: number
   /** Matches inline strip `round` (rem); default `1` = 16px at default root font size */
   roundRem?: number
+  fetchPriority?: ImageFetchPriorityHint
 }
 
-function LightboxSlide({ src, alt, layout, maxWidthPx, roundRem = 1 }: LightboxSlideProps) {
+function LightboxSlide({ src, alt, layout, maxWidthPx, roundRem = 1, fetchPriority }: LightboxSlideProps) {
   const radius = `${roundRem}rem`
   const portraitMax: CSSProperties =
     layout === 'portrait' && maxWidthPx != null
@@ -456,8 +496,13 @@ function LightboxSlide({ src, alt, layout, maxWidthPx, roundRem = 1 }: LightboxS
   return (
     <div className="flex h-full w-full min-h-0 min-w-0 items-center justify-center overflow-visible">
       <div
+        {...{ [LIGHTBOX_IMAGE_HIT_ATTR]: '' }}
         className="flex h-full w-full min-h-0 max-h-full max-w-full items-center justify-center overflow-hidden shadow-light"
-        style={{ borderRadius: radius, ...portraitMax }}
+        style={{
+          borderRadius: radius,
+          overscrollBehaviorX: 'contain',
+          ...portraitMax,
+        }}
       >
         <img
           src={src}
@@ -465,6 +510,7 @@ function LightboxSlide({ src, alt, layout, maxWidthPx, roundRem = 1 }: LightboxS
           className="block h-auto w-auto max-h-full max-w-full object-contain"
           style={{ display: 'block', borderRadius: radius }}
           draggable={false}
+          {...(fetchPriority ? { fetchPriority } : {})}
         />
       </div>
     </div>
@@ -483,6 +529,7 @@ function LightboxZoomableImage({
   layout,
   maxWidthPx,
   roundRem = 1,
+  fetchPriority,
   zoomEnabled,
   onZoomChange,
 }: LightboxZoomableImageProps) {
@@ -516,6 +563,7 @@ function LightboxZoomableImage({
         layout={layout}
         maxWidthPx={maxWidthPx}
         roundRem={roundRem}
+        fetchPriority={fetchPriority}
       />
     )
   }
@@ -548,8 +596,13 @@ function LightboxZoomableImage({
   return (
     <div className="flex h-full w-full min-h-0 min-w-0 items-center justify-center overflow-visible">
       <div
+        {...{ [LIGHTBOX_IMAGE_HIT_ATTR]: '' }}
         className="flex h-full w-full min-h-0 max-h-full max-w-full min-w-0 items-center justify-center overflow-hidden shadow-light"
-        style={{ borderRadius: radius, ...portraitMax }}
+        style={{
+          borderRadius: radius,
+          overscrollBehaviorX: 'contain',
+          ...portraitMax,
+        }}
         role="presentation"
       >
         <TransformWrapper
@@ -580,6 +633,7 @@ function LightboxZoomableImage({
               className="block h-auto w-auto max-h-full max-w-full object-contain select-none"
               style={{ display: 'block', borderRadius: radius }}
               draggable={false}
+              {...(fetchPriority ? { fetchPriority } : {})}
             />
           </TransformComponent>
         </TransformWrapper>
@@ -599,6 +653,10 @@ type LightboxMotionGalleryProps = {
   /** Inline strip corner radius (rem), mirrored in lightbox */
   roundRem: number
   prefersReducedMotion: boolean
+  /** Horizontal gutter (px) applied per slide so resting layout matches the old inset stage */
+  horizontalInsetPx: number
+  /** When length matches `images`, passed to each slide `img` */
+  imageFetchPriorities?: ImageFetchPriorityHint[]
 }
 
 function LightboxMotionGallery({
@@ -610,6 +668,8 @@ function LightboxMotionGallery({
   imageAlts,
   roundRem,
   prefersReducedMotion: reducedMotion,
+  horizontalInsetPx,
+  imageFetchPriorities,
 }: LightboxMotionGalleryProps) {
   const stageRef = useRef<HTMLDivElement>(null)
   const [stageW, setStageW] = useState(0)
@@ -678,6 +738,8 @@ function LightboxMotionGallery({
 
   const wheelSwipeLockedRef = useRef(false)
   const lastHorizontalWheelAtRef = useRef(0)
+  /** `-Infinity` until the first wheel-driven slide change (so cooldown does not block the first nav). */
+  const lastWheelNavAtRef = useRef(Number.NEGATIVE_INFINITY)
 
   useEffect(() => {
     const el = stageRef.current
@@ -685,17 +747,32 @@ function LightboxMotionGallery({
 
     const onWheel = (e: WheelEvent) => {
       if (galleryZoomed) return
+
+      preventBrowserHistoryOnHorizontalWheelOverLightboxImage(e, { zoomed: galleryZoomed })
+
       const absX = Math.abs(e.deltaX)
       const absY = Math.abs(e.deltaY)
+
+      if (!wheelEventOverLightboxImageHit(e)) return
+
       if (absX < absY || absX < LB.wheelMinDeltaX) return
 
       const now = performance.now()
-      if (now - lastHorizontalWheelAtRef.current > LB.wheelNewGestureGapMs) {
+
+      // 1) Post-navigation cooldown — no slide change; do not refresh `lastHorizontalWheelAtRef`
+      //    (spam during cooldown must not extend the burst lock / gap clock).
+      if (now - lastWheelNavAtRef.current < LB.wheelNavCooldownMs) {
+        e.preventDefault()
+        return
+      }
+
+      // 2) Same-burst lock: gap since last horizontal tick ends the previous gesture
+      if (now - lastHorizontalWheelAtRef.current >= LB.wheelNewGestureGapMs) {
         wheelSwipeLockedRef.current = false
       }
-      lastHorizontalWheelAtRef.current = now
 
       if (wheelSwipeLockedRef.current) {
+        lastHorizontalWheelAtRef.current = now
         e.preventDefault()
         return
       }
@@ -710,13 +787,15 @@ function LightboxMotionGallery({
         return
       }
 
+      lastHorizontalWheelAtRef.current = now
       wheelSwipeLockedRef.current = true
+      lastWheelNavAtRef.current = now
       e.preventDefault()
       onIndexChange(nextIdx)
     }
 
-    el.addEventListener('wheel', onWheel, { passive: false })
-    return () => el.removeEventListener('wheel', onWheel)
+    el.addEventListener('wheel', onWheel, { passive: false, capture: true })
+    return () => el.removeEventListener('wheel', onWheel, { capture: true })
   }, [galleryZoomed, images.length, index, onIndexChange])
 
   const trackWidth =
@@ -748,8 +827,12 @@ function LightboxMotionGallery({
           {images.map((src, i) => (
             <div
               key={`${i}-${src}`}
-              className="box-border flex h-full shrink-0 items-center justify-center overflow-hidden p-0"
-              style={{ width: stageW }}
+              className="box-border flex h-full shrink-0 items-center justify-center overflow-hidden"
+              style={{
+                width: stageW,
+                paddingLeft: horizontalInsetPx,
+                paddingRight: horizontalInsetPx,
+              }}
             >
               <LightboxZoomableImage
                 src={src}
@@ -761,6 +844,11 @@ function LightboxMotionGallery({
                 layout={lightboxLayout}
                 maxWidthPx={lightboxPortraitMaxWidth}
                 roundRem={roundRem}
+                fetchPriority={
+                  imageFetchPriorities?.length === images.length
+                    ? imageFetchPriorities[i]
+                    : undefined
+                }
                 zoomEnabled={i === index}
                 onZoomChange={onSlideZoomChange}
               />
@@ -790,6 +878,8 @@ type CarouselProps = {
   imageAlts?: string[]
   /** Extra classes for inline strip images (e.g. `project-image` for page-matched radius and shadow) */
   inlineImageClassName?: string
+  /** When length matches `images`, sets `fetchPriority` on inline and lightbox images (top-of-page = higher). */
+  imageFetchPriorities?: ImageFetchPriorityHint[]
 }
 
 const Carousel = ({
@@ -801,6 +891,7 @@ const Carousel = ({
   lightboxPortraitMaxWidth,
   imageAlts,
   inlineImageClassName,
+  imageFetchPriorities,
 }: CarouselProps) => {
   const scrollRef = useRef<HTMLDivElement>(null)
   const scrollRafRef = useRef<number | null>(null)
@@ -814,6 +905,8 @@ const Carousel = ({
   const [lightboxNav, dispatchLightboxNav] = useReducer(lightboxNavReducer, { index: 0, dir: 1 })
   const lightboxIndex = lightboxNav.index
   const lightboxPrefersReducedMotion = usePrefersReducedMotion()
+  const lightboxSingleImageRef = useRef<HTMLDivElement>(null)
+  const [lightboxSingleImageZoomed, setLightboxSingleImageZoomed] = useState(false)
 
   const closeLightbox = useCallback(() => {
     setLightboxOpen(false)
@@ -926,6 +1019,25 @@ const Carousel = ({
   }, [lightboxOpen])
 
   useEffect(() => {
+    if (!lightboxOpen) {
+      setLightboxSingleImageZoomed(false)
+    }
+  }, [lightboxOpen])
+
+  useEffect(() => {
+    if (!lightboxOpen || images.length !== 1 || !lightbox) return
+    const el = lightboxSingleImageRef.current
+    if (!el) return
+    const onWheel = (e: WheelEvent) => {
+      preventBrowserHistoryOnHorizontalWheelOverLightboxImage(e, {
+        zoomed: lightboxSingleImageZoomed,
+      })
+    }
+    el.addEventListener('wheel', onWheel, { passive: false, capture: true })
+    return () => el.removeEventListener('wheel', onWheel, { capture: true })
+  }, [lightboxOpen, images.length, lightbox, lightboxSingleImageZoomed])
+
+  useEffect(() => {
     if (!lightboxOpen) return
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -962,12 +1074,10 @@ const Carousel = ({
         role="presentation"
       >
         <div
-          className="pointer-events-none absolute z-[201] flex min-h-0 min-w-0 overflow-hidden"
+          className="pointer-events-none absolute inset-x-0 z-[201] flex min-h-0 min-w-0 overflow-hidden"
           style={{
             top: lightboxImageStageInsetTop,
             bottom: lightboxImageStageInsetBottom,
-            left: lightboxEdgeInsetX,
-            right: lightboxEdgeInsetX,
           }}
           role="presentation"
         >
@@ -983,10 +1093,21 @@ const Carousel = ({
                   imageAlts={imageAlts}
                   roundRem={round}
                   prefersReducedMotion={lightboxPrefersReducedMotion}
+                  horizontalInsetPx={lightboxEdgeInsetX}
+                  imageFetchPriorities={
+                    imageFetchPriorities?.length === images.length
+                      ? imageFetchPriorities
+                      : undefined
+                  }
                 />
               ) : (
                 <div
-                  className="pointer-events-auto box-border flex h-full min-h-0 w-full min-w-0 items-center justify-center p-0"
+                  ref={lightboxSingleImageRef}
+                  className="pointer-events-auto box-border flex h-full min-h-0 w-full min-w-0 items-center justify-center"
+                  style={{
+                    paddingLeft: lightboxEdgeInsetX,
+                    paddingRight: lightboxEdgeInsetX,
+                  }}
                   onClick={stopLightboxBubble}
                   onPointerDown={stopLightboxBubble}
                   role="presentation"
@@ -1001,8 +1122,9 @@ const Carousel = ({
                     layout={lightboxLayout}
                     maxWidthPx={lightboxPortraitMaxWidth}
                     roundRem={round}
+                    fetchPriority={imageFetchPriorities?.[0]}
                     zoomEnabled
-                    onZoomChange={() => {}}
+                    onZoomChange={setLightboxSingleImageZoomed}
                   />
                 </div>
               )}
@@ -1107,6 +1229,9 @@ const Carousel = ({
                 }block h-auto w-full object-contain`}
                 onLoad={syncInlineIndexFromScroll}
                 draggable={false}
+                {...(imageFetchPriorities?.length === images.length
+                  ? { fetchPriority: imageFetchPriorities[idx] }
+                  : {})}
               />
             </div>
           ))}
