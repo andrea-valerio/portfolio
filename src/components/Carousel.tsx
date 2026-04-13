@@ -880,6 +880,12 @@ type CarouselProps = {
   inlineImageClassName?: string
   /** When length matches `images`, sets `fetchPriority` on inline and lightbox images (top-of-page = higher). */
   imageFetchPriorities?: ImageFetchPriorityHint[]
+  /**
+   * When true (default), left/right edge fades (project white → transparent) appear only when there is more content
+   * off-screen in that direction; at the leading/trailing scroll extreme the corresponding fade is hidden.
+   * Set `false` to disable fades (same horizontal padding as when enabled: `px-1`).
+   */
+  inlineEdgeFade?: boolean
 }
 
 const Carousel = ({
@@ -892,6 +898,7 @@ const Carousel = ({
   imageAlts,
   inlineImageClassName,
   imageFetchPriorities,
+  inlineEdgeFade = true,
 }: CarouselProps) => {
   const scrollRef = useRef<HTMLDivElement>(null)
   const scrollRafRef = useRef<number | null>(null)
@@ -1188,53 +1195,67 @@ const Carousel = ({
       {lightboxOverlay}
 
       <div className="flex flex-col" style={{ gap: IC.stepperGapToImages }}>
-        <div
-          ref={scrollRef}
-          className="flex overflow-x-auto scroll-smooth gap-[3rem] px-2 pt-2 pb-0 hide-scrollbar snap-x snap-mandatory"
-          onScroll={onInlineScroll}
-        >
-          {images.map((src, idx) => (
-            <div
-              key={idx}
-              className={`snap-center shrink-0 overflow-hidden shadow-light ${
-                width > 0 ? '' : 'w-full min-w-full'
-              } ${lightbox ? 'cursor-pointer' : ''}`}
-              style={{
-                width: width > 0 ? `${width}px` : undefined,
-                borderRadius: `${round}rem`,
-              }}
-              onClick={lightbox ? () => openLightbox(idx) : undefined}
-              onKeyDown={
-                lightbox
-                  ? (e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault()
-                        openLightbox(idx)
+        <div className={`relative w-full ${inlineEdgeFade ? 'isolate' : ''}`}>
+          <div
+            ref={scrollRef}
+            className="relative z-0 flex w-full overflow-x-auto scroll-smooth gap-[3rem] px-1 pt-1 pb-1 hide-scrollbar snap-x snap-mandatory"
+            onScroll={onInlineScroll}
+          >
+            {images.map((src, idx) => (
+              <div
+                key={idx}
+                className={`snap-center shrink-0 overflow-hidden shadow-light ${
+                  width > 0 ? '' : 'w-full min-w-full'
+                } ${lightbox ? 'cursor-pointer' : ''}`}
+                style={{
+                  width: width > 0 ? `${width}px` : undefined,
+                  borderRadius: `${round}rem`,
+                }}
+                onClick={lightbox ? () => openLightbox(idx) : undefined}
+                onKeyDown={
+                  lightbox
+                    ? (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault()
+                          openLightbox(idx)
+                        }
                       }
-                    }
-                  : undefined
-              }
-              role={lightbox ? 'button' : undefined}
-              tabIndex={lightbox ? 0 : undefined}
-            >
-              <img
-                src={src}
-                alt={
-                  imageAlts?.length === images.length && imageAlts[idx]
-                    ? imageAlts[idx]
-                    : `carousel-${idx}`
+                    : undefined
                 }
-                className={`${
-                  inlineImageClassName ? `${inlineImageClassName} ` : ''
-                }block h-auto w-full object-contain`}
-                onLoad={syncInlineIndexFromScroll}
-                draggable={false}
-                {...(imageFetchPriorities?.length === images.length
-                  ? { fetchPriority: imageFetchPriorities[idx] }
-                  : {})}
-              />
-            </div>
-          ))}
+                role={lightbox ? 'button' : undefined}
+                tabIndex={lightbox ? 0 : undefined}
+              >
+                <img
+                  src={src}
+                  alt={
+                    imageAlts?.length === images.length && imageAlts[idx]
+                      ? imageAlts[idx]
+                      : `carousel-${idx}`
+                  }
+                  className={`${
+                    inlineImageClassName ? `${inlineImageClassName} ` : ''
+                  }block h-auto w-full object-contain`}
+                  onLoad={syncInlineIndexFromScroll}
+                  draggable={false}
+                  {...(imageFetchPriorities?.length === images.length
+                    ? { fetchPriority: imageFetchPriorities[idx] }
+                    : {})}
+                />
+              </div>
+            ))}
+          </div>
+          {inlineEdgeFade && !inlineAtFirst ? (
+            <div
+              className="pointer-events-none absolute inset-y-0 -left-1 z-10 w-5 bg-[linear-gradient(to_right,#F9EEEB_0,#F9EEEB_4px,rgba(249,238,235,0)_100%)]"
+              aria-hidden
+            />
+          ) : null}
+          {inlineEdgeFade && !inlineAtLast ? (
+            <div
+              className="pointer-events-none absolute inset-y-0 -right-1 z-10 w-5 bg-[linear-gradient(to_left,#F9EEEB_0,#F9EEEB_4px,rgba(249,238,235,0)_100%)]"
+              aria-hidden
+            />
+          ) : null}
         </div>
 
         {images.length > 1 && (
