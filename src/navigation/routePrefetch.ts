@@ -23,8 +23,6 @@ const routeLoaders: Record<RoutePath, () => Promise<unknown>> = {
   '/thesis': () => import('../pages/ThesisPage'),
 }
 
-const ALL_PATHS = Object.keys(routeLoaders) as RoutePath[]
-
 function runWhenIdle(cb: () => void): void {
   if (typeof requestIdleCallback !== 'undefined') {
     requestIdleCallback(() => cb(), { timeout: 2500 })
@@ -33,8 +31,18 @@ function runWhenIdle(cb: () => void): void {
   }
 }
 
+/** Prefetch a project route chunk (e.g. on hover/focus of a project card). */
+export function prefetchProjectRoute(slug: string): void {
+  const path = `/${slug}` as RoutePath
+  const loader = routeLoaders[path]
+  if (loader) {
+    void loader().catch(() => {})
+  }
+}
+
 /**
- * After the current route paints: if not Home, prefetch Home chunk, then prefetch all other route chunks.
+ * After the current route paints: if not Home, prefetch only the Home chunk (fast return to index).
+ * Does not prefetch every other route (avoids idle-downloading large image-heavy chunks).
  * Call with an incremented generation; stale runs bail when `genRef.current !== generation`.
  */
 export function scheduleRoutePrefetch(
@@ -44,26 +52,8 @@ export function scheduleRoutePrefetch(
 ): void {
   runWhenIdle(() => {
     if (genRef.current !== generation) return
-
-    const prefetchOthers = (skipHome: boolean) => {
-      if (genRef.current !== generation) return
-      const targets = ALL_PATHS.filter((p) => {
-        if (p === pathname) return false
-        if (skipHome && p === '/') return false
-        return true
-      })
-      void Promise.all(targets.map((p) => routeLoaders[p]())).catch(() => {})
-    }
-
     if (pathname !== '/') {
-      void routeLoaders['/']()
-        .then(() => {
-          if (genRef.current !== generation) return
-          runWhenIdle(() => prefetchOthers(true))
-        })
-        .catch(() => {})
-    } else {
-      prefetchOthers(false)
+      void routeLoaders['/']().catch(() => {})
     }
   })
 }

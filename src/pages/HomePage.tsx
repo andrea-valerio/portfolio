@@ -10,12 +10,6 @@ import ribbonStartup from '../assets/projects/ribbon-startup.webp'
 import ribbonMscThesis from '../assets/projects/ribbon-msc-thesis.webp'
 import pillChevronRight from '../assets/icons/right-arrow-overlay-dark.svg'
 import profilePhoto from '../assets/mypicture/Mid.webp'
-import meetupCover from '../assets/projects/meetup.webp'
-import grooveCover from '../assets/projects/groove.webp'
-import thesisCover from '../assets/projects/thesis.webp'
-import ovenconfCover from '../assets/projects/ovenconf.webp'
-import citinstCover from '../assets/projects/citinst.webp'
-import ecomuseoCover from '../assets/projects/ecomuseo.webp'
 import {
   buildFetchPriorities,
   useImagesPaintReady,
@@ -25,31 +19,23 @@ import {
 const SHOW_SUSTSMOK_REELSFYP_ON_HOME = false
 
 /**
- * Top-to-bottom visual order for paint gate + fetch priority.
- * Includes CSS background URLs so they participate in the 80% gate.
+ * Above-the-fold assets only — project grid covers load lazily via ProjectBox.
+ * Paint gate waits for 80% of this list (ceil(n * 0.8)), not for every home teaser.
  */
-const HOME_ORDERED_IMAGES: readonly string[] = [
+const HOME_CRITICAL_IMAGES: readonly string[] = [
   homeBg,
   profilePhoto,
   mailIcon,
   inIcon,
   ghIcon,
   pillChevronRight,
-  meetupCover,
-  grooveCover,
-  ribbonStartup,
-  thesisCover,
-  ribbonMscThesis,
-  ovenconfCover,
-  citinstCover,
-  ecomuseoCover,
 ]
 
-const HOME_FETCH_PRIORITIES = buildFetchPriorities(HOME_ORDERED_IMAGES.length)
+const HOME_FETCH_PRIORITIES = buildFetchPriorities(HOME_CRITICAL_IMAGES.length)
 
 function HomePage() {
   const [previouslyOpen, setPreviouslyOpen] = useState(false)
-  const paintReady = useImagesPaintReady(HOME_ORDERED_IMAGES)
+  const paintReady = useImagesPaintReady(HOME_CRITICAL_IMAGES)
 
   if (!paintReady) {
     return (
@@ -220,14 +206,12 @@ function HomePage() {
             desc="UX / UI Design"
             imageName="groove"
             ribbonSrc={ribbonStartup}
-            ribbonFetchPriority={HOME_FETCH_PRIORITIES[8]}
           />
           <ProjectBox
             name="Teleoperators' Workload"
             desc="HCI Research & Data Analysis"
             imageName="thesis"
             ribbonSrc={ribbonMscThesis}
-            ribbonFetchPriority={HOME_FETCH_PRIORITIES[10]}
           />
           <ProjectBox name="Oven Configurator" desc="UX Research & Design" imageName="ovenconf" />
           <ProjectBox name="Citizen-Institution Interaction" desc="UX Research & Design" imageName="citinst" />
