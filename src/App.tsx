@@ -3,7 +3,6 @@ import { lazy, Suspense, useEffect, useRef, useLayoutEffect } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import LayoutWrapper from './components/LayoutWrapper'
 import { ProjectPageSkeleton } from './components/ProjectPageSkeleton'
-import { RouteLoadingProvider, RouteLoadComplete } from './components/RouteLoadingBar'
 
 const HomePage = lazy(() => import('./pages/HomePage'))
 const GroovePage = lazy(() => import('./pages/GroovePage'))
@@ -41,24 +40,19 @@ function App() {
   }, [location.pathname])
 
   return (
-    <RouteLoadingProvider>
-      <Suspense fallback={routeFallback}>
-        <>
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/groove" element={<GroovePage />} />
-            <Route path="/ovenconf" element={<OvenConfPage />} />
-            <Route path="/citinst" element={<CitInstPage />} />
-            <Route path="/ecomuseo" element={<EcomuseoPage />} />
-            <Route path="/sustsmok" element={<SustSmokPage />} />
-            <Route path="/reelsfyp" element={<ReelsFypPage />} />
-            <Route path="/meetup" element={<MeetupPage />} />
-            <Route path="/thesis" element={<ThesisPage />} />
-          </Routes>
-          <RouteLoadComplete />
-        </>
-      </Suspense>
-    </RouteLoadingProvider>
+    <Suspense fallback={routeFallback}>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/groove" element={<GroovePage />} />
+        <Route path="/ovenconf" element={<OvenConfPage />} />
+        <Route path="/citinst" element={<CitInstPage />} />
+        <Route path="/ecomuseo" element={<EcomuseoPage />} />
+        <Route path="/sustsmok" element={<SustSmokPage />} />
+        <Route path="/reelsfyp" element={<ReelsFypPage />} />
+        <Route path="/meetup" element={<MeetupPage />} />
+        <Route path="/thesis" element={<ThesisPage />} />
+      </Routes>
+    </Suspense>
   )
 }
 

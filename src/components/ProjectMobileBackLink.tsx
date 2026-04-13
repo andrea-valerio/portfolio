@@ -6,10 +6,10 @@ export default function ProjectMobileBackLink() {
   return (
     <Link
       to="/"
-      className="sm:hidden flex flex-col justify-center items-start -ml-[0.5rem] p-[0.5rem] box-content w-[4rem] h-[3rem] shrink-0"
+      className="sm:hidden flex flex-col justify-center items-start -ml-[0.5rem] p-[0.5rem] box-content w-[2.75rem] h-8 shrink-0"
       aria-label="Back to home"
     >
-      <img src={backArrow} alt="" className="w-[2.625rem] h-[1.5rem] pointer-events-none" />
+      <img src={backArrow} alt="" className="h-4 w-[1.75rem] pointer-events-none" />
     </Link>
   )
 }

@@ -11,6 +11,11 @@ import {
 } from 'react'
 import { createPortal } from 'react-dom'
 import { animate, motion, useMotionValue, type PanInfo } from 'framer-motion'
+import {
+  TransformComponent,
+  TransformWrapper,
+  type ReactZoomPanPinchRef,
+} from 'react-zoom-pan-pinch'
 import leftArrowOverlayDark from '../assets/icons/left-arrow-overlay-dark.svg'
 import leftArrowOverlayDarkOff from '../assets/icons/left-arrow-overlay-dark-inactive.svg'
 import rightArrowOverlayDark from '../assets/icons/right-arrow-overlay-dark.svg'
@@ -51,6 +56,8 @@ const LB = {
   close: {
     inset: 48,
     size: 32,
+    /** Minimum touch target (px); icon stays visually centered in the hit rect */
+    hit: 44,
     icon: (32 * 32) / 48,
   },
   wheelMinDeltaX: 28,
@@ -415,6 +422,20 @@ function usePrefersReducedMotion() {
 
 const lightboxSpring = { type: 'spring' as const, stiffness: 380, damping: 36, mass: 0.85 }
 
+const LIGHTBOX_ZOOM_MIN = 1
+const LIGHTBOX_ZOOM_MAX = 4
+/** Treat as zoomed when scale exceeds this (disables horizontal slide drag). */
+const LIGHTBOX_ZOOM_THRESHOLD = 1.02
+
+/**
+ * `react-zoom-pan-pinch` treats multiple `activationKeys` entries as ALL required (`.every()`).
+ * macOS trackpad pinch-to-zoom sends wheel events with `ctrlKey` only (no Meta), which would
+ * fail an array like `['Control','Meta']`. Use OR semantics: Ctrl or Meta, synced from each wheel event.
+ */
+function lightboxWheelZoomActivationKeys(activeKeys: string[]): boolean {
+  return activeKeys.includes('Control') || activeKeys.includes('Meta')
+}
+
 type LightboxSlideProps = {
   src: string
   alt: string
@@ -450,6 +471,123 @@ function LightboxSlide({ src, alt, layout, maxWidthPx, roundRem = 1 }: LightboxS
   )
 }
 
+type LightboxZoomableImageProps = LightboxSlideProps & {
+  /** Only the active slide handles pinch/pan; others render static. */
+  zoomEnabled: boolean
+  onZoomChange: (zoomed: boolean) => void
+}
+
+function LightboxZoomableImage({
+  src,
+  alt,
+  layout,
+  maxWidthPx,
+  roundRem = 1,
+  zoomEnabled,
+  onZoomChange,
+}: LightboxZoomableImageProps) {
+  const radius = `${roundRem}rem`
+  const portraitMax: CSSProperties =
+    layout === 'portrait' && maxWidthPx != null
+      ? { maxWidth: `min(100%, ${maxWidthPx}px)` }
+      : {}
+
+  const [transformScale, setTransformScale] = useState(LIGHTBOX_ZOOM_MIN)
+
+  const onTransform = useCallback(
+    (_ref: ReactZoomPanPinchRef, state: { scale: number }) => {
+      setTransformScale(state.scale)
+      onZoomChange(state.scale >= LIGHTBOX_ZOOM_THRESHOLD)
+    },
+    [onZoomChange]
+  )
+
+  useEffect(() => {
+    if (!zoomEnabled) {
+      setTransformScale(LIGHTBOX_ZOOM_MIN)
+    }
+  }, [zoomEnabled])
+
+  if (!zoomEnabled) {
+    return (
+      <LightboxSlide
+        src={src}
+        alt={alt}
+        layout={layout}
+        maxWidthPx={maxWidthPx}
+        roundRem={roundRem}
+      />
+    )
+  }
+
+  const panningLocked = transformScale <= LIGHTBOX_ZOOM_THRESHOLD
+
+  /** Overrides library `.wrapper`/`.content` `fit-content` defaults so the stage fills the slide and gestures hit a full-size target. */
+  const rzppWrapperStyle: CSSProperties = {
+    boxSizing: 'border-box',
+    width: '100%',
+    height: '100%',
+    minWidth: 0,
+    minHeight: 0,
+    maxWidth: '100%',
+    maxHeight: '100%',
+  }
+  const rzppContentStyle: CSSProperties = {
+    boxSizing: 'border-box',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    height: '100%',
+    minWidth: 0,
+    minHeight: 0,
+    maxWidth: '100%',
+    maxHeight: '100%',
+  }
+
+  return (
+    <div className="flex h-full w-full min-h-0 min-w-0 items-center justify-center overflow-visible">
+      <div
+        className="flex h-full w-full min-h-0 max-h-full max-w-full min-w-0 items-center justify-center overflow-hidden shadow-light"
+        style={{ borderRadius: radius, ...portraitMax }}
+        role="presentation"
+      >
+        <TransformWrapper
+          key={src}
+          minScale={LIGHTBOX_ZOOM_MIN}
+          maxScale={LIGHTBOX_ZOOM_MAX}
+          initialScale={LIGHTBOX_ZOOM_MIN}
+          limitToBounds
+          centerOnInit
+          smooth={false}
+          onTransform={onTransform}
+          panning={{ disabled: panningLocked }}
+          wheel={{
+            step: 0.12,
+            activationKeys: lightboxWheelZoomActivationKeys,
+          }}
+          doubleClick={{ disabled: true }}
+        >
+          <TransformComponent
+            wrapperClass="!flex !h-full !w-full !min-h-0 !min-w-0 items-center justify-center"
+            contentClass="!flex !h-full !w-full !min-h-0 !min-w-0 items-center justify-center"
+            wrapperStyle={rzppWrapperStyle}
+            contentStyle={rzppContentStyle}
+          >
+            <img
+              src={src}
+              alt={alt}
+              className="block h-auto w-auto max-h-full max-w-full object-contain select-none"
+              style={{ display: 'block', borderRadius: radius }}
+              draggable={false}
+            />
+          </TransformComponent>
+        </TransformWrapper>
+      </div>
+    </div>
+  )
+}
+
 type LightboxMotionGalleryProps = {
   images: string[]
   index: number
@@ -460,6 +598,7 @@ type LightboxMotionGalleryProps = {
   imageAlts?: string[]
   /** Inline strip corner radius (rem), mirrored in lightbox */
   roundRem: number
+  prefersReducedMotion: boolean
 }
 
 function LightboxMotionGallery({
@@ -470,12 +609,21 @@ function LightboxMotionGallery({
   lightboxPortraitMaxWidth,
   imageAlts,
   roundRem,
+  prefersReducedMotion: reducedMotion,
 }: LightboxMotionGalleryProps) {
   const stageRef = useRef<HTMLDivElement>(null)
   const [stageW, setStageW] = useState(0)
+  const [galleryZoomed, setGalleryZoomed] = useState(false)
   const x = useMotionValue(0)
-  const reducedMotion = usePrefersReducedMotion()
   const didInitialSync = useRef(false)
+
+  useEffect(() => {
+    setGalleryZoomed(false)
+  }, [index])
+
+  const onSlideZoomChange = useCallback((zoomed: boolean) => {
+    setGalleryZoomed(zoomed)
+  }, [])
 
   useLayoutEffect(() => {
     const el = stageRef.current
@@ -536,6 +684,7 @@ function LightboxMotionGallery({
     if (!el || images.length <= 1) return
 
     const onWheel = (e: WheelEvent) => {
+      if (galleryZoomed) return
       const absX = Math.abs(e.deltaX)
       const absY = Math.abs(e.deltaY)
       if (absX < absY || absX < LB.wheelMinDeltaX) return
@@ -568,7 +717,7 @@ function LightboxMotionGallery({
 
     el.addEventListener('wheel', onWheel, { passive: false })
     return () => el.removeEventListener('wheel', onWheel)
-  }, [images.length, index, onIndexChange])
+  }, [galleryZoomed, images.length, index, onIndexChange])
 
   const trackWidth =
     images.length * stageW + Math.max(0, images.length - 1) * LB.slideGap
@@ -583,14 +732,14 @@ function LightboxMotionGallery({
     >
       {stageW > 0 && (
         <motion.div
-          className="flex h-full touch-pan-y"
+          className="flex h-full touch-manipulation"
           style={{
             x,
             width: trackWidth,
             gap: LB.slideGap,
-            touchAction: 'pan-y',
+            touchAction: galleryZoomed ? 'none' : 'manipulation',
           }}
-          drag="x"
+          drag={galleryZoomed ? false : 'x'}
           dragConstraints={stageRef}
           dragElastic={0.12}
           dragMomentum={false}
@@ -602,7 +751,7 @@ function LightboxMotionGallery({
               className="box-border flex h-full shrink-0 items-center justify-center overflow-hidden p-0"
               style={{ width: stageW }}
             >
-              <LightboxSlide
+              <LightboxZoomableImage
                 src={src}
                 alt={
                   imageAlts?.length === images.length && imageAlts[i]
@@ -612,6 +761,8 @@ function LightboxMotionGallery({
                 layout={lightboxLayout}
                 maxWidthPx={lightboxPortraitMaxWidth}
                 roundRem={roundRem}
+                zoomEnabled={i === index}
+                onZoomChange={onSlideZoomChange}
               />
             </div>
           ))}
@@ -662,6 +813,7 @@ const Carousel = ({
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [lightboxNav, dispatchLightboxNav] = useReducer(lightboxNavReducer, { index: 0, dir: 1 })
   const lightboxIndex = lightboxNav.index
+  const lightboxPrefersReducedMotion = usePrefersReducedMotion()
 
   const closeLightbox = useCallback(() => {
     setLightboxOpen(false)
@@ -804,38 +956,11 @@ const Carousel = ({
     typeof document !== 'undefined' &&
     createPortal(
       <div
-        className="fixed inset-0 z-[200] min-h-0 cursor-default"
+        className="fixed inset-0 z-[200] min-h-0 cursor-default isolate"
         style={{ background: LIGHTBOX_SCRIM }}
         onClick={closeLightbox}
         role="presentation"
       >
-        <button
-          type="button"
-          aria-label="Close gallery"
-          className="absolute z-[210] flex cursor-pointer items-center justify-center border-0 bg-transparent p-0"
-          style={{
-            top: lightboxCloseInset,
-            right: lightboxCloseInset,
-            width: LB.close.size,
-            height: LB.close.size,
-            minWidth: LB.close.size,
-            minHeight: LB.close.size,
-          }}
-          onClick={(e) => {
-            e.stopPropagation()
-            closeLightbox()
-          }}
-          onPointerDown={stopLightboxBubble}
-        >
-          <img
-            src={closeLightboxIcon}
-            alt=""
-            width={LB.close.icon}
-            height={LB.close.icon}
-            className="pointer-events-none shrink-0"
-            draggable={false}
-          />
-        </button>
         <div
           className="pointer-events-none absolute z-[201] flex min-h-0 min-w-0 overflow-hidden"
           style={{
@@ -857,6 +982,7 @@ const Carousel = ({
                   lightboxPortraitMaxWidth={lightboxPortraitMaxWidth}
                   imageAlts={imageAlts}
                   roundRem={round}
+                  prefersReducedMotion={lightboxPrefersReducedMotion}
                 />
               ) : (
                 <div
@@ -865,7 +991,7 @@ const Carousel = ({
                   onPointerDown={stopLightboxBubble}
                   role="presentation"
                 >
-                  <LightboxSlide
+                  <LightboxZoomableImage
                     src={images[0]}
                     alt={
                       imageAlts?.length === images.length && imageAlts[0]
@@ -875,6 +1001,8 @@ const Carousel = ({
                     layout={lightboxLayout}
                     maxWidthPx={lightboxPortraitMaxWidth}
                     roundRem={round}
+                    zoomEnabled
+                    onZoomChange={() => {}}
                   />
                 </div>
               )}
@@ -902,6 +1030,33 @@ const Carousel = ({
             />
           </div>
         )}
+        <button
+          type="button"
+          aria-label="Close gallery"
+          className="absolute z-[220] flex touch-manipulation cursor-pointer items-center justify-center border-0 bg-transparent p-0"
+          style={{
+            top: `max(${lightboxCloseInset}px, env(safe-area-inset-top, 0px))`,
+            right: `max(${lightboxCloseInset}px, env(safe-area-inset-right, 0px))`,
+            width: LB.close.hit,
+            height: LB.close.hit,
+            minWidth: LB.close.hit,
+            minHeight: LB.close.hit,
+          }}
+          onClick={(e) => {
+            e.stopPropagation()
+            closeLightbox()
+          }}
+          onPointerDown={stopLightboxBubble}
+        >
+          <img
+            src={closeLightboxIcon}
+            alt=""
+            width={LB.close.icon}
+            height={LB.close.icon}
+            className="pointer-events-none shrink-0"
+            draggable={false}
+          />
+        </button>
       </div>,
       document.body
     )

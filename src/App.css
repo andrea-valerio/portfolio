@@ -105,17 +105,3 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
-
-/* Route loading bar (lazy route transitions) */
-.route-loading-bar__fill--active {
-  animation: routeLoadingIndeterminate 1.1s ease-in-out infinite;
-}
-
-@keyframes routeLoadingIndeterminate {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(calc(100vw + 100%));
-  }
-}
