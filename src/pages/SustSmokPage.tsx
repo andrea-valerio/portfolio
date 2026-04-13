@@ -1,6 +1,7 @@
 import LayoutWrapper from '../components/LayoutWrapper'
 import HeroSection from '../components/HeroSection'
 import LeftSide from '../components/LeftSide'
+import ProjectMetaStart from '../components/ProjectMetaStart'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
 import { ProjectPageSkeleton } from '../components/ProjectPageSkeleton'
@@ -17,19 +18,7 @@ import workshop4         from '../assets/projects/sustsmok/workshop-4.webp';
 import workshop5         from '../assets/projects/sustsmok/workshop-5.webp';
 import workshop6         from '../assets/projects/sustsmok/workshop-6.webp';
 
-const SUSTSMOK_PRELOAD_IMAGES: readonly string[] = [
-  sustsmokHero,
-  roveretoImg,
-  povoImg,
-  sociologyImg,
-  cardsImg,
-  workshop1,
-  workshop2,
-  workshop3,
-  workshop4,
-  workshop5,
-  workshop6,
-]
+const SUSTSMOK_PRELOAD_IMAGES: readonly string[] = [sustsmokHero]
 
 function SustSmokPage() {
     const assetsReady = useAssetsReady({ images: SUSTSMOK_PRELOAD_IMAGES })
@@ -50,10 +39,12 @@ function SustSmokPage() {
 
         {/* Right Side */}
         <div className="project-content">
-          <DetailsText>
-            September - November 2022, 5-member team<br />
-            MSc in Human-Computer Interaction, course in Qualitative Research and Participatory Design
-          </DetailsText>
+          <ProjectMetaStart>
+            <DetailsText>
+              September - November 2022, 5-member team<br />
+              MSc in Human-Computer Interaction, course in Qualitative Research and Participatory Design
+            </DetailsText>
+          </ProjectMetaStart>
 
           {/* intro */}
           <div className="project-text-container" id="section-1">

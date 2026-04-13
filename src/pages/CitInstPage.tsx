@@ -1,6 +1,7 @@
 import LayoutWrapper from '../components/LayoutWrapper'
 import HeroSection from '../components/HeroSection'
 import LeftSide from '../components/LeftSide'
+import ProjectMetaStart from '../components/ProjectMetaStart'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
 import { ProjectPageSkeleton } from '../components/ProjectPageSkeleton'
@@ -16,18 +17,7 @@ import booking from '../assets/projects/citinst/results/booking.webp';
 import faq from '../assets/projects/citinst/results/faq.webp';
 import feedback from '../assets/projects/citinst/results/feedback.webp';
 
-const CITINST_PRELOAD_IMAGES: readonly string[] = [
-  citinstHero,
-  conceptMap,
-  taxonomy,
-  sketches,
-  contact,
-  help,
-  opinion,
-  booking,
-  faq,
-  feedback,
-]
+const CITINST_PRELOAD_IMAGES: readonly string[] = [citinstHero]
 
 function CitInstPage() {
     const assetsReady = useAssetsReady({ images: CITINST_PRELOAD_IMAGES })
@@ -48,10 +38,12 @@ function CitInstPage() {
 
         {/* Right Side */}
         <div className="project-content">
-          <DetailsText>
-            March - June 2022, 5-member team<br />
-            BA in Interfaces and Communication Technologies, course in Advanced Human-Computer Interaction
-          </DetailsText>
+          <ProjectMetaStart>
+            <DetailsText>
+              March - June 2022, 5-member team<br />
+              BA in Interfaces and Communication Technologies, course in Advanced Human-Computer Interaction
+            </DetailsText>
+          </ProjectMetaStart>
 
           {/* intro */}
           <div className="project-text-container" id="section-1">

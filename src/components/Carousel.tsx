@@ -26,7 +26,7 @@ const LIGHTBOX_SCRIM = 'rgba(28, 36, 42, 0.75)'
 
 /**
  * Lightbox layout tokens.
- * Image stage uses fixed top/bottom and horizontal insets; pill sits `pillGapToStage` below the stage bottom edge.
+ * Image stage uses fixed top/bottom and horizontal insets; pill is anchored to the viewport bottom.
  */
 const LB = {
   /** Horizontal gutter (px) from viewport to image stage */
@@ -35,14 +35,15 @@ const LB = {
   imageStageInsetY: 128,
   /** Horizontal gap (px) between slides in the draggable lightbox strip */
   slideGap: 12,
-  /** Vertical gap (px) from bottom edge of image stage to top of pill navigator */
-  pillGapToStage: 24,
+  /** Distance (px) from viewport bottom edge to lightbox pill navigator */
+  pillViewportBottom: 24,
   stepperDotGap: 8,
   stepperDot: {
     frame: 6,
     hit: 12,
   },
-  pillArrowDotGap: 20,
+  /** Gap (px) between chevrons and dot stepper in pill and inline carousel controls */
+  pillArrowDotGap: 24,
   pillChevron: {
     frame: 16,
     hit: 24,
@@ -55,6 +56,27 @@ const LB = {
   wheelMinDeltaX: 28,
   wheelNewGestureGapMs: 100,
 } as const
+
+/** Below Tailwind `md` (768px): tighter insets so the lightbox image stage matches phone viewports. */
+const LB_COMPACT = {
+  edgeInsetX: 8,
+  imageStageInsetTop: 64,
+  imageStageInsetBottom: 80,
+} as const
+
+const LIGHTBOX_COMPACT_MQ = '(max-width: 767px)'
+
+function useLightboxCompactLayout() {
+  const [compact, setCompact] = useState(false)
+  useEffect(() => {
+    const mq = window.matchMedia(LIGHTBOX_COMPACT_MQ)
+    const sync = () => setCompact(mq.matches)
+    sync()
+    mq.addEventListener('change', sync)
+    return () => mq.removeEventListener('change', sync)
+  }, [])
+  return compact
+}
 
 /** In-page carousel: vertical gap (px) from image row to nav below — design: 20px */
 const IC = {
@@ -155,11 +177,29 @@ type LightboxStepperProps = {
   count: number
   currentIndex: number
   onSelect: (index: number) => void
+  /** `onDark`: light dots for the black lightbox pill. `onLight`: accent / grey for in-page (no pill). */
+  tone?: 'onDark' | 'onLight'
 }
 
-function LightboxStepper({ count, currentIndex, onSelect }: LightboxStepperProps) {
+function LightboxStepper({
+  count,
+  currentIndex,
+  onSelect,
+  tone = 'onDark',
+}: LightboxStepperProps) {
   const { frame, hit } = LB.stepperDot
   const hitOutset = (hit - frame) / 2
+
+  const dotClass =
+    tone === 'onLight'
+      ? (i: number) =>
+          i === currentIndex
+            ? 'bg-accent'
+            : 'bg-grey-3 group-hover:bg-grey-2'
+      : (i: number) =>
+          i === currentIndex
+            ? 'bg-white'
+            : 'bg-white/35 group-hover:bg-white/55'
 
   return (
     <nav
@@ -193,11 +233,7 @@ function LightboxStepper({ count, currentIndex, onSelect }: LightboxStepperProps
             }}
           >
             <span
-              className={`shrink-0 rounded-full transition-colors ${
-                i === currentIndex
-                  ? 'bg-white'
-                  : 'bg-white/35 group-hover:bg-white/55'
-              }`}
+              className={`shrink-0 rounded-full transition-colors ${dotClass(i)}`}
               style={{ width: frame, height: frame }}
             />
           </button>
@@ -686,6 +722,18 @@ const Carousel = ({
     dispatchLightboxNav({ type: 'next', max: images.length })
   }, [images.length])
 
+  const lightboxCompact = useLightboxCompactLayout()
+  const lightboxEdgeInsetX = lightboxCompact ? LB_COMPACT.edgeInsetX : LB.edgeInsetX
+  const lightboxImageStageInsetTop = lightboxCompact
+    ? LB_COMPACT.imageStageInsetTop
+    : LB.imageStageInsetY
+  const lightboxImageStageInsetBottom = lightboxCompact
+    ? LB_COMPACT.imageStageInsetBottom
+    : LB.imageStageInsetY
+  const lightboxCloseInset = lightboxCompact
+    ? LB.close.inset / 2
+    : LB.close.inset
+
   const selectLightboxImage = useCallback((i: number) => {
     dispatchLightboxNav({ type: 'select', index: i })
   }, [])
@@ -766,8 +814,8 @@ const Carousel = ({
           aria-label="Close gallery"
           className="absolute z-[210] flex cursor-pointer items-center justify-center border-0 bg-transparent p-0"
           style={{
-            top: LB.close.inset,
-            right: LB.close.inset,
+            top: lightboxCloseInset,
+            right: lightboxCloseInset,
             width: LB.close.size,
             height: LB.close.size,
             minWidth: LB.close.size,
@@ -791,10 +839,10 @@ const Carousel = ({
         <div
           className="pointer-events-none absolute z-[201] flex min-h-0 min-w-0 overflow-hidden"
           style={{
-            top: LB.imageStageInsetY,
-            bottom: LB.imageStageInsetY,
-            left: LB.edgeInsetX,
-            right: LB.edgeInsetX,
+            top: lightboxImageStageInsetTop,
+            bottom: lightboxImageStageInsetBottom,
+            left: lightboxEdgeInsetX,
+            right: lightboxEdgeInsetX,
           }}
           role="presentation"
         >
@@ -837,7 +885,7 @@ const Carousel = ({
           <div
             className="absolute left-0 right-0 z-[205] flex justify-center"
             style={{
-              top: `calc(100% - ${LB.imageStageInsetY}px + ${LB.pillGapToStage}px)`,
+              bottom: LB.pillViewportBottom,
             }}
             onClick={stopLightboxBubble}
             onPointerDown={stopLightboxBubble}
@@ -910,14 +958,24 @@ const Carousel = ({
         </div>
 
         {images.length > 1 && (
-          <div className="hidden justify-center md:flex">
-            <InlineCarouselStepper
-              atFirst={inlineAtFirst}
-              atLast={inlineAtLast}
-              onPrev={inlinePrev}
-              onNext={inlineNext}
-            />
-          </div>
+          <>
+            <div className="flex justify-center md:hidden">
+              <LightboxStepper
+                tone="onLight"
+                count={images.length}
+                currentIndex={inlineScroll.index}
+                onSelect={scrollToSlideIndex}
+              />
+            </div>
+            <div className="hidden justify-center md:flex">
+              <InlineCarouselStepper
+                atFirst={inlineAtFirst}
+                atLast={inlineAtLast}
+                onPrev={inlinePrev}
+                onNext={inlineNext}
+              />
+            </div>
+          </>
         )}
       </div>
     </div>

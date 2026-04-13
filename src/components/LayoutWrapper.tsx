@@ -9,8 +9,9 @@ type LayoutWrapperProps = {
 
 const LayoutWrapper = ({ header, content, className = '' }: LayoutWrapperProps) => {
   return (
-    <div className={`w-full flex flex-col items-center ${className}
-      gap-[2rem] sm:gap-[3rem] md:gap-[4rem] lg:gap-[6rem]`}>
+    <div
+      className={`w-full flex flex-col items-center gap-[2rem] sm:gap-[3rem] md:gap-[4rem] lg:gap-[6rem] ${className}`}
+    >
       <div className="w-full">
         {header}
       </div>

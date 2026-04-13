@@ -1,6 +1,7 @@
 import LayoutWrapper from '../components/LayoutWrapper'
 import HeroSection from '../components/HeroSection'
 import LeftSide from '../components/LeftSide'
+import ProjectMetaStart from '../components/ProjectMetaStart'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
 import { ProjectPageSkeleton } from '../components/ProjectPageSkeleton'
@@ -34,13 +35,7 @@ const redesignAlts = [
   'Additional screens',
 ]
 
-const THESIS_PRELOAD_IMAGES: readonly string[] = [
-  thesisHero,
-  ...redesignImages,
-  personas1,
-  personas2,
-  personas3,
-]
+const THESIS_PRELOAD_IMAGES: readonly string[] = [thesisHero]
 
 function ThesisPage() {
   const assetsReady = useAssetsReady({ images: THESIS_PRELOAD_IMAGES })
@@ -57,11 +52,13 @@ function ThesisPage() {
       <div className="hidden lg:block w-[.5px] bg-black -translate-x-[.75rem]" />
 
       <div className="project-content">
-        <DetailsText>
-          June 2024 - March 2025, individual project
-          <br />
-          MSc in Human-Computer Interaction, Master’s Thesis
-        </DetailsText>
+        <ProjectMetaStart>
+          <DetailsText>
+            June 2024 - March 2025, individual project
+            <br />
+            MSc in Human-Computer Interaction, Master’s Thesis
+          </DetailsText>
+        </ProjectMetaStart>
 
         <div className="project-text-container" id="section-1">
           <p className="title-2">Introduction</p>

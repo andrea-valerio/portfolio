@@ -1,6 +1,7 @@
 import LayoutWrapper from '../components/LayoutWrapper'
 import HeroSection from '../components/HeroSection'
 import LeftSide from '../components/LeftSide'
+import ProjectMetaStart from '../components/ProjectMetaStart'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
 import { ProjectPageSkeleton } from '../components/ProjectPageSkeleton'
@@ -36,11 +37,7 @@ const redesignAlts = [
 const growthImages = [sms, paywalls]
 const growthAlts = ['SMS reminders experiment', 'Subscription paywalls']
 
-const MEETUP_PRELOAD_IMAGES: readonly string[] = [
-  meetupHero,
-  ...redesignImages,
-  ...growthImages,
-]
+const MEETUP_PRELOAD_IMAGES: readonly string[] = [meetupHero]
 
 function MeetupPage() {
   const assetsReady = useAssetsReady({ images: MEETUP_PRELOAD_IMAGES })
@@ -55,18 +52,20 @@ function MeetupPage() {
       <LeftSide
         item1="Intro to Meetup"
         item2="Redesign"
-        item3="Growth experiment"
+        item3="Growth"
         item4="Impact"
       />
 
       <div className="hidden lg:block w-[.5px] bg-black -translate-x-[.75rem]" />
 
       <div className="project-content">
-        <DetailsText>
-          September - December 2025
-          <br />
-          Product Designer at Bending Spoons
-        </DetailsText>
+        <ProjectMetaStart>
+          <DetailsText>
+            September - December 2025
+            <br />
+            Product Designer at Bending Spoons
+          </DetailsText>
+        </ProjectMetaStart>
 
         <div className="project-text-container" id="section-1">
           <p className="title-2">Meetup: social events & groups</p>
@@ -125,7 +124,7 @@ function MeetupPage() {
         </div>
 
         <div className="project-text-container" id="section-3">
-          <p className="title-2">Growth experiments</p>
+          <p className="title-2">Growth</p>
           <div className="project-text">
             <p>
               Alongside the redesign, several <span className="font-medium">a/b test experiments</span> explored ways to improve product engagement and

@@ -1,5 +1,6 @@
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
+import ProjectMetaStart from './ProjectMetaStart'
 import { skeletonThemeColors } from './skeletonTheme'
 
 const theme = skeletonThemeColors
@@ -38,9 +39,11 @@ function Body() {
         <div className="hidden lg:block w-[.5px] bg-black -translate-x-[.75rem] self-stretch min-h-[320px]" />
 
         <div className="project-content">
-          <div className="w-full max-w-[28rem]">
-            <Skeleton count={2} height={18} className="my-1" borderRadius={6} />
-          </div>
+          <ProjectMetaStart>
+            <div className="w-full max-w-[28rem]">
+              <Skeleton count={2} height={18} className="my-1" borderRadius={6} />
+            </div>
+          </ProjectMetaStart>
 
           <div className="project-text-container w-full">
             <Skeleton width="55%" height={36} className="mb-1" borderRadius={9} />

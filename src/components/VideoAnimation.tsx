@@ -1,3 +1,12 @@
+/**
+ * Groove “Video Animation” section — disabled on the page; `animation.mp4` and overlay assets stay in the repo.
+ * Re-enable by uncommenting below and restoring usage in `GroovePage.tsx`.
+ */
+export default function VideoAnimation() {
+  return null
+}
+
+/*
 import React, { useRef, useState, useEffect } from 'react'
 import animationMp4     from '../assets/projects/groove/results/animation.mp4';
 import videoOverlay from '../assets/projects/groove/results/video-overlay.webp';
@@ -63,3 +72,4 @@ const VideoAnimation: React.FC = () => {
 }
 
 export default VideoAnimation
+*/

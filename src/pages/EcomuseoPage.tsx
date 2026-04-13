@@ -1,6 +1,7 @@
 import LayoutWrapper from '../components/LayoutWrapper'
 import HeroSection from '../components/HeroSection'
 import LeftSide from '../components/LeftSide'
+import ProjectMetaStart from '../components/ProjectMetaStart'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
 import { ProjectPageSkeleton } from '../components/ProjectPageSkeleton'
@@ -18,19 +19,7 @@ import ecomCiucioi from '../assets/projects/ecomuseo/results/ciucioi.webp';
 import ecomTicket from '../assets/projects/ecomuseo/results/ticket.webp';
 import ecomPayment from '../assets/projects/ecomuseo/results/payment.webp';
 
-const ECOMUSEO_PRELOAD_IMAGES: readonly string[] = [
-  ecomuseoHero,
-  personas1,
-  personas2,
-  personas3,
-  taxonomyImg,
-  sketchesImg,
-  ecomHome,
-  ecomOrrido,
-  ecomCiucioi,
-  ecomTicket,
-  ecomPayment,
-]
+const ECOMUSEO_PRELOAD_IMAGES: readonly string[] = [ecomuseoHero]
 
 function EcomuseoPage() {
     const assetsReady = useAssetsReady({ images: ECOMUSEO_PRELOAD_IMAGES })
@@ -51,10 +40,12 @@ function EcomuseoPage() {
 
         {/* Right Side */}
         <div className="project-content">
-          <DetailsText>
-            April - June 2023, 4-member team<br />
-            MSc in Human-Computer Interaction, course in Visual Design
-          </DetailsText>
+          <ProjectMetaStart>
+            <DetailsText>
+              April - June 2023, 4-member team<br />
+              MSc in Human-Computer Interaction, course in Visual Design
+            </DetailsText>
+          </ProjectMetaStart>
 
           {/* intro */}
           <div className="project-text-container" id="section-1">

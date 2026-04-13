@@ -1,14 +1,15 @@
 import LayoutWrapper from '../components/LayoutWrapper'
 import HeroSection from '../components/HeroSection'
 import LeftSide from '../components/LeftSide'
+import ProjectMetaStart from '../components/ProjectMetaStart'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
-import VideoAnimation from '../components/VideoAnimation'
+// import VideoAnimation from '../components/VideoAnimation'
 import { ProjectPageSkeleton } from '../components/ProjectPageSkeleton'
 import { useAssetsReady } from '../hooks/useAssetsReady'
 import grooveHero from '../assets/projects/groove.webp'
-import animationMp4 from '../assets/projects/groove/results/animation.mp4'
-import videoOverlay from '../assets/projects/groove/results/video-overlay.webp'
+// import animationMp4 from '../assets/projects/groove/results/animation.mp4'
+// import videoOverlay from '../assets/projects/groove/results/video-overlay.webp'
 import stakeholderInterview from '../assets/projects/groove/stakeholder-interview.webp'
 import userPersonas         from '../assets/projects/groove/personas.webp'
 import experienceJourneys   from '../assets/projects/groove/journeys.webp'
@@ -22,27 +23,12 @@ import localeImg            from '../assets/projects/groove/results/Locale.webp'
 import bigliettiImg         from '../assets/projects/groove/results/Biglietti.webp'
 import bigliettoImg         from '../assets/projects/groove/results/Biglietto.webp'
 
-const GROOVE_PRELOAD_IMAGES: readonly string[] = [
-  grooveHero,
-  videoOverlay,
-  stakeholderInterview,
-  userPersonas,
-  experienceJourneys,
-  crazyEight,
-  signUpImg,
-  homeImg,
-  ricercaImg,
-  mappaImg,
-  eventoImg,
-  localeImg,
-  bigliettiImg,
-  bigliettoImg,
-]
+const GROOVE_PRELOAD_IMAGES: readonly string[] = [grooveHero]
 
-const GROOVE_PRELOAD_VIDEOS: readonly string[] = [animationMp4]
+// const GROOVE_PRELOAD_VIDEOS: readonly string[] = [animationMp4]
 
 function GroovePage() {
-    const assetsReady = useAssetsReady({ images: GROOVE_PRELOAD_IMAGES, videos: GROOVE_PRELOAD_VIDEOS })
+    const assetsReady = useAssetsReady({ images: GROOVE_PRELOAD_IMAGES })
     if (!assetsReady) {
       return <LayoutWrapper header={<ProjectPageSkeleton.Header />} content={<ProjectPageSkeleton.Body />} />
     }
@@ -60,10 +46,12 @@ function GroovePage() {
 
         {/* Right Side */}
         <div className="project-content">
-          <DetailsText>
-            September - November 2024, individual project<br />
-            UX/UI Designer for Groove Project
-          </DetailsText>
+          <ProjectMetaStart>
+            <DetailsText>
+              September - November 2024, individual project<br />
+              UX/UI Designer for Groove Project
+            </DetailsText>
+          </ProjectMetaStart>
 
           {/* intro */}
           <div className="project-text-container" id="section-1">
@@ -168,7 +156,7 @@ function GroovePage() {
             </div>
           </div>
 
-          <VideoAnimation />
+          {/* <VideoAnimation /> */}
 
           <Carousel
             images={[

@@ -1,6 +1,7 @@
 import LayoutWrapper from '../components/LayoutWrapper'
 import HeroSection from '../components/HeroSection'
 import LeftSide from '../components/LeftSide'
+import ProjectMetaStart from '../components/ProjectMetaStart'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
 import { ProjectPageSkeleton } from '../components/ProjectPageSkeleton'
@@ -14,16 +15,7 @@ import kpiInstagram       from '../assets/projects/reelsfyp/results/kpi-instagra
 import kpiTikTok          from '../assets/projects/reelsfyp/results/kpi-tiktok.webp';
 import kpiAge             from '../assets/projects/reelsfyp/results/kpi-age.webp';
 
-const REELSFYP_PRELOAD_IMAGES: readonly string[] = [
-  reelsfypHero,
-  instagramImg,
-  tiktokImg,
-  questionnaireImg,
-  kpiGeneral,
-  kpiInstagram,
-  kpiTikTok,
-  kpiAge,
-]
+const REELSFYP_PRELOAD_IMAGES: readonly string[] = [reelsfypHero]
 
 function ReelsFypPage() {
     const assetsReady = useAssetsReady({ images: REELSFYP_PRELOAD_IMAGES })
@@ -44,10 +36,12 @@ function ReelsFypPage() {
 
         {/* Right Side */}
         <div className="project-content">
-          <DetailsText>
-            April - June 2023, 4-member team<br />
-            MSc in Human-Computer Interaction, course in Cognitive Ergonomics and Quantitative Research
-          </DetailsText>
+          <ProjectMetaStart>
+            <DetailsText>
+              April - June 2023, 4-member team<br />
+              MSc in Human-Computer Interaction, course in Cognitive Ergonomics and Quantitative Research
+            </DetailsText>
+          </ProjectMetaStart>
 
           <div className="project-text-container" id="section-1">
             <p className="title-2">Introduction</p>

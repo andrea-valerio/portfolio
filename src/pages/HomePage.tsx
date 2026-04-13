@@ -10,35 +10,13 @@ import ribbonStartup from '../assets/projects/ribbon-startup.webp'
 import ribbonMscThesis from '../assets/projects/ribbon-msc-thesis.webp'
 import pillChevronRight from '../assets/icons/right-arrow-overlay-dark.svg'
 import profilePhoto from '../assets/mypicture/Mid.webp'
-import meetupCover from '../assets/projects/meetup.webp'
-import grooveCover from '../assets/projects/groove.webp'
-import thesisCover from '../assets/projects/thesis.webp'
-import ovenconfCover from '../assets/projects/ovenconf.webp'
-import citinstCover from '../assets/projects/citinst.webp'
-import ecomuseoCover from '../assets/projects/ecomuseo.webp'
-import sustsmokCover from '../assets/projects/sustsmok.webp'
-import reelsfypCover from '../assets/projects/reelsfyp.webp'
 import { useAssetsReady } from '../hooks/useAssetsReady'
 
 /** Set to `true` to show these two projects on the home grid again (`/sustsmok` and `/reelsfyp` routes stay available). */
 const SHOW_SUSTSMOK_REELSFYP_ON_HOME = false
 
-const HOME_PRELOAD_URLS: readonly string[] = [
-  homeBg,
-  profilePhoto,
-  mailIcon,
-  inIcon,
-  ghIcon,
-  ribbonStartup,
-  ribbonMscThesis,
-  meetupCover,
-  grooveCover,
-  thesisCover,
-  ovenconfCover,
-  citinstCover,
-  ecomuseoCover,
-  ...(SHOW_SUSTSMOK_REELSFYP_ON_HOME ? [sustsmokCover, reelsfypCover] : []),
-]
+/** Above-the-fold / LCP only; project tiles load cover art lazily via ProjectBox. */
+const HOME_PRELOAD_URLS: readonly string[] = [homeBg, profilePhoto, mailIcon, inIcon, ghIcon]
 
 function HomePage() {
   const [previouslyOpen, setPreviouslyOpen] = useState(false)
@@ -46,7 +24,11 @@ function HomePage() {
 
   if (!assetsReady) {
     return (
-      <LayoutWrapper header={<HomePageSkeleton.Header />} content={<HomePageSkeleton.Content />} />
+      <LayoutWrapper
+        header={<HomePageSkeleton.Header />}
+        content={<HomePageSkeleton.Content />}
+        className="!gap-[4rem] lg:!gap-[6rem]"
+      />
     )
   }
 
@@ -82,8 +64,7 @@ function HomePage() {
   )
 
   const content = (
-    <div className="flex flex-col
-    gap-[2rem] sm:gap-[3rem] md:gap-[4rem] lg:gap-[6rem]">
+    <div className="flex flex-col gap-[4rem] lg:gap-[6rem]">
       {/* Me and Contacts */}
       <div className="col-span-12 flex flex-col gap-[1.5rem] body-1 break-words w-full max-w-full">
         {/* Me */}
@@ -124,7 +105,7 @@ function HomePage() {
         </div>
         {/* Contacts */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-[1.5rem] sm:gap-[3rem] pt-4">
-          <span className="text-body-1 font-body font-medium md:text-subtitle-2 md:font-title">
+          <span className="text-body-1 font-title font-medium">
             Contacts :
           </span>
           <div className="flex items-center gap-[0.625rem]">
@@ -273,7 +254,9 @@ function HomePage() {
     </div>
   )
 
-  return <LayoutWrapper header={header} content={content} />
+  return (
+    <LayoutWrapper header={header} content={content} className="!gap-[4rem] lg:!gap-[6rem]" />
+  )
 }
   
 export default HomePage

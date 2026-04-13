@@ -1,6 +1,7 @@
 import LayoutWrapper from '../components/LayoutWrapper'
 import HeroSection from '../components/HeroSection'
 import LeftSide from '../components/LeftSide'
+import ProjectMetaStart from '../components/ProjectMetaStart'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
 import { ProjectPageSkeleton } from '../components/ProjectPageSkeleton'
@@ -15,17 +16,7 @@ import placementImg from '../assets/projects/ovenconf/results/placement.webp';
 import accessoryImg from '../assets/projects/ovenconf/results/accessory.webp';
 import reviewImg from '../assets/projects/ovenconf/results/review.webp';
 
-const OVENCONF_PRELOAD_IMAGES: readonly string[] = [
-  ovenconfHero,
-  accessFlow,
-  configurationFlow,
-  ovenHome,
-  ovensImg,
-  secondOvenImg,
-  placementImg,
-  accessoryImg,
-  reviewImg,
-]
+const OVENCONF_PRELOAD_IMAGES: readonly string[] = [ovenconfHero]
 
 function OvenConfPage() {
     const assetsReady = useAssetsReady({ images: OVENCONF_PRELOAD_IMAGES })
@@ -46,10 +37,12 @@ function OvenConfPage() {
 
         {/* Right Side */}
         <div className="project-content">
-          <DetailsText>
-            May - July 2022, 3-member team<br />
-            UX Design and Research Intern at UNOX, Internship project
-          </DetailsText>
+          <ProjectMetaStart>
+            <DetailsText>
+              May - July 2022, 3-member team<br />
+              UX Design and Research Intern at UNOX, Internship project
+            </DetailsText>
+          </ProjectMetaStart>
 
           {/* intro */}
           <div className="project-text-container" id="section-1">

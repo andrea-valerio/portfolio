@@ -23,10 +23,7 @@ function Header() {
 function Content() {
   return (
     <SkeletonTheme {...theme}>
-      <div
-        className="flex flex-col
-        gap-[2rem] sm:gap-[3rem] md:gap-[4rem] lg:gap-[6rem]"
-      >
+      <div className="flex flex-col gap-[4rem] lg:gap-[6rem]">
         <div className="col-span-12 flex flex-col gap-[1.5rem] body-1 break-words w-full max-w-full">
           <div className="col-span-12 flex flex-col lg:flex-row lg:gap-16 lg:items-stretch gap-8">
             <div className="flex flex-col items-center gap-4 shrink-0 w-full max-w-[260px] mx-auto lg:mx-0">
