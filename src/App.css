@@ -4,7 +4,12 @@
 
 @layer components {
   .link-accent {
-    @apply font-normal text-accent-shade3 no-underline hover:underline hover:decoration-accent-shade3/60 hover:decoration-1 hover:underline-offset-2;
+    @apply font-normal text-accent-shade3 no-underline transition-colors hover:underline hover:decoration-accent-shade3/60 hover:decoration-1 hover:underline-offset-2 active:text-accent hover:active:decoration-accent/60;
+  }
+
+  /** Icon `<img>` inside a `group` control: 100% → 80% on hover/active. */
+  .icon-hit-opacity-img {
+    @apply pointer-events-none opacity-100 transition-opacity group-hover:opacity-80 group-active:opacity-80;
   }
 
   /** Same hover underline shape as `.link-accent`, but text stays black (e.g. project page index). */

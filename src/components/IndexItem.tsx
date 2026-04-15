@@ -1,3 +1,5 @@
+import type { KeyboardEvent } from 'react'
+
 type IndexItemProps = {
   children: string
   anchorId: string
@@ -38,13 +40,25 @@ const IndexItem = ({ children, anchorId }: IndexItemProps) => {
     }
   }
 
+  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      handleClick()
+    }
+  }
+
   return (
     <div
-      className="body-1 link-nav active:text-accent transition-colors px-[0.75rem] flex gap-2 cursor-pointer items-start"
+      role="button"
+      tabIndex={0}
+      className="group body-1 px-[0.75rem] flex gap-2 cursor-pointer items-start text-black transition-opacity active:opacity-80 focus-visible:opacity-80"
       onClick={handleClick}
+      onKeyDown={handleKeyDown}
     >
       <span className="flex-shrink-0 w-[0.25rem] h-[0.25rem] bg-black rounded-full mt-[0.625rem]" />
-      <div>{children}</div>
+      <div className="no-underline group-hover:underline group-hover:decoration-black group-hover:decoration-1 group-hover:underline-offset-2">
+        {children}
+      </div>
     </div>
   )
 }

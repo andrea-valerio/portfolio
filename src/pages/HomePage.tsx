@@ -102,13 +102,13 @@ function HomePage() {
             </p>
             <div>
               <p>
-                As a <span className="font-medium italic text-accent">UX/UI Designer</span>, I craft intuitive and impactful interfaces.
+                As a <span className="font-medium italic text-accent-shade3">UX/UI Designer</span>, I craft intuitive and impactful interfaces.
               </p>
               <p>
-                As a <span className="font-medium italic text-accent">UX Researcher</span>, I uncover user insights to drive solutions.
+                As a <span className="font-medium italic text-accent-shade3">UX Researcher</span>, I uncover user insights to drive solutions.
               </p>
               <p>
-                As an <span className="font-medium italic text-accent">aspiring HCI researcher</span>, I explore the boundaries of cognitive and social systems in technology.
+                As an <span className="font-medium italic text-accent-shade3">aspiring HCI researcher</span>, I explore the boundaries of cognitive and social systems in technology.
               </p>
             </div>
             <p>
@@ -158,7 +158,7 @@ function HomePage() {
               aria-expanded={previouslyOpen}
               aria-controls="previously-panel"
               onClick={() => setPreviouslyOpen((open) => !open)}
-              className="body-1 flex items-center gap-2 text-left text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+              className="group body-1 flex items-center gap-2 text-left text-grey-5 transition-colors hover:text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
             >
               Previously
               <img
@@ -168,7 +168,7 @@ function HomePage() {
                 height={12}
                 draggable={false}
                 fetchPriority={HOME_FETCH_PRIORITIES[5]}
-                className={`pointer-events-none h-3 w-3 shrink-0 translate-y-[2px] transition-transform duration-200 ${
+                className={`pointer-events-none h-3 w-3 shrink-0 translate-y-[2px] transition-[transform,opacity] duration-200 opacity-70 group-hover:opacity-100 ${
                   previouslyOpen ? '-rotate-90' : 'rotate-90'
                 }`}
                 aria-hidden

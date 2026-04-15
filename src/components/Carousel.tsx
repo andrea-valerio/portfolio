@@ -97,6 +97,10 @@ const IC = {
   stepperGapToImages: 20,
 } as const
 
+/** Parent must use `group` when interactive; omit on disabled controls so hover does not dim inactive chevrons. */
+const ICON_HIT_OPACITY_IMG =
+  'icon-hit-opacity-img block shrink-0'
+
 /** Pixels: treat scroll position within this distance of an edge as “at” that edge (sub-pixel + snap). */
 const INLINE_SCROLL_EDGE_EPS = 3
 
@@ -325,7 +329,7 @@ function LightboxPillNav({
           }}
           onPointerDown={stopLightboxBubble}
           className={`absolute flex cursor-pointer items-center justify-center border-0 bg-transparent p-0 ${
-            atFirst ? 'pointer-events-none cursor-default' : ''
+            atFirst ? 'pointer-events-none cursor-default' : 'group'
           }`}
           style={{
             top: -hitOutset,
@@ -339,7 +343,7 @@ function LightboxPillNav({
           <img
             src={atFirst ? leftArrowOverlayOff : leftArrowOverlay}
             alt=""
-            className="pointer-events-none block shrink-0"
+            className={atFirst ? 'pointer-events-none block shrink-0' : ICON_HIT_OPACITY_IMG}
             width={frame}
             height={frame}
             draggable={false}
@@ -358,7 +362,7 @@ function LightboxPillNav({
           }}
           onPointerDown={stopLightboxBubble}
           className={`absolute flex cursor-pointer items-center justify-center border-0 bg-transparent p-0 ${
-            atLast ? 'pointer-events-none cursor-default' : ''
+            atLast ? 'pointer-events-none cursor-default' : 'group'
           }`}
           style={{
             top: -hitOutset,
@@ -372,7 +376,7 @@ function LightboxPillNav({
           <img
             src={atLast ? rightArrowOverlayOff : rightArrowOverlay}
             alt=""
-            className="pointer-events-none block shrink-0"
+            className={atLast ? 'pointer-events-none block shrink-0' : ICON_HIT_OPACITY_IMG}
             width={frame}
             height={frame}
             draggable={false}
@@ -408,13 +412,13 @@ function InlineCarouselStepper({ atFirst, atLast, onPrev, onNext }: InlineCarous
           if (!atFirst) onPrev()
         }}
         className={`box-border flex shrink-0 items-center justify-center rounded-full border-0 bg-grey-1 p-2 ${
-          atFirst ? 'cursor-default' : 'cursor-pointer'
+          atFirst ? 'cursor-default' : 'cursor-pointer group'
         }`}
       >
         <img
           src={atFirst ? leftArrowOverlayDarkOff : leftArrowOverlayDark}
           alt=""
-          className="pointer-events-none block shrink-0"
+          className={atFirst ? 'pointer-events-none block shrink-0' : ICON_HIT_OPACITY_IMG}
           width={chFrame}
           height={chFrame}
           draggable={false}
@@ -428,13 +432,13 @@ function InlineCarouselStepper({ atFirst, atLast, onPrev, onNext }: InlineCarous
           if (!atLast) onNext()
         }}
         className={`box-border flex shrink-0 items-center justify-center rounded-full border-0 bg-grey-1 p-2 ${
-          atLast ? 'cursor-default' : 'cursor-pointer'
+          atLast ? 'cursor-default' : 'cursor-pointer group'
         }`}
       >
         <img
           src={atLast ? rightArrowOverlayDarkOff : rightArrowOverlayDark}
           alt=""
-          className="pointer-events-none block shrink-0"
+          className={atLast ? 'pointer-events-none block shrink-0' : ICON_HIT_OPACITY_IMG}
           width={chFrame}
           height={chFrame}
           draggable={false}
@@ -1162,7 +1166,7 @@ const Carousel = ({
         <button
           type="button"
           aria-label="Close gallery"
-          className="absolute z-[220] flex touch-manipulation cursor-pointer items-center justify-center border-0 bg-transparent p-0"
+          className="group absolute z-[220] flex touch-manipulation cursor-pointer items-center justify-center border-0 bg-transparent p-0"
           style={{
             top: `max(${lightboxCloseInset}px, env(safe-area-inset-top, 0px))`,
             right: `max(${lightboxCloseInset}px, env(safe-area-inset-right, 0px))`,
@@ -1182,7 +1186,7 @@ const Carousel = ({
             alt=""
             width={LB.close.icon}
             height={LB.close.icon}
-            className="pointer-events-none shrink-0"
+            className="icon-hit-opacity-img shrink-0"
             draggable={false}
           />
         </button>
