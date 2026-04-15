@@ -31,7 +31,13 @@ const REELS_PRIORITIES = buildFetchPriorities(REELSFYP_ORDERED_IMAGES.length)
 function ReelsFypPage() {
     const paintReady = useImagesPaintReady(REELSFYP_ORDERED_IMAGES)
     if (!paintReady) {
-      return <LayoutWrapper header={<ProjectPageSkeleton.Header />} content={<ProjectPageSkeleton.Body />} />
+      return (
+      <LayoutWrapper
+        header={<ProjectPageSkeleton.Header />}
+        content={<ProjectPageSkeleton.Body />}
+        contentOverlaysHero
+      />
+    )
     }
 
     const header = <HeroSection title="Instagram vs TikTok" imageName="reelsfyp" />
@@ -160,7 +166,7 @@ function ReelsFypPage() {
       </div>
     )
 
-    return <LayoutWrapper header={header} content={content} />
+    return <LayoutWrapper header={header} content={content} contentOverlaysHero />
   }
   
   export default ReelsFypPage

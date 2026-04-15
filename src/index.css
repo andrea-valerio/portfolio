@@ -8,4 +8,9 @@
     background-color: theme('colors.white');
     @apply antialiased;
   }
+
+  #root {
+    position: relative;
+    z-index: 1;
+  }
 }

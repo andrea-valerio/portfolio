@@ -33,7 +33,13 @@ const OVEN_PRIORITIES = buildFetchPriorities(OVENCONF_ORDERED_IMAGES.length)
 function OvenConfPage() {
     const paintReady = useImagesPaintReady(OVENCONF_ORDERED_IMAGES)
     if (!paintReady) {
-      return <LayoutWrapper header={<ProjectPageSkeleton.Header />} content={<ProjectPageSkeleton.Body />} />
+      return (
+      <LayoutWrapper
+        header={<ProjectPageSkeleton.Header />}
+        content={<ProjectPageSkeleton.Body />}
+        contentOverlaysHero
+      />
+    )
     }
 
     const header = <HeroSection title="Oven Configurator" imageName="ovenconf" />
@@ -52,7 +58,7 @@ function OvenConfPage() {
           <ProjectMetaStart>
             <DetailsText>
               May - July 2022, 3-member team<br />
-              UX Design and Research Intern at UNOX, Internship project
+              UX Design and Research Intern @ UNOX
             </DetailsText>
           </ProjectMetaStart>
 
@@ -163,7 +169,7 @@ function OvenConfPage() {
       </div>
     )
 
-    return <LayoutWrapper header={header} content={content} />
+    return <LayoutWrapper header={header} content={content} contentOverlaysHero />
   }
   
   export default OvenConfPage

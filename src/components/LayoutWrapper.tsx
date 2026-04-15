@@ -5,23 +5,49 @@ type LayoutWrapperProps = {
   header: React.ReactNode
   content: React.ReactNode
   className?: string
+  /** Project case studies: fixed hero image under a scrolling opaque body column */
+  contentOverlaysHero?: boolean
 }
 
-const LayoutWrapper = ({ header, content, className = '' }: LayoutWrapperProps) => {
-  return (
-    <div
-      className={`w-full flex flex-col items-center gap-[2rem] sm:gap-[3rem] md:gap-[4rem] lg:gap-[6rem] ${className}`}
-    >
-      <div className="w-full">
-        {header}
-      </div>
+const LayoutWrapper = ({
+  header,
+  content,
+  className = '',
+  contentOverlaysHero = false,
+}: LayoutWrapperProps) => {
+  const gapClass = contentOverlaysHero
+    ? 'gap-0'
+    : 'gap-[2rem] sm:gap-[3rem] md:gap-[4rem] lg:gap-[6rem]'
 
-      <div className="w-full max-w-[1240px] mx-auto px-5 sm:px-8 md:px-10 lg:px-20">
-        {content}
-        <div className="col-span-12">
-          <Footer />
-        </div>
+  const headerWrapperClass = contentOverlaysHero ? 'w-full relative z-10' : 'w-full'
+
+  const innerColumnClass =
+    'w-full max-w-[1240px] mx-auto px-5 sm:px-8 md:px-10 lg:px-20'
+
+  const mainColumn = (
+    <>
+      {content}
+      <div className="col-span-12">
+        <Footer />
       </div>
+    </>
+  )
+
+  return (
+    <div className={`w-full flex flex-col items-center ${gapClass} ${className}`}>
+      <div className={headerWrapperClass}>{header}</div>
+
+      {contentOverlaysHero ? (
+        <div className="w-full relative z-10 bg-white" data-overlay-sheet>
+          <div
+            aria-hidden
+            className="pointer-events-none absolute left-0 right-0 top-0 z-[2] min-h-[2.5rem] h-12 sm:h-16 md:h-20 lg:h-24 -translate-y-full bg-gradient-to-b from-white/0 to-white"
+          />
+          <div className={`${innerColumnClass} relative z-[1] pt-12`}>{mainColumn}</div>
+        </div>
+      ) : (
+        <div className={innerColumnClass}>{mainColumn}</div>
+      )}
     </div>
   )
 }

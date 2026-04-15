@@ -15,8 +15,15 @@ const ReelsFypPage = lazy(() => import('./pages/ReelsFypPage'))
 const MeetupPage = lazy(() => import('./pages/MeetupPage'))
 const ThesisPage = lazy(() => import('./pages/ThesisPage'))
 
+/** With a 60vh hero, landing scroll shows ~40vh of the band (top ~20vh above the fold). */
+const PROJECT_HERO_INITIAL_SCROLL_RATIO = 0.2
+
 const routeFallback = (
-  <LayoutWrapper header={<ProjectPageSkeleton.Header />} content={<ProjectPageSkeleton.Body />} />
+  <LayoutWrapper
+    header={<ProjectPageSkeleton.Header />}
+    content={<ProjectPageSkeleton.Body />}
+    contentOverlaysHero
+  />
 )
 
 function App() {
@@ -37,7 +44,10 @@ function App() {
       const y = scrollPos.current['/'] || 0
       window.scrollTo(0, y)
     } else {
-      window.scrollTo(0, 0)
+      window.scrollTo(
+        0,
+        Math.round(window.innerHeight * PROJECT_HERO_INITIAL_SCROLL_RATIO)
+      )
     }
   }, [location.pathname])
 

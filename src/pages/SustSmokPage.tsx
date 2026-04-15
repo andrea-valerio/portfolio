@@ -37,7 +37,13 @@ const SUST_PRIORITIES = buildFetchPriorities(SUSTSMOK_ORDERED_IMAGES.length)
 function SustSmokPage() {
     const paintReady = useImagesPaintReady(SUSTSMOK_ORDERED_IMAGES)
     if (!paintReady) {
-      return <LayoutWrapper header={<ProjectPageSkeleton.Header />} content={<ProjectPageSkeleton.Body />} />
+      return (
+        <LayoutWrapper
+          header={<ProjectPageSkeleton.Header />}
+          content={<ProjectPageSkeleton.Body />}
+          contentOverlaysHero
+        />
+      )
     }
 
     const header = <HeroSection title="Sustainability & Smoking" imageName="sustsmok" />
@@ -203,7 +209,7 @@ function SustSmokPage() {
       </div>
     )
 
-    return <LayoutWrapper header={header} content={content} />
-  }
-  
-  export default SustSmokPage
+    return <LayoutWrapper header={header} content={content} contentOverlaysHero />
+}
+
+export default SustSmokPage

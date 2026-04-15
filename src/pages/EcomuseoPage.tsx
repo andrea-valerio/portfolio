@@ -38,7 +38,13 @@ const ECOM_PRIORITIES = buildFetchPriorities(ECOMUSEO_ORDERED_IMAGES.length)
 function EcomuseoPage() {
     const paintReady = useImagesPaintReady(ECOMUSEO_ORDERED_IMAGES)
     if (!paintReady) {
-      return <LayoutWrapper header={<ProjectPageSkeleton.Header />} content={<ProjectPageSkeleton.Body />} />
+      return (
+      <LayoutWrapper
+        header={<ProjectPageSkeleton.Header />}
+        content={<ProjectPageSkeleton.Body />}
+        contentOverlaysHero
+      />
+    )
     }
 
     const header = <HeroSection title="Ecomuseo Argentario" imageName="ecomuseo" />
@@ -187,7 +193,7 @@ function EcomuseoPage() {
       </div>
     )
 
-    return <LayoutWrapper header={header} content={content} />
+    return <LayoutWrapper header={header} content={content} contentOverlaysHero />
   }
   
   export default EcomuseoPage

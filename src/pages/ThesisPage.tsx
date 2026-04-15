@@ -43,23 +43,29 @@ const THESIS_PDF_URL =
 function ThesisPage() {
   const paintReady = useImagesPaintReady(THESIS_ORDERED_IMAGES)
   if (!paintReady) {
-    return <LayoutWrapper header={<ProjectPageSkeleton.Header />} content={<ProjectPageSkeleton.Body />} />
+    return (
+      <LayoutWrapper
+        header={<ProjectPageSkeleton.Header />}
+        content={<ProjectPageSkeleton.Body />}
+        contentOverlaysHero
+      />
+    )
   }
 
   const header = <HeroSection title="Teleoperators' Workload" imageName="thesis" />
 
   const content = (
     <div className="col-span-12 flex justify-between">
-      <LeftSide item2="Approach" item3="Insights" item4="Results" />
+      <LeftSide item2="User study" item3="Analysis" item4="Results" />
 
       <div className="hidden lg:block w-[.5px] bg-black -translate-x-[.75rem]" />
 
       <div className="project-content">
         <ProjectMetaStart>
           <DetailsText>
-            June 2024 - March 2025, individual project
+            June 2024 - March 2025, Master’s Thesis
             <br />
-            MSc in Human-Computer Interaction, Master’s Thesis
+            MSc in Human-Computer Interaction & Research Assistant @ German Aerospace center (DLR)
           </DetailsText>
         </ProjectMetaStart>
 
@@ -90,30 +96,23 @@ function ThesisPage() {
         </div>
 
         <div className="project-text-container" id="section-2">
-          <p className="title-2">Approach</p>
+          <p className="title-2">User study</p>
           <div className="project-text">
             <p>
-              I analyzed eye-tracking data from a <span className="font-medium">2×2 within-subject user study</span> where task{' '}
-              <span className="font-medium">difficulty</span> and <span className="font-medium">frequency</span> were manipulated to induce different
-              workload levels. Dependent variables included NASA-TLX, performance, and eye-tracking data.
+              The analysis is based on data from a <span className="font-medium">controlled user study</span> adopting a{' '}
+              <span className="font-medium">2×2 within-subject design</span>, where workload was manipulated through task{' '}
+              <span className="font-medium">difficulty</span> (<em>easy</em> vs. <em>hard</em>) and task presentation{' '}
+              <span className="font-medium">frequency</span> (<em>slow</em> vs. <em>fast</em>). Participants performed remote fleet management tasks across
+              all experimental conditions.
             </p>
             <p>
-              The main analysis focused on <span className="font-medium">Area-of-Interest (AoI) metrics</span>, capturing how users visually interact with
-              different parts of the <span className="font-medium">interface</span>. This spatial approach allowed identifying not just how much users look, but
-              where and how their attention shifts under varying workload conditions.
+              For each condition, subjective workload was measured using <span className="font-medium">NASA-TLX</span>, while{' '}
+              <span className="font-medium">performance metrics</span> and <span className="font-medium">eye-tracking data</span> were continuously recorded.
             </p>
             <p>
-              The study combined <span className="font-medium">statistical analysis</span> with <span className="font-medium">machine learning</span> to both
-              explain behavioral patterns and evaluate predictive potential:
+              The interaction took place within a single interface structured into five functional regions—Ticket, Description, Map, Diagnostics, and Actions—which
+              were later used as <span className="font-medium">Areas of Interest</span> for the spatial analysis.
             </p>
-            <ul className="list-disc pl-[1.5rem] space-y-[0.375rem]">
-              <li>Data cleaning and processing</li>
-              <li>AoI fixation-based feature extraction (e.g. visual entropy) with feature selection</li>
-              <li>Clustering analysis (HDBSCAN) and assumption validation.</li>
-              <li>Inferential statistics (t-tests, ANOVAs), parametrical and non-parametrical</li>
-              <li>Pipeline building using cross-validation, feature selection, and resampling</li>
-              <li>Models: SVM, XGBoost, Random Forest, MLP, stacked models.</li>
-            </ul>
           </div>
         </div>
 
@@ -129,23 +128,30 @@ function ThesisPage() {
         </div>
 
         <div className="project-text-container" id="section-3">
-          <p className="title-2">Insights</p>
+          <p className="title-2">Analysis</p>
           <div className="project-text">
-            <p>Workload significantly reshapes visual behavior. Under high workload, operators show:</p>
-            <ul className="list-disc pl-[1.5rem] space-y-[0.375rem]">
-              <li>
-                More frequent but shorter fixations, indicating <span className="font-medium">faster information processing</span>
-              </li>
-              <li>
-                Reduced revisits to non-critical areas, suggesting <span className="font-medium">focused attention</span>
-              </li>
-              <li>
-                Increased <span className="font-medium">exploratory patterns</span>, driven by the need to integrate information across the interface
-              </li>
-            </ul>
+            <p>The analysis follows a structured pipeline combining statistical and machine learning approaches.</p>
             <p>
-              Task difficulty had a broader impact than frequency, affecting most visual metrics, while frequency mainly influenced attention timing and
-              reactivity. These findings highlight how interface structure and task design directly shape cognitive load and attention strategies.
+              After <span className="font-medium">data cleaning and synchronization</span>, a <span className="font-medium">data extraction</span> of
+              AoI-based features followed to capture different aspects of visual behavior, including fixation dynamics, visit patterns, and spatial entropy
+              measures. These metrics enabled a spatially grounded analysis of how attention is distributed across interface regions.
+            </p>
+            <p>
+              A <span className="font-medium">validation phase</span> was conducted to ensure the robustness of the experimental setup. This included verifying
+              workload manipulation through subjective measures, assessing performance decay under increasing workload, and validating the AoI segmentation using
+              density-based clustering (HDBSCAN).
+            </p>
+            <p>
+              <span className="font-medium">Inferential analysis</span> was then performed to address the research questions. Differences between low and high
+              workload conditions were assessed using paired t-tests, while the effects of difficulty and frequency were analyzed through factorial
+              repeated-measures ANOVA. In addition, L1-regularized logistic regression was used to identify the most informative interface regions for each metric.
+            </p>
+            <p>
+              For the predictive analysis, a <span className="font-medium">machine learning pipeline</span> was developed to evaluate the extent to which workload
+              states can be inferred from AoI metrics. A <span className="font-medium">feature selection</span> was performed using correlation filtering and the
+              Boruta algorithm, followed by <span className="font-medium">model evaluation</span> through nested cross-validation with participant-level splits.
+              Multiple models were tested, including Support Vector Classifier, Random Forest, Gradient Boosting, XGBoost, and Multilayer Perceptron, combined with
+              different resampling strategies to address class imbalance.
             </p>
           </div>
         </div>
@@ -154,20 +160,19 @@ function ThesisPage() {
           <p className="title-2">Results</p>
           <div className="project-text">
             <p>
-              The project demonstrates that{' '}
-              <span className="font-medium">AoI-based eye-tracking metrics can reliably estimate operator workload</span>, with predictive models reaching:
-            </p>
-            <ul className="list-disc pl-[1.5rem] space-y-[0.375rem]">
-              <li>~83% performance for binary workload detection</li>
-              <li>80% for frequency-related states</li>
-            </ul>
-            <p>
-              These results support the design of <span className="font-medium">adaptive intelligent interfaces</span> capable of detecting cognitive overload
-              and responding in real time — for example by prioritizing information or assisting decision-making.
+              The results show that <span className="font-medium">mental workload significantly affects ocular behavior</span>. Visual attention patterns change
+              systematically under higher workload conditions, with operators allocating less attention to non-critical interface regions and adapting their
+              visual strategies to manage <span className="font-medium">increasing task complexity</span>. Task difficulty was found to exert a broader and more
+              consistent influence across metrics, while task frequency primarily affected the temporal dynamics of attention.
             </p>
             <p>
-              This work contributes to bridging human factors research and intelligent system design, moving toward safer and more responsive autonomous vehicle
-              operations.
+              From a predictive perspective, <span className="font-medium">AoI-based metrics proved effective in estimating workload states</span>. The
+              best-performing models achieved approximately 83% performance in binary workload classification and around 80% for frequency-related states,
+              demonstrating the potential of spatial eye-tracking features as reliable indicators of cognitive load.
+            </p>
+            <p>
+              Overall, the findings support the use of AoI-based analysis for both explaining and predicting workload, contributing to the development of{' '}
+              <span className="font-medium">intelligent interfaces capable of adapting to users’ mental states in real time.</span>
             </p>
           </div>
         </div>
@@ -175,7 +180,7 @@ function ThesisPage() {
     </div>
   )
 
-  return <LayoutWrapper header={header} content={content} />
+  return <LayoutWrapper header={header} content={content} contentOverlaysHero />
 }
 
 export default ThesisPage

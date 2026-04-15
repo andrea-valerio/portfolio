@@ -35,7 +35,13 @@ const CIT_PRIORITIES = buildFetchPriorities(CITINST_ORDERED_IMAGES.length)
 function CitInstPage() {
     const paintReady = useImagesPaintReady(CITINST_ORDERED_IMAGES)
     if (!paintReady) {
-      return <LayoutWrapper header={<ProjectPageSkeleton.Header />} content={<ProjectPageSkeleton.Body />} />
+      return (
+      <LayoutWrapper
+        header={<ProjectPageSkeleton.Header />}
+        content={<ProjectPageSkeleton.Body />}
+        contentOverlaysHero
+      />
+    )
     }
 
     const header = <HeroSection title="Citizen-Institution Interaction" imageName="citinst" />
@@ -200,7 +206,7 @@ function CitInstPage() {
       </div>
     )
 
-    return <LayoutWrapper header={header} content={content} />
+    return <LayoutWrapper header={header} content={content} contentOverlaysHero />
   }
   
   export default CitInstPage

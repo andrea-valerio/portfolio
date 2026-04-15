@@ -45,7 +45,13 @@ const GROOVE_PRIORITIES = buildFetchPriorities(GROOVE_ORDERED_IMAGES.length)
 function GroovePage() {
   const paintReady = useImagesPaintReady(GROOVE_ORDERED_IMAGES)
   if (!paintReady) {
-    return <LayoutWrapper header={<ProjectPageSkeleton.Header />} content={<ProjectPageSkeleton.Body />} />
+    return (
+      <LayoutWrapper
+        header={<ProjectPageSkeleton.Header />}
+        content={<ProjectPageSkeleton.Body />}
+        contentOverlaysHero
+      />
+    )
   }
 
   const header = <HeroSection title="Groove" imageName="groove" />
@@ -195,7 +201,9 @@ function GroovePage() {
     </div>
   )
 
-  return <LayoutWrapper header={header} content={content} />
+  return (
+    <LayoutWrapper header={header} content={content} contentOverlaysHero />
+  )
 }
 
 export default GroovePage

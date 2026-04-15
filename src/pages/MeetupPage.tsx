@@ -44,7 +44,13 @@ const MEETUP_PRIORITIES = buildFetchPriorities(MEETUP_ORDERED_IMAGES.length)
 function MeetupPage() {
   const paintReady = useImagesPaintReady(MEETUP_ORDERED_IMAGES)
   if (!paintReady) {
-    return <LayoutWrapper header={<ProjectPageSkeleton.Header />} content={<ProjectPageSkeleton.Body />} />
+    return (
+    <LayoutWrapper
+      header={<ProjectPageSkeleton.Header />}
+      content={<ProjectPageSkeleton.Body />}
+      contentOverlaysHero
+    />
+  )
   }
 
   const header = <HeroSection title="Meetup" imageName="meetup" />
@@ -65,7 +71,7 @@ function MeetupPage() {
           <DetailsText>
             September - December 2025
             <br />
-            Product Designer at Bending Spoons
+            Product Designer @ Bending Spoons
           </DetailsText>
         </ProjectMetaStart>
 
@@ -178,7 +184,7 @@ function MeetupPage() {
     </div>
   )
 
-  return <LayoutWrapper header={header} content={content} />
+  return <LayoutWrapper header={header} content={content} contentOverlaysHero />
 }
 
 export default MeetupPage
