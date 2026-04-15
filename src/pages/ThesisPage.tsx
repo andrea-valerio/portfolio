@@ -8,31 +8,50 @@ import { ProjectPageSkeleton } from '../components/ProjectPageSkeleton'
 import { buildFetchPriorities, useImagesPaintReady } from '../hooks/useImagesPaintReady'
 import thesisHero from '../assets/projects/thesis.webp'
 import thesisInterface from '../assets/projects/thesis/interface.png'
-import confmatBinary from '../assets/projects/thesis/confmat_binary.png'
-import confmatMulticlass from '../assets/projects/thesis/confmat_multiclass.png'
-import confmatDifficulty from '../assets/projects/thesis/confmat_difficulty.png'
-import confmatFrequency from '../assets/projects/thesis/confmat_frequency.png'
-import fixClusters from '../assets/projects/thesis/fix_clusters.png'
+import thesisInterfaceAoi from '../assets/projects/thesis/interface_aoi.png'
+import thesisExpSetup from '../assets/projects/thesis/exp_setup.png'
+import thesisExpVp from '../assets/projects/thesis/exp_vp.png'
+import thesisHdbscan from '../assets/projects/thesis/hdbscan.png'
+import thesisBinaryGraphs from '../assets/projects/thesis/binary_graphs.png'
+import thesisTtffGraph from '../assets/projects/thesis/ttff_graph.png'
+import thesisVisFreqGraph from '../assets/projects/thesis/vis_freq_graph.png'
+import thesisConfMat from '../assets/projects/thesis/conf_mat.png'
 
-const studyOutcomeImages = [
+const userStudyCarouselImages = [
   thesisInterface,
-  confmatBinary,
-  confmatMulticlass,
-  confmatDifficulty,
-  confmatFrequency,
-  fixClusters,
+  thesisInterfaceAoi,
+  thesisExpSetup,
+  thesisExpVp,
 ]
 
-const studyOutcomeAlts = [
-  'Remote assistance interface',
-  'Confusion matrix — binary workload detection',
-  'Confusion matrix — multiclass workload',
-  'Confusion matrix — task difficulty',
-  'Confusion matrix — task frequency',
-  'Fixation clusters by workload condition',
+const userStudyCarouselAlts = [
+  'Remote assistance interface with map, diagnostics, incident description, and actions',
+  'Same interface with Areas of Interest regions highlighted',
+  'Eye-tracking experiment setup with monitor and fiducial markers',
+  'Participant wearing eye-tracking glasses at the workstation',
 ]
 
-const THESIS_ORDERED_IMAGES: readonly string[] = [thesisHero, ...studyOutcomeImages]
+const analysisCarouselImages = [
+  thesisHdbscan,
+  thesisBinaryGraphs,
+  thesisTtffGraph,
+  thesisVisFreqGraph,
+  thesisConfMat,
+]
+
+const analysisCarouselAlts = [
+  'HDBSCAN gaze clusters overlaid on interface Areas of Interest',
+  'Stationary entropy and fixation duration by Easy Slow vs Hard Fast',
+  'Time-to-first fixation on Actions by difficulty and by frequency',
+  'Visit frequency for Ticket AOI by difficulty and by frequency',
+  'Confusion matrices for workload classification models',
+]
+
+const THESIS_ORDERED_IMAGES: readonly string[] = [
+  thesisHero,
+  ...userStudyCarouselImages,
+  ...analysisCarouselImages,
+]
 
 const THESIS_PRIORITIES = buildFetchPriorities(THESIS_ORDERED_IMAGES.length)
 
@@ -118,12 +137,12 @@ function ThesisPage() {
 
         <div className="project-image-container">
           <Carousel
-            images={studyOutcomeImages}
+            images={userStudyCarouselImages}
             width={0}
             lightbox
             lightboxLayout="landscape"
-            imageAlts={studyOutcomeAlts}
-            imageFetchPriorities={THESIS_PRIORITIES.slice(1, THESIS_ORDERED_IMAGES.length)}
+            imageAlts={userStudyCarouselAlts}
+            imageFetchPriorities={THESIS_PRIORITIES.slice(1, 5)}
           />
         </div>
 
@@ -154,6 +173,17 @@ function ThesisPage() {
               different resampling strategies to address class imbalance.
             </p>
           </div>
+        </div>
+
+        <div className="project-image-container">
+          <Carousel
+            images={analysisCarouselImages}
+            width={0}
+            lightbox
+            lightboxLayout="landscape"
+            imageAlts={analysisCarouselAlts}
+            imageFetchPriorities={THESIS_PRIORITIES.slice(5, 10)}
+          />
         </div>
 
         <div className="project-text-container" id="section-4">
