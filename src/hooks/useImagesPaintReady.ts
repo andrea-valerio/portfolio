@@ -3,6 +3,21 @@ import { useEffect, useState } from 'react'
 /** Portion of images that must have loaded (or errored) before showing real UI. */
 export const IMAGE_PAINT_THRESHOLD = 0.8
 
+/** Case studies: only the first N ordered images block paint; the rest load with the page. */
+export const PROJECT_PAINT_GATE_COUNT = 3
+
+/** Softer than home — e.g. with n=3, ceil(3 * 0.55) = 2 images must complete. */
+export const PROJECT_PAINT_THRESHOLD = 0.55
+
+/** Stable slice used for `useImagesPaintReady` on project routes (assign to a module-level const). */
+export function projectPaintGateImages<T extends readonly string[]>(
+  ordered: T
+): readonly string[] {
+  if (ordered.length === 0) return ordered
+  const n = Math.min(PROJECT_PAINT_GATE_COUNT, ordered.length)
+  return ordered.slice(0, n)
+}
+
 export type ImageFetchPriorityLevel = 'high' | 'auto' | 'low'
 
 /** `ceil(n * threshold)` images must complete; 0 when `n === 0`. */

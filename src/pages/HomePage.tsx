@@ -19,10 +19,10 @@ import {
 const SHOW_SUSTSMOK_REELSFYP_ON_HOME = false
 
 /**
- * Above-the-fold assets only — project grid covers load lazily via ProjectBox.
- * Paint gate waits for 80% of this list (ceil(n * 0.8)), not for every home teaser.
+ * Full top-to-bottom order for `fetchPriority` on imgs (indices must match).
+ * Paint gate uses only hero + profile so the shell is not blocked on small icons.
  */
-const HOME_CRITICAL_IMAGES: readonly string[] = [
+const HOME_ORDERED_IMAGES: readonly string[] = [
   homeBg,
   profilePhoto,
   mailIcon,
@@ -31,11 +31,13 @@ const HOME_CRITICAL_IMAGES: readonly string[] = [
   pillChevronRight,
 ]
 
-const HOME_FETCH_PRIORITIES = buildFetchPriorities(HOME_CRITICAL_IMAGES.length)
+const HOME_PAINT_IMAGES: readonly string[] = [homeBg, profilePhoto]
+
+const HOME_FETCH_PRIORITIES = buildFetchPriorities(HOME_ORDERED_IMAGES.length)
 
 function HomePage() {
   const [previouslyOpen, setPreviouslyOpen] = useState(false)
-  const paintReady = useImagesPaintReady(HOME_CRITICAL_IMAGES)
+  const paintReady = useImagesPaintReady(HOME_PAINT_IMAGES)
 
   if (!paintReady) {
     return (

@@ -4,8 +4,8 @@ import { Routes, Route, useLocation } from 'react-router-dom'
 import LayoutWrapper from './components/LayoutWrapper'
 import { ProjectPageSkeleton } from './components/ProjectPageSkeleton'
 import { scheduleRoutePrefetch } from './navigation/routePrefetch'
+import HomePage from './pages/HomePage'
 
-const HomePage = lazy(() => import('./pages/HomePage'))
 const GroovePage = lazy(() => import('./pages/GroovePage'))
 const OvenConfPage = lazy(() => import('./pages/OvenConfPage'))
 const CitInstPage = lazy(() => import('./pages/CitInstPage'))

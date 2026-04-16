@@ -13,6 +13,9 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "@fontsource/crimson-pro": "^5.2.8",
+    "@fontsource/montserrat": "^5.2.8",
+    "@fontsource/raleway": "^5.2.8",
     "framer-motion": "^12.7.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

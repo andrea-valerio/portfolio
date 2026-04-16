@@ -5,7 +5,12 @@ import ProjectMetaStart from '../components/ProjectMetaStart'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
 import { ProjectPageSkeleton } from '../components/ProjectPageSkeleton'
-import { buildFetchPriorities, useImagesPaintReady } from '../hooks/useImagesPaintReady'
+import {
+  buildFetchPriorities,
+  projectPaintGateImages,
+  PROJECT_PAINT_THRESHOLD,
+  useImagesPaintReady,
+} from '../hooks/useImagesPaintReady'
 import ovenconfHero from '../assets/projects/ovenconf.webp'
 import accessFlow from '../assets/projects/ovenconf/access-flow.webp';
 import configurationFlow from '../assets/projects/ovenconf/configuration-flow.webp';
@@ -30,8 +35,10 @@ const OVENCONF_ORDERED_IMAGES: readonly string[] = [
 
 const OVEN_PRIORITIES = buildFetchPriorities(OVENCONF_ORDERED_IMAGES.length)
 
+const OVENCONF_PAINT_IMAGES = projectPaintGateImages(OVENCONF_ORDERED_IMAGES)
+
 function OvenConfPage() {
-    const paintReady = useImagesPaintReady(OVENCONF_ORDERED_IMAGES)
+    const paintReady = useImagesPaintReady(OVENCONF_PAINT_IMAGES, PROJECT_PAINT_THRESHOLD)
     if (!paintReady) {
       return (
       <LayoutWrapper

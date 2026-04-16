@@ -5,7 +5,12 @@ import ProjectMetaStart from '../components/ProjectMetaStart'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
 import { ProjectPageSkeleton } from '../components/ProjectPageSkeleton'
-import { buildFetchPriorities, useImagesPaintReady } from '../hooks/useImagesPaintReady'
+import {
+  buildFetchPriorities,
+  projectPaintGateImages,
+  PROJECT_PAINT_THRESHOLD,
+  useImagesPaintReady,
+} from '../hooks/useImagesPaintReady'
 import thesisHero from '../assets/projects/thesis.webp'
 import thesisInterface from '../assets/projects/thesis/interface.png'
 import thesisInterfaceAoi from '../assets/projects/thesis/interface_aoi.png'
@@ -55,12 +60,14 @@ const THESIS_ORDERED_IMAGES: readonly string[] = [
 
 const THESIS_PRIORITIES = buildFetchPriorities(THESIS_ORDERED_IMAGES.length)
 
+const THESIS_PAINT_IMAGES = projectPaintGateImages(THESIS_ORDERED_IMAGES)
+
 const PUBLICATION_MUC_DOI = 'https://doi.org/10.1145/3743049.3748583'
 const THESIS_PDF_URL =
   'https://drive.google.com/file/d/1aEw1kN_jFDbA7SrF8yVNDBG-unWa-tJh/view?usp=sharing'
 
 function ThesisPage() {
-  const paintReady = useImagesPaintReady(THESIS_ORDERED_IMAGES)
+  const paintReady = useImagesPaintReady(THESIS_PAINT_IMAGES, PROJECT_PAINT_THRESHOLD)
   if (!paintReady) {
     return (
       <LayoutWrapper

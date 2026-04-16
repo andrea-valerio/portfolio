@@ -5,7 +5,12 @@ import ProjectMetaStart from '../components/ProjectMetaStart'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
 import { ProjectPageSkeleton } from '../components/ProjectPageSkeleton'
-import { buildFetchPriorities, useImagesPaintReady } from '../hooks/useImagesPaintReady'
+import {
+  buildFetchPriorities,
+  projectPaintGateImages,
+  PROJECT_PAINT_THRESHOLD,
+  useImagesPaintReady,
+} from '../hooks/useImagesPaintReady'
 import ecomuseoHero from '../assets/projects/ecomuseo.webp'
 // Asset imports
 import personas1 from '../assets/projects/ecomuseo/personas-1.webp';
@@ -35,8 +40,10 @@ const ECOMUSEO_ORDERED_IMAGES: readonly string[] = [
 
 const ECOM_PRIORITIES = buildFetchPriorities(ECOMUSEO_ORDERED_IMAGES.length)
 
+const ECOMUSEO_PAINT_IMAGES = projectPaintGateImages(ECOMUSEO_ORDERED_IMAGES)
+
 function EcomuseoPage() {
-    const paintReady = useImagesPaintReady(ECOMUSEO_ORDERED_IMAGES)
+    const paintReady = useImagesPaintReady(ECOMUSEO_PAINT_IMAGES, PROJECT_PAINT_THRESHOLD)
     if (!paintReady) {
       return (
       <LayoutWrapper

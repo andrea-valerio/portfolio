@@ -5,7 +5,12 @@ import ProjectMetaStart from '../components/ProjectMetaStart'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
 import { ProjectPageSkeleton } from '../components/ProjectPageSkeleton'
-import { buildFetchPriorities, useImagesPaintReady } from '../hooks/useImagesPaintReady'
+import {
+  buildFetchPriorities,
+  projectPaintGateImages,
+  PROJECT_PAINT_THRESHOLD,
+  useImagesPaintReady,
+} from '../hooks/useImagesPaintReady'
 import reelsfypHero from '../assets/projects/reelsfyp.webp'
 import instagramImg       from '../assets/projects/reelsfyp/instagram.webp';
 import tiktokImg          from '../assets/projects/reelsfyp/tiktok.webp';
@@ -28,8 +33,10 @@ const REELSFYP_ORDERED_IMAGES: readonly string[] = [
 
 const REELS_PRIORITIES = buildFetchPriorities(REELSFYP_ORDERED_IMAGES.length)
 
+const REELSFYP_PAINT_IMAGES = projectPaintGateImages(REELSFYP_ORDERED_IMAGES)
+
 function ReelsFypPage() {
-    const paintReady = useImagesPaintReady(REELSFYP_ORDERED_IMAGES)
+    const paintReady = useImagesPaintReady(REELSFYP_PAINT_IMAGES, PROJECT_PAINT_THRESHOLD)
     if (!paintReady) {
       return (
       <LayoutWrapper
