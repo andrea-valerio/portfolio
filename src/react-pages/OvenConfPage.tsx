@@ -5,6 +5,7 @@ import ProjectMetaStart from '../components/ProjectMetaStart'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
 import { buildFetchPriorities } from '../hooks/useImagesPaintReady'
+import type { BundledSrc } from '../types/bundled-asset'
 import ovenconfHero from '../assets/projects/ovenconf.webp'
 import accessFlow from '../assets/projects/ovenconf/access-flow.webp';
 import configurationFlow from '../assets/projects/ovenconf/configuration-flow.webp';
@@ -15,7 +16,7 @@ import placementImg from '../assets/projects/ovenconf/results/placement.webp';
 import accessoryImg from '../assets/projects/ovenconf/results/accessory.webp';
 import reviewImg from '../assets/projects/ovenconf/results/review.webp';
 
-const OVENCONF_ORDERED_IMAGES: readonly string[] = [
+const OVENCONF_ORDERED_IMAGES: readonly BundledSrc[] = [
   ovenconfHero,
   accessFlow,
   configurationFlow,

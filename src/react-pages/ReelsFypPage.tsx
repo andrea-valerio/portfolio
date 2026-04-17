@@ -5,6 +5,7 @@ import ProjectMetaStart from '../components/ProjectMetaStart'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
 import { buildFetchPriorities } from '../hooks/useImagesPaintReady'
+import type { BundledSrc } from '../types/bundled-asset'
 import reelsfypHero from '../assets/projects/reelsfyp.webp'
 import instagramImg       from '../assets/projects/reelsfyp/instagram.webp';
 import tiktokImg          from '../assets/projects/reelsfyp/tiktok.webp';
@@ -14,7 +15,7 @@ import kpiInstagram       from '../assets/projects/reelsfyp/results/kpi-instagra
 import kpiTikTok          from '../assets/projects/reelsfyp/results/kpi-tiktok.webp';
 import kpiAge             from '../assets/projects/reelsfyp/results/kpi-age.webp';
 
-const REELSFYP_ORDERED_IMAGES: readonly string[] = [
+const REELSFYP_ORDERED_IMAGES: readonly BundledSrc[] = [
   reelsfypHero,
   instagramImg,
   tiktokImg,

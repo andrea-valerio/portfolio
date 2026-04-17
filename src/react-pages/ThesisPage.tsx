@@ -5,6 +5,7 @@ import ProjectMetaStart from '../components/ProjectMetaStart'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
 import { buildFetchPriorities } from '../hooks/useImagesPaintReady'
+import type { BundledSrc } from '../types/bundled-asset'
 import thesisHero from '../assets/projects/thesis.webp'
 import thesisInterface from '../assets/projects/thesis/interface.png'
 import thesisInterfaceAoi from '../assets/projects/thesis/interface_aoi.png'
@@ -46,7 +47,7 @@ const analysisCarouselAlts = [
   'Confusion matrices for workload classification models',
 ]
 
-const THESIS_ORDERED_IMAGES: readonly string[] = [
+const THESIS_ORDERED_IMAGES: readonly BundledSrc[] = [
   thesisHero,
   ...userStudyCarouselImages,
   ...analysisCarouselImages,

@@ -5,6 +5,7 @@ import ProjectMetaStart from '../components/ProjectMetaStart'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
 import { buildFetchPriorities } from '../hooks/useImagesPaintReady'
+import type { BundledSrc } from '../types/bundled-asset'
 import citinstHero from '../assets/projects/citinst.webp'
 import conceptMap from '../assets/projects/citinst/concept-map.webp';
 import taxonomy from '../assets/projects/citinst/taxonomy.webp';
@@ -16,7 +17,7 @@ import booking from '../assets/projects/citinst/results/booking.webp';
 import faq from '../assets/projects/citinst/results/faq.webp';
 import feedback from '../assets/projects/citinst/results/feedback.webp';
 
-const CITINST_ORDERED_IMAGES: readonly string[] = [
+const CITINST_ORDERED_IMAGES: readonly BundledSrc[] = [
   citinstHero,
   conceptMap,
   taxonomy,

@@ -5,6 +5,7 @@ import ProjectMetaStart from '../components/ProjectMetaStart'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
 import { buildFetchPriorities } from '../hooks/useImagesPaintReady'
+import type { BundledSrc } from '../types/bundled-asset'
 import ecomuseoHero from '../assets/projects/ecomuseo.webp'
 // Asset imports
 import personas1 from '../assets/projects/ecomuseo/personas-1.webp';
@@ -18,7 +19,7 @@ import ecomCiucioi from '../assets/projects/ecomuseo/results/ciucioi.webp';
 import ecomTicket from '../assets/projects/ecomuseo/results/ticket.webp';
 import ecomPayment from '../assets/projects/ecomuseo/results/payment.webp';
 
-const ECOMUSEO_ORDERED_IMAGES: readonly string[] = [
+const ECOMUSEO_ORDERED_IMAGES: readonly BundledSrc[] = [
   ecomuseoHero,
   personas1,
   personas2,

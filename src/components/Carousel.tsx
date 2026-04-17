@@ -5,6 +5,7 @@ import {
   useEffect,
   useLayoutEffect,
   useCallback,
+  useMemo,
   type CSSProperties,
   type MouseEvent,
   type PointerEvent,
@@ -25,6 +26,7 @@ import leftArrowOverlayOff from '../assets/icons/left-arrow-overlay-inactive.svg
 import rightArrowOverlay from '../assets/icons/right-arrow-overlay.svg'
 import rightArrowOverlayOff from '../assets/icons/right-arrow-overlay-inactive.svg'
 import closeLightboxIcon from '../assets/icons/close-lightbox.svg'
+import { bundledSrc, type BundledSrc } from '../types/bundled-asset'
 
 /** Full-viewport lightbox scrim (#1C242A) */
 const LIGHTBOX_SCRIM = 'rgba(28, 36, 42, 0.75)'
@@ -341,7 +343,7 @@ function LightboxPillNav({
           }}
         >
           <img
-            src={atFirst ? leftArrowOverlayOff : leftArrowOverlay}
+            src={bundledSrc(atFirst ? leftArrowOverlayOff : leftArrowOverlay)}
             alt=""
             className={atFirst ? 'pointer-events-none block shrink-0' : ICON_HIT_OPACITY_IMG}
             width={frame}
@@ -374,7 +376,7 @@ function LightboxPillNav({
           }}
         >
           <img
-            src={atLast ? rightArrowOverlayOff : rightArrowOverlay}
+            src={bundledSrc(atLast ? rightArrowOverlayOff : rightArrowOverlay)}
             alt=""
             className={atLast ? 'pointer-events-none block shrink-0' : ICON_HIT_OPACITY_IMG}
             width={frame}
@@ -416,7 +418,7 @@ function InlineCarouselStepper({ atFirst, atLast, onPrev, onNext }: InlineCarous
         }`}
       >
         <img
-          src={atFirst ? leftArrowOverlayDarkOff : leftArrowOverlayDark}
+          src={bundledSrc(atFirst ? leftArrowOverlayDarkOff : leftArrowOverlayDark)}
           alt=""
           className={atFirst ? 'pointer-events-none block shrink-0' : ICON_HIT_OPACITY_IMG}
           width={chFrame}
@@ -436,7 +438,7 @@ function InlineCarouselStepper({ atFirst, atLast, onPrev, onNext }: InlineCarous
         }`}
       >
         <img
-          src={atLast ? rightArrowOverlayDarkOff : rightArrowOverlayDark}
+          src={bundledSrc(atLast ? rightArrowOverlayDarkOff : rightArrowOverlayDark)}
           alt=""
           className={atLast ? 'pointer-events-none block shrink-0' : ICON_HIT_OPACITY_IMG}
           width={chFrame}
@@ -865,7 +867,7 @@ function LightboxMotionGallery({
 }
 
 type CarouselProps = {
-  images: string[] // array of image paths
+  images: BundledSrc[]
   width: number // image widths
   /** Corner radius in rem for inline strip thumbnails (lightbox images are square). Default `1`. */
   round?: number
@@ -904,6 +906,7 @@ const Carousel = ({
   imageFetchPriorities,
   inlineEdgeFade = true,
 }: CarouselProps) => {
+  const imageUrls = useMemo(() => images.map(bundledSrc), [images])
   const scrollRef = useRef<HTMLDivElement>(null)
   const scrollRafRef = useRef<number | null>(null)
   const [inlineScroll, setInlineScroll] = useState({
@@ -1096,7 +1099,7 @@ const Carousel = ({
             <div className="pointer-events-none col-start-1 row-start-1 flex h-full min-h-0 min-w-0 w-full items-stretch overflow-hidden">
               {images.length > 1 ? (
                 <LightboxMotionGallery
-                  images={images}
+                  images={imageUrls}
                   index={lightboxIndex}
                   onIndexChange={selectLightboxImage}
                   lightboxLayout={lightboxLayout}
@@ -1124,7 +1127,7 @@ const Carousel = ({
                   role="presentation"
                 >
                   <LightboxZoomableImage
-                    src={images[0]}
+                    src={imageUrls[0]}
                     alt={
                       imageAlts?.length === images.length && imageAlts[0]
                         ? imageAlts[0]
@@ -1182,7 +1185,7 @@ const Carousel = ({
           onPointerDown={stopLightboxBubble}
         >
           <img
-            src={closeLightboxIcon}
+            src={bundledSrc(closeLightboxIcon)}
             alt=""
             width={LB.close.icon}
             height={LB.close.icon}
@@ -1205,7 +1208,7 @@ const Carousel = ({
             className="relative z-0 flex w-full overflow-x-auto scroll-smooth gap-[3rem] px-1 pt-1 pb-1 hide-scrollbar snap-x snap-mandatory"
             onScroll={onInlineScroll}
           >
-            {images.map((src, idx) => (
+            {imageUrls.map((src, idx) => (
               <div
                 key={idx}
                 className={`snap-center shrink-0 overflow-hidden shadow-light ${

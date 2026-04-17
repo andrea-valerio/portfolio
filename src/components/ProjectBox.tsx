@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { bundledSrc, type BundledSrc } from '../types/bundled-asset'
 import meetupCover from '../assets/projects/meetup.webp'
 import grooveCover from '../assets/projects/groove.webp'
 import thesisCover from '../assets/projects/thesis.webp'
@@ -9,7 +10,7 @@ import sustsmokCover from '../assets/projects/sustsmok.webp'
 import reelsfypCover from '../assets/projects/reelsfyp.webp'
 import placeholderCover from '../assets/projects/placeholder.webp'
 
-const projectCoverBySlug: Record<string, string> = {
+const projectCoverBySlug: Record<string, BundledSrc> = {
   meetup: meetupCover,
   groove: grooveCover,
   thesis: thesisCover,
@@ -24,7 +25,7 @@ type ProjectBoxProps = {
   name: string
   desc: string
   imageName: string
-  ribbonSrc?: string
+  ribbonSrc?: BundledSrc
   /** Base URL including trailing slash, e.g. `/portfolio/` */
   baseUrl?: string
 }
@@ -45,7 +46,7 @@ const ProjectBox = ({
       ? 'opacity-70'
       : 'opacity-50 md:opacity-30'
 
-  const bgUrl = projectCoverBySlug[imageName] ?? placeholderCover
+  const bgUrl = bundledSrc(projectCoverBySlug[imageName] ?? placeholderCover)
 
   const href = `${baseUrl}${imageName}/`
 
@@ -88,7 +89,7 @@ const ProjectBox = ({
           </div>
           {ribbonSrc && (
             <img
-              src={ribbonSrc}
+              src={bundledSrc(ribbonSrc)}
               alt="Ribbon"
               loading="lazy"
               decoding="async"

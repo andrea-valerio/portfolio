@@ -1,9 +1,9 @@
-import React from 'react'
+import type { ReactNode } from 'react'
 import Footer from './Footer'
 
 type LayoutWrapperProps = {
-  header: React.ReactNode
-  content: React.ReactNode
+  header: ReactNode
+  content: ReactNode
   className?: string
   /** Project case studies: fixed hero image under a scrolling opaque body column */
   contentOverlaysHero?: boolean

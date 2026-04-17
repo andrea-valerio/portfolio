@@ -5,6 +5,7 @@ import ProjectMetaStart from '../components/ProjectMetaStart'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
 import { buildFetchPriorities } from '../hooks/useImagesPaintReady'
+import type { BundledSrc } from '../types/bundled-asset'
 import meetupHero from '../assets/projects/meetup.webp'
 import comparisonWeb from '../assets/projects/meetup/redesign/comparison-web.webp'
 import comparisonMobile from '../assets/projects/meetup/redesign/comparison-mobile.webp'
@@ -36,7 +37,7 @@ const redesignAlts = [
 const growthImages = [sms, paywalls]
 const growthAlts = ['SMS reminders experiment', 'Subscription paywalls']
 
-const MEETUP_ORDERED_IMAGES: readonly string[] = [meetupHero, ...redesignImages, ...growthImages]
+const MEETUP_ORDERED_IMAGES: readonly BundledSrc[] = [meetupHero, ...redesignImages, ...growthImages]
 
 const MEETUP_PRIORITIES = buildFetchPriorities(MEETUP_ORDERED_IMAGES.length)
 

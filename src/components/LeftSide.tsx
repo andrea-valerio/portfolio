@@ -1,4 +1,5 @@
 import backArrow from '../assets/icons/back-arrow.svg'
+import { bundledSrc } from '../types/bundled-asset'
 import IndexList from './IndexList'
 
 type LeftSideProps = {
@@ -24,7 +25,7 @@ const LeftSide = ({
         className="group flex flex-col justify-center items-center p-[0.5rem] box-content w-[4rem] h-[3rem] "
       >
         <img
-          src={backArrow}
+          src={bundledSrc(backArrow)}
           alt="Back arrow"
           className="icon-hit-opacity-img w-[2.625rem] h-[1.5rem]"
         />

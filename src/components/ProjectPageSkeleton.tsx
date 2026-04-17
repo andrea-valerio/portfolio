@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components -- compound skeleton (Header + Body) */
 import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import ProjectMetaStart from './ProjectMetaStart'

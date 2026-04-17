@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import pillChevronRight from '../assets/icons/right-arrow-overlay-dark.svg'
+import { bundledSrc } from '../types/bundled-asset'
 
 export default function PreviouslyAccordion() {
   const [open, setOpen] = useState(false)
@@ -15,7 +16,7 @@ export default function PreviouslyAccordion() {
       >
         Previously
         <img
-          src={pillChevronRight}
+          src={bundledSrc(pillChevronRight)}
           alt=""
           width={12}
           height={12}

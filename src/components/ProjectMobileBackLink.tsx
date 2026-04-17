@@ -1,4 +1,5 @@
 import backArrow from '../assets/icons/back-arrow.svg'
+import { bundledSrc } from '../types/bundled-asset'
 
 type ProjectMobileBackLinkProps = {
   homeHref?: string
@@ -14,7 +15,7 @@ export default function ProjectMobileBackLink({
       className="group sm:hidden flex flex-col justify-center items-start -ml-[0.5rem] p-[0.5rem] box-content w-[2.75rem] h-8 shrink-0"
       aria-label="Back to home"
     >
-      <img src={backArrow} alt="" className="icon-hit-opacity-img h-4 w-[1.75rem]" />
+      <img src={bundledSrc(backArrow)} alt="" className="icon-hit-opacity-img h-4 w-[1.75rem]" />
     </a>
   )
 }

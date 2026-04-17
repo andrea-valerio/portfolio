@@ -5,6 +5,7 @@ import ProjectMetaStart from '../components/ProjectMetaStart'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
 import { buildFetchPriorities } from '../hooks/useImagesPaintReady'
+import type { BundledSrc } from '../types/bundled-asset'
 import grooveHero from '../assets/projects/groove.webp'
 import stakeholderInterview from '../assets/projects/groove/stakeholder-interview.webp'
 import userPersonas from '../assets/projects/groove/personas.webp'
@@ -20,7 +21,7 @@ import bigliettiImg from '../assets/projects/groove/results/Biglietti.webp'
 import bigliettoImg from '../assets/projects/groove/results/Biglietto.webp'
 
 /** Top-to-bottom order for 80% paint gate + `fetchPriority` tiers */
-const GROOVE_ORDERED_IMAGES: readonly string[] = [
+const GROOVE_ORDERED_IMAGES: readonly BundledSrc[] = [
   grooveHero,
   stakeholderInterview,
   userPersonas,

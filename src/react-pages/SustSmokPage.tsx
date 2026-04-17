@@ -5,6 +5,7 @@ import ProjectMetaStart from '../components/ProjectMetaStart'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
 import { buildFetchPriorities } from '../hooks/useImagesPaintReady'
+import type { BundledSrc } from '../types/bundled-asset'
 import sustsmokHero from '../assets/projects/sustsmok.webp'
 import roveretoImg        from '../assets/projects/sustsmok/rovereto.webp';
 import povoImg           from '../assets/projects/sustsmok/povo.webp';
@@ -17,7 +18,7 @@ import workshop4         from '../assets/projects/sustsmok/workshop-4.webp';
 import workshop5         from '../assets/projects/sustsmok/workshop-5.webp';
 import workshop6         from '../assets/projects/sustsmok/workshop-6.webp';
 
-const SUSTSMOK_ORDERED_IMAGES: readonly string[] = [
+const SUSTSMOK_ORDERED_IMAGES: readonly BundledSrc[] = [
   sustsmokHero,
   roveretoImg,
   povoImg,
