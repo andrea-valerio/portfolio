@@ -1,0 +1,13 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import ThesisPage from '../../react-pages/ThesisPage'
+import thesisHero from '../../assets/projects/thesis.webp'
+
+const title = "Teleoperators' Workload | Andrea Valerio"
+const description =
+  "Master's thesis: mental workload and eye-tracking for remote operators of automated vehicle fleets (DLR)."
+---
+
+<BaseLayout title={title} description={description} ogImage={thesisHero} ogImageAlt="Thesis project" canonicalPath="/portfolio/thesis/">
+  <ThesisPage client:load />
+</BaseLayout>

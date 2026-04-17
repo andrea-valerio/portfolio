@@ -1,6 +1,4 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { prefetchProjectRoute } from '../navigation/routePrefetch'
 import meetupCover from '../assets/projects/meetup.webp'
 import grooveCover from '../assets/projects/groove.webp'
 import thesisCover from '../assets/projects/thesis.webp'
@@ -27,9 +25,17 @@ type ProjectBoxProps = {
   desc: string
   imageName: string
   ribbonSrc?: string
+  /** Base URL including trailing slash, e.g. `/portfolio/` */
+  baseUrl?: string
 }
 
-const ProjectBox = ({ name, desc, imageName, ribbonSrc }: ProjectBoxProps) => {
+const ProjectBox = ({
+  name,
+  desc,
+  imageName,
+  ribbonSrc,
+  baseUrl = import.meta.env.BASE_URL,
+}: ProjectBoxProps) => {
   const [isPressed, setIsPressed] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
 
@@ -41,19 +47,15 @@ const ProjectBox = ({ name, desc, imageName, ribbonSrc }: ProjectBoxProps) => {
 
   const bgUrl = projectCoverBySlug[imageName] ?? placeholderCover
 
-  const warmRoute = () => {
-    prefetchProjectRoute(imageName)
-  }
+  const href = `${baseUrl}${imageName}/`
 
   return (
-    <Link
-      to={`/${imageName}`}
+    <a
+      href={href}
       className="relative col-span-2 md:col-span-1 aspect-[16/9] overflow-hidden rounded-[20px] group"
       onMouseEnter={() => {
         setIsHovered(true)
-        warmRoute()
       }}
-      onFocus={warmRoute}
       onMouseLeave={() => {
         setIsHovered(false)
         setIsPressed(false)
@@ -95,7 +97,7 @@ const ProjectBox = ({ name, desc, imageName, ribbonSrc }: ProjectBoxProps) => {
           )}
         </div>
       </div>
-    </Link>
+    </a>
   )
 }
 

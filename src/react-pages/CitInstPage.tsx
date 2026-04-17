@@ -4,13 +4,7 @@ import LeftSide from '../components/LeftSide'
 import ProjectMetaStart from '../components/ProjectMetaStart'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
-import { ProjectPageSkeleton } from '../components/ProjectPageSkeleton'
-import {
-  buildFetchPriorities,
-  projectPaintGateImages,
-  PROJECT_PAINT_THRESHOLD,
-  useImagesPaintReady,
-} from '../hooks/useImagesPaintReady'
+import { buildFetchPriorities } from '../hooks/useImagesPaintReady'
 import citinstHero from '../assets/projects/citinst.webp'
 import conceptMap from '../assets/projects/citinst/concept-map.webp';
 import taxonomy from '../assets/projects/citinst/taxonomy.webp';
@@ -37,20 +31,7 @@ const CITINST_ORDERED_IMAGES: readonly string[] = [
 
 const CIT_PRIORITIES = buildFetchPriorities(CITINST_ORDERED_IMAGES.length)
 
-const CITINST_PAINT_IMAGES = projectPaintGateImages(CITINST_ORDERED_IMAGES)
-
 function CitInstPage() {
-    const paintReady = useImagesPaintReady(CITINST_PAINT_IMAGES, PROJECT_PAINT_THRESHOLD)
-    if (!paintReady) {
-      return (
-      <LayoutWrapper
-        header={<ProjectPageSkeleton.Header />}
-        content={<ProjectPageSkeleton.Body />}
-        contentOverlaysHero
-      />
-    )
-    }
-
     const header = <HeroSection title="Citizen-Institution Interaction" imageName="citinst" />
 
     const content = (

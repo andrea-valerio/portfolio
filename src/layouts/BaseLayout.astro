@@ -1,0 +1,63 @@
+---
+import '../styles/global.css'
+import type { ImageMetadata } from 'astro'
+
+type Props = {
+  title: string
+  description: string
+  /** Optional OG/Twitter image (processed by Astro). Defaults to profile photo path if omitted. */
+  ogImage?: ImageMetadata
+  ogImageAlt?: string
+  canonicalPath?: string
+}
+
+const {
+  title,
+  description,
+  ogImage,
+  ogImageAlt = '',
+  canonicalPath,
+} = Astro.props
+
+const canonical = new URL(canonicalPath ?? Astro.url.pathname, Astro.site)
+const ogImageSrc = ogImage
+  ? new URL(ogImage.src, Astro.url).href
+  : new URL('mypicture/Mid.webp', new URL(import.meta.env.BASE_URL, Astro.site)).href
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical.href} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical.href} />
+    <meta property="og:image" content={ogImageSrc} />
+    <meta property="og:image:alt" content={ogImageAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageSrc} />
+    <link rel="icon" href={`${import.meta.env.BASE_URL}favicon.ico`} />
+    <link rel="manifest" href={`${import.meta.env.BASE_URL}site.webmanifest`} />
+    <script is:inline define:vars={{ base: import.meta.env.BASE_URL }}>
+      ;(function () {
+        var h = window.location.hash
+        if (!h || h.length < 2) return
+        if (h.indexOf('#/') !== 0) return
+        var path = h.slice(2).replace(/\/+$/, '')
+        var target = base.replace(/\/+$/, '/') + (path ? path + '/' : '')
+        window.location.replace(target)
+      })()
+    </script>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

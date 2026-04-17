@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import EcomuseoPage from '../../react-pages/EcomuseoPage'
+import ecomuseoHero from '../../assets/projects/ecomuseo.webp'
+
+const title = 'Ecomuseo Argentario | Andrea Valerio'
+const description = 'Visual design case study: consolidating museum websites while preserving distinct brand identities.'
+---
+
+<BaseLayout title={title} description={description} ogImage={ecomuseoHero} ogImageAlt="Ecomuseo project" canonicalPath="/portfolio/ecomuseo/">
+  <EcomuseoPage client:load />
+</BaseLayout>

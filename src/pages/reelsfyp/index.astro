@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import ReelsFypPage from '../../react-pages/ReelsFypPage'
+import reelsfypHero from '../../assets/projects/reelsfyp.webp'
+
+const title = 'Instagram vs TikTok | Andrea Valerio'
+const description = 'Quantitative research comparing Instagram Reels and TikTok FYP engagement and KPIs.'
+---
+
+<BaseLayout title={title} description={description} ogImage={reelsfypHero} ogImageAlt="Reels vs FYP study" canonicalPath="/portfolio/reelsfyp/">
+  <ReelsFypPage client:load />
+</BaseLayout>

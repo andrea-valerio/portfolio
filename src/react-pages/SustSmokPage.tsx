@@ -4,13 +4,7 @@ import LeftSide from '../components/LeftSide'
 import ProjectMetaStart from '../components/ProjectMetaStart'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
-import { ProjectPageSkeleton } from '../components/ProjectPageSkeleton'
-import {
-  buildFetchPriorities,
-  projectPaintGateImages,
-  PROJECT_PAINT_THRESHOLD,
-  useImagesPaintReady,
-} from '../hooks/useImagesPaintReady'
+import { buildFetchPriorities } from '../hooks/useImagesPaintReady'
 import sustsmokHero from '../assets/projects/sustsmok.webp'
 import roveretoImg        from '../assets/projects/sustsmok/rovereto.webp';
 import povoImg           from '../assets/projects/sustsmok/povo.webp';
@@ -39,20 +33,7 @@ const SUSTSMOK_ORDERED_IMAGES: readonly string[] = [
 
 const SUST_PRIORITIES = buildFetchPriorities(SUSTSMOK_ORDERED_IMAGES.length)
 
-const SUSTSMOK_PAINT_IMAGES = projectPaintGateImages(SUSTSMOK_ORDERED_IMAGES)
-
 function SustSmokPage() {
-    const paintReady = useImagesPaintReady(SUSTSMOK_PAINT_IMAGES, PROJECT_PAINT_THRESHOLD)
-    if (!paintReady) {
-      return (
-        <LayoutWrapper
-          header={<ProjectPageSkeleton.Header />}
-          content={<ProjectPageSkeleton.Body />}
-          contentOverlaysHero
-        />
-      )
-    }
-
     const header = <HeroSection title="Sustainability & Smoking" imageName="sustsmok" />
 
     const content = (

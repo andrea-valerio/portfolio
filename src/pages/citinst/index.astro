@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import CitInstPage from '../../react-pages/CitInstPage'
+import citinstHero from '../../assets/projects/citinst.webp'
+
+const title = 'Citizen–Institution Interaction | Andrea Valerio'
+const description = 'UX case study: Help, Support, and appointment booking for Italian municipal websites.'
+---
+
+<BaseLayout title={title} description={description} ogImage={citinstHero} ogImageAlt="Citizen-institution project" canonicalPath="/portfolio/citinst/">
+  <CitInstPage client:load />
+</BaseLayout>

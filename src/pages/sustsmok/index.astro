@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import SustSmokPage from '../../react-pages/SustSmokPage'
+import sustsmokHero from '../../assets/projects/sustsmok.webp'
+
+const title = 'Sustainability & Smoking | Andrea Valerio'
+const description = 'Qualitative research case study on sustainability attitudes and smoking in Trentino youth.'
+---
+
+<BaseLayout title={title} description={description} ogImage={sustsmokHero} ogImageAlt="Sustainability and smoking research" canonicalPath="/portfolio/sustsmok/">
+  <SustSmokPage client:load />
+</BaseLayout>

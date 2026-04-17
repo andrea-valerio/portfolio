@@ -4,13 +4,7 @@ import LeftSide from '../components/LeftSide'
 import ProjectMetaStart from '../components/ProjectMetaStart'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
-import { ProjectPageSkeleton } from '../components/ProjectPageSkeleton'
-import {
-  buildFetchPriorities,
-  projectPaintGateImages,
-  PROJECT_PAINT_THRESHOLD,
-  useImagesPaintReady,
-} from '../hooks/useImagesPaintReady'
+import { buildFetchPriorities } from '../hooks/useImagesPaintReady'
 import grooveHero from '../assets/projects/groove.webp'
 import stakeholderInterview from '../assets/projects/groove/stakeholder-interview.webp'
 import userPersonas from '../assets/projects/groove/personas.webp'
@@ -44,20 +38,7 @@ const GROOVE_ORDERED_IMAGES: readonly string[] = [
 
 const GROOVE_PRIORITIES = buildFetchPriorities(GROOVE_ORDERED_IMAGES.length)
 
-const GROOVE_PAINT_IMAGES = projectPaintGateImages(GROOVE_ORDERED_IMAGES)
-
 function GroovePage() {
-  const paintReady = useImagesPaintReady(GROOVE_PAINT_IMAGES, PROJECT_PAINT_THRESHOLD)
-  if (!paintReady) {
-    return (
-      <LayoutWrapper
-        header={<ProjectPageSkeleton.Header />}
-        content={<ProjectPageSkeleton.Body />}
-        contentOverlaysHero
-      />
-    )
-  }
-
   const header = <HeroSection title="Groove" imageName="groove" />
 
   const content = (

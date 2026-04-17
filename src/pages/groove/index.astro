@@ -1,0 +1,13 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import GroovePage from '../../react-pages/GroovePage'
+import grooveHero from '../../assets/projects/groove.webp'
+
+const title = 'Groove | Andrea Valerio'
+const description =
+  'UX/UI case study: Groove — MVP for club event tickets with geolocation and personalized suggestions (startup project).'
+---
+
+<BaseLayout title={title} description={description} ogImage={grooveHero} ogImageAlt="Groove project" canonicalPath="/portfolio/groove/">
+  <GroovePage client:load />
+</BaseLayout>

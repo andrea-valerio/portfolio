@@ -4,13 +4,7 @@ import LeftSide from '../components/LeftSide'
 import ProjectMetaStart from '../components/ProjectMetaStart'
 import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
-import { ProjectPageSkeleton } from '../components/ProjectPageSkeleton'
-import {
-  buildFetchPriorities,
-  projectPaintGateImages,
-  PROJECT_PAINT_THRESHOLD,
-  useImagesPaintReady,
-} from '../hooks/useImagesPaintReady'
+import { buildFetchPriorities } from '../hooks/useImagesPaintReady'
 import meetupHero from '../assets/projects/meetup.webp'
 import comparisonWeb from '../assets/projects/meetup/redesign/comparison-web.webp'
 import comparisonMobile from '../assets/projects/meetup/redesign/comparison-mobile.webp'
@@ -46,20 +40,7 @@ const MEETUP_ORDERED_IMAGES: readonly string[] = [meetupHero, ...redesignImages,
 
 const MEETUP_PRIORITIES = buildFetchPriorities(MEETUP_ORDERED_IMAGES.length)
 
-const MEETUP_PAINT_IMAGES = projectPaintGateImages(MEETUP_ORDERED_IMAGES)
-
 function MeetupPage() {
-  const paintReady = useImagesPaintReady(MEETUP_PAINT_IMAGES, PROJECT_PAINT_THRESHOLD)
-  if (!paintReady) {
-    return (
-    <LayoutWrapper
-      header={<ProjectPageSkeleton.Header />}
-      content={<ProjectPageSkeleton.Body />}
-      contentOverlaysHero
-    />
-  )
-  }
-
   const header = <HeroSection title="Meetup" imageName="meetup" />
 
   const content = (

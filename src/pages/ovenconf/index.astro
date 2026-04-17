@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import OvenConfPage from '../../react-pages/OvenConfPage'
+import ovenconfHero from '../../assets/projects/ovenconf.webp'
+
+const title = 'Oven Configurator | Andrea Valerio'
+const description = 'UX research and design case study: UNOX oven configurator redesign for marketers and customers.'
+---
+
+<BaseLayout title={title} description={description} ogImage={ovenconfHero} ogImageAlt="Oven configurator" canonicalPath="/portfolio/ovenconf/">
+  <OvenConfPage client:load />
+</BaseLayout>

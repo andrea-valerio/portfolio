@@ -1,0 +1,13 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import MeetupPage from '../../react-pages/MeetupPage'
+import meetupHero from '../../assets/projects/meetup.webp'
+
+const title = 'Meetup | Andrea Valerio'
+const description =
+  'Product design case study: Meetup — redesign, growth experiments, and impact at Bending Spoons.'
+---
+
+<BaseLayout title={title} description={description} ogImage={meetupHero} ogImageAlt="Meetup project" canonicalPath="/portfolio/meetup/">
+  <MeetupPage client:load />
+</BaseLayout>
