@@ -912,7 +912,8 @@ const Carousel = ({
   const [inlineScroll, setInlineScroll] = useState({
     index: 0,
     atFirst: true,
-    atLast: true,
+    /** Wrong when true with multiple slides at scroll 0 — hides both edge fades until scroll sync. */
+    atLast: images.length <= 1,
   })
 
   const [lightboxOpen, setLightboxOpen] = useState(false)
@@ -1082,13 +1083,13 @@ const Carousel = ({
     typeof document !== 'undefined' &&
     createPortal(
       <div
-        className="fixed inset-0 z-[200] min-h-0 cursor-default isolate"
+        className="fixed inset-0 z-[9999] min-h-0 cursor-default isolate"
         style={{ background: LIGHTBOX_SCRIM }}
         onClick={closeLightbox}
         role="presentation"
       >
         <div
-          className="pointer-events-none absolute inset-x-0 z-[201] flex min-h-0 min-w-0 overflow-hidden"
+          className="pointer-events-none absolute inset-x-0 z-[10000] flex min-h-0 min-w-0 overflow-hidden"
           style={{
             top: lightboxImageStageInsetTop,
             bottom: lightboxImageStageInsetBottom,
@@ -1147,7 +1148,7 @@ const Carousel = ({
         </div>
         {images.length > 1 && (
           <div
-            className="absolute left-0 right-0 z-[205] flex justify-center"
+            className="absolute left-0 right-0 z-[10004] flex justify-center"
             style={{
               bottom: LB.pillViewportBottom,
             }}
@@ -1169,7 +1170,7 @@ const Carousel = ({
         <button
           type="button"
           aria-label="Close gallery"
-          className="group absolute z-[220] flex touch-manipulation cursor-pointer items-center justify-center border-0 bg-transparent p-0"
+          className="group absolute z-[10020] flex touch-manipulation cursor-pointer items-center justify-center border-0 bg-transparent p-0"
           style={{
             top: `max(${lightboxCloseInset}px, env(safe-area-inset-top, 0px))`,
             right: `max(${lightboxCloseInset}px, env(safe-area-inset-right, 0px))`,
@@ -1202,7 +1203,7 @@ const Carousel = ({
       {lightboxOverlay}
 
       <div className="flex flex-col" style={{ gap: IC.stepperGapToImages }}>
-        <div className={`relative w-full ${inlineEdgeFade ? 'isolate' : ''}`}>
+        <div className="relative w-full">
           <div
             ref={scrollRef}
             className="relative z-0 flex w-full overflow-x-auto scroll-smooth gap-[3rem] px-1 pt-1 pb-1 hide-scrollbar snap-x snap-mandatory"
@@ -1253,13 +1254,13 @@ const Carousel = ({
           </div>
           {inlineEdgeFade && !inlineAtFirst ? (
             <div
-              className="pointer-events-none absolute inset-y-0 -left-1 z-10 w-5 bg-[linear-gradient(to_right,#F9EEEB_0,#F9EEEB_4px,rgba(249,238,235,0)_100%)]"
+              className="pointer-events-none absolute inset-y-0 -left-1 z-10 w-5 bg-[linear-gradient(to_right,theme(colors.white)_0,theme(colors.white)_4px,transparent_100%)]"
               aria-hidden
             />
           ) : null}
           {inlineEdgeFade && !inlineAtLast ? (
             <div
-              className="pointer-events-none absolute inset-y-0 -right-1 z-10 w-5 bg-[linear-gradient(to_left,#F9EEEB_0,#F9EEEB_4px,rgba(249,238,235,0)_100%)]"
+              className="pointer-events-none absolute inset-y-0 -right-1 z-10 w-5 bg-[linear-gradient(to_left,theme(colors.white)_0,theme(colors.white)_4px,transparent_100%)]"
               aria-hidden
             />
           ) : null}

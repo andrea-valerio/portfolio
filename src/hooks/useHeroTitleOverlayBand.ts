@@ -6,6 +6,9 @@ type Layer = { top: number; height: number; visible: boolean }
 const hiddenBand: Band = { top: 0, height: 0, visible: false }
 const hiddenLayer: Layer = { top: 0, height: 0, visible: false }
 
+/** ~60vh at a 900px-tall viewport; replaced immediately in useLayoutEffect by measured layout. */
+const DEFAULT_HERO_LAYER_HEIGHT_PX = 540
+
 type Layout = { band: Band; layer: Layer }
 
 const sameLayout = (a: Layout, b: Layout) =>
@@ -24,9 +27,16 @@ const sameLayout = (a: Layout, b: Layout) =>
 export function useHeroTitleOverlayBand(enabled: boolean) {
   const heroRef = useRef<HTMLDivElement>(null)
   const rafRef = useRef<number | null>(null)
-  const [layout, setLayout] = useState<Layout>({
-    band: hiddenBand,
-    layer: hiddenLayer,
+  const [layout, setLayout] = useState<Layout>(() => {
+    if (!enabled) return { band: hiddenBand, layer: hiddenLayer }
+    return {
+      band: hiddenBand,
+      layer: {
+        top: 0,
+        height: DEFAULT_HERO_LAYER_HEIGHT_PX,
+        visible: true,
+      },
+    }
   })
 
   const update = useCallback(() => {

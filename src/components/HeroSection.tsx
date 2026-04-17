@@ -1,10 +1,7 @@
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 import { useHeroTitleOverlayBand } from '../hooks/useHeroTitleOverlayBand'
-
-const projectImages: Record<string, string> = import.meta.glob(
-  '../assets/projects/*.webp',
-  { eager: true, query: '?url', import: 'default' }
-)
+import { bundledSrc } from '../types/bundled-asset'
+import { placeholderCover, projectCoverBySlug } from '../constants/projectCovers'
 
 const HERO_HEIGHTS = 'h-[60vh]'
 
@@ -27,7 +24,7 @@ function buildHeroBackgroundStyle(bgUrl: string) {
 }
 
 const HeroSection = ({ title, imageName }: HeroSectionProps) => {
-  const bgUrl = projectImages[`../assets/projects/${imageName}.webp`]
+  const bgUrl = bundledSrc(projectCoverBySlug[imageName] ?? placeholderCover)
   const reduceMotion = usePrefersReducedMotion()
   const bgStyle = buildHeroBackgroundStyle(bgUrl)
 
