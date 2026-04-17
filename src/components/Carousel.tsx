@@ -106,6 +106,17 @@ const ICON_HIT_OPACITY_IMG =
 /** Pixels: treat scroll position within this distance of an edge as “at” that edge (sub-pixel + snap). */
 const INLINE_SCROLL_EDGE_EPS = 3
 
+/** Matches `theme(colors.white)` — inline gradients avoid flaky Tailwind `theme()` in arbitrary classes. */
+const INLINE_EDGE_WHITE = '#F9EEEB'
+
+const inlineEdgeFadeLeftStyle: CSSProperties = {
+  backgroundImage: `linear-gradient(to right, ${INLINE_EDGE_WHITE} 0, ${INLINE_EDGE_WHITE} 4px, rgba(249,238,235,0) 100%)`,
+}
+
+const inlineEdgeFadeRightStyle: CSSProperties = {
+  backgroundImage: `linear-gradient(to left, ${INLINE_EDGE_WHITE} 0, ${INLINE_EDGE_WHITE} 4px, rgba(249,238,235,0) 100%)`,
+}
+
 /** Marks the rounded image card; scopes horizontal trackpad handling so gallery wins over browser history. */
 const LIGHTBOX_IMAGE_HIT_ATTR = 'data-lightbox-image-hit'
 
@@ -179,10 +190,7 @@ function readInlineCarouselScrollState(
 function scrollContainerToSlideIndex(container: HTMLDivElement, index: number) {
   const child = container.children[index] as HTMLElement | undefined
   if (!child) return
-  const target =
-    child.offsetLeft + child.offsetWidth / 2 - container.clientWidth / 2
-  const max = Math.max(0, container.scrollWidth - container.clientWidth)
-  container.scrollTo({ left: Math.max(0, Math.min(target, max)), behavior: 'smooth' })
+  child.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
 }
 
 type LightboxNav = { index: number; dir: 1 | -1 }
@@ -956,11 +964,27 @@ const Carousel = ({
     })
   }, [syncInlineIndexFromScroll])
 
-  const scrollToSlideIndex = useCallback((i: number) => {
-    const el = scrollRef.current
-    if (!el) return
-    scrollContainerToSlideIndex(el, i)
-  }, [])
+  const scheduleInlineScrollSync = useCallback(() => {
+    syncInlineIndexFromScroll()
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => syncInlineIndexFromScroll())
+    })
+    window.setTimeout(syncInlineIndexFromScroll, 400)
+  }, [syncInlineIndexFromScroll])
+
+  const scrollToSlideIndex = useCallback(
+    (i: number) => {
+      const el = scrollRef.current
+      if (!el) return
+      scrollContainerToSlideIndex(el, i)
+      const onScrollEnd = () => {
+        syncInlineIndexFromScroll()
+      }
+      el.addEventListener('scrollend', onScrollEnd, { once: true })
+      scheduleInlineScrollSync()
+    },
+    [scheduleInlineScrollSync, syncInlineIndexFromScroll]
+  )
 
   const { atFirst: inlineAtFirst, atLast: inlineAtLast } = inlineScroll
 
@@ -1002,10 +1026,18 @@ const Carousel = ({
     const container = scrollRef.current
     if (!container) return
     syncInlineIndexFromScroll()
+    const ro = new ResizeObserver(() => {
+      syncInlineIndexFromScroll()
+    })
+    ro.observe(container)
     container.addEventListener('scroll', onInlineScroll, { passive: true })
+    const onScrollEnd = () => syncInlineIndexFromScroll()
+    container.addEventListener('scrollend', onScrollEnd)
     window.addEventListener('resize', syncInlineIndexFromScroll)
     return () => {
+      ro.disconnect()
       container.removeEventListener('scroll', onInlineScroll)
+      container.removeEventListener('scrollend', onScrollEnd)
       window.removeEventListener('resize', syncInlineIndexFromScroll)
       if (scrollRafRef.current != null) {
         cancelAnimationFrame(scrollRafRef.current)
@@ -1203,7 +1235,7 @@ const Carousel = ({
       {lightboxOverlay}
 
       <div className="flex flex-col" style={{ gap: IC.stepperGapToImages }}>
-        <div className="relative w-full">
+        <div className="relative w-full overflow-visible">
           <div
             ref={scrollRef}
             className="relative z-0 flex w-full overflow-x-auto scroll-smooth gap-[3rem] px-1 pt-1 pb-1 hide-scrollbar snap-x snap-mandatory"
@@ -1254,13 +1286,15 @@ const Carousel = ({
           </div>
           {inlineEdgeFade && !inlineAtFirst ? (
             <div
-              className="pointer-events-none absolute inset-y-0 -left-1 z-10 w-5 bg-[linear-gradient(to_right,theme(colors.white)_0,theme(colors.white)_4px,transparent_100%)]"
+              className="pointer-events-none absolute inset-y-0 left-0 z-20 w-6"
+              style={inlineEdgeFadeLeftStyle}
               aria-hidden
             />
           ) : null}
           {inlineEdgeFade && !inlineAtLast ? (
             <div
-              className="pointer-events-none absolute inset-y-0 -right-1 z-10 w-5 bg-[linear-gradient(to_left,theme(colors.white)_0,theme(colors.white)_4px,transparent_100%)]"
+              className="pointer-events-none absolute inset-y-0 right-0 z-20 w-6"
+              style={inlineEdgeFadeRightStyle}
               aria-hidden
             />
           ) : null}
