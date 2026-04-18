@@ -508,50 +508,47 @@ type LightboxSlideProps = {
   fetchPriority?: ImageFetchPriorityHint
 }
 
-/** Portrait lightbox: fill vertical band between stage insets first; `maxWidthPx` caps width second (see plan). */
-function lightboxPortraitImgStyle(
+/**
+ * Lightbox: `object-fit: contain` on an img that **fills** a definite-width × definite-height box
+ * so the bitmap always touches either the full width or full height of that box (standard contain).
+ * Optional portrait `maxWidthPx` shrinks the box horizontally (phone mockup cap) while keeping height.
+ */
+function lightboxContainFrameStyle(
   layout: 'portrait' | 'landscape',
-  maxWidthPx: number | undefined,
-  radius: string
-): CSSProperties | undefined {
-  if (layout !== 'portrait') return undefined
-  return {
-    display: 'block',
-    borderRadius: radius,
-    maxHeight: '100%',
-    width: 'auto',
-    height: 'auto',
-    maxWidth: maxWidthPx != null ? `min(100%, ${maxWidthPx}px)` : '100%',
-    objectFit: 'contain',
-  }
+  maxWidthPx: number | undefined
+): CSSProperties {
+  return layout === 'portrait' && maxWidthPx != null
+    ? { width: '100%', maxWidth: `min(100%, ${maxWidthPx}px)` }
+    : { width: '100%' }
 }
 
 function LightboxSlide({ src, alt, layout, maxWidthPx, roundRem = 1, fetchPriority }: LightboxSlideProps) {
   const radius = `${roundRem}rem`
-  const portraitImgStyle = lightboxPortraitImgStyle(layout, maxWidthPx, radius)
+  const frameStyle = lightboxContainFrameStyle(layout, maxWidthPx)
 
   return (
     <div className="flex h-full w-full min-h-0 min-w-0 items-center justify-center overflow-visible">
       <div
         {...{ [LIGHTBOX_IMAGE_HIT_ATTR]: '' }}
-        className="flex h-full w-full min-h-0 max-h-full max-w-full items-center justify-center overflow-hidden shadow-light"
+        className="flex h-full w-full min-h-0 max-h-full max-w-full items-stretch justify-center overflow-hidden shadow-light"
         style={{
           borderRadius: radius,
           overscrollBehaviorX: 'contain',
         }}
       >
-        <img
-          src={src}
-          alt={alt}
-          className={
-            layout === 'portrait'
-              ? 'mx-auto block object-contain'
-              : 'block h-auto w-auto max-h-full max-w-full object-contain'
-          }
-          style={portraitImgStyle ?? { display: 'block', borderRadius: radius }}
-          draggable={false}
-          {...(fetchPriority ? { fetchPriority } : {})}
-        />
+        <div
+          className="relative mx-auto h-full min-h-0 min-w-0 w-full max-w-full"
+          style={frameStyle}
+        >
+          <img
+            src={src}
+            alt={alt}
+            className="absolute inset-0 block h-full w-full object-contain"
+            style={{ borderRadius: radius }}
+            draggable={false}
+            {...(fetchPriority ? { fetchPriority } : {})}
+          />
+        </div>
       </div>
     </div>
   )
@@ -574,7 +571,7 @@ function LightboxZoomableImage({
   onZoomChange,
 }: LightboxZoomableImageProps) {
   const radius = `${roundRem}rem`
-  const portraitImgStyle = lightboxPortraitImgStyle(layout, maxWidthPx, radius)
+  const frameStyle = lightboxContainFrameStyle(layout, maxWidthPx)
 
   const [transformScale, setTransformScale] = useState(LIGHTBOX_ZOOM_MIN)
 
@@ -634,7 +631,7 @@ function LightboxZoomableImage({
     <div className="flex h-full w-full min-h-0 min-w-0 items-center justify-center overflow-visible">
       <div
         {...{ [LIGHTBOX_IMAGE_HIT_ATTR]: '' }}
-        className="flex h-full w-full min-h-0 max-h-full max-w-full min-w-0 items-center justify-center overflow-hidden shadow-light"
+        className="flex h-full w-full min-h-0 max-h-full max-w-full min-w-0 items-stretch justify-center overflow-hidden shadow-light"
         style={{
           borderRadius: radius,
           overscrollBehaviorX: 'contain',
@@ -658,25 +655,25 @@ function LightboxZoomableImage({
           doubleClick={{ disabled: true }}
         >
           <TransformComponent
-            wrapperClass="!flex !h-full !w-full !min-h-0 !min-w-0 items-center justify-center"
-            contentClass="!flex !h-full !w-full !min-h-0 !min-w-0 items-center justify-center"
+            wrapperClass="!flex !h-full !w-full !min-h-0 !min-w-0 items-stretch justify-center"
+            contentClass="!flex !h-full !w-full !min-h-0 !min-w-0 items-stretch justify-center"
             wrapperStyle={rzppWrapperStyle}
-            contentStyle={rzppContentStyle}
+            contentStyle={{
+              ...rzppContentStyle,
+              alignItems: 'stretch',
+              justifyContent: 'center',
+            }}
           >
-            <img
-              src={src}
-              alt={alt}
-              className={
-                layout === 'portrait'
-                  ? 'mx-auto block object-contain select-none'
-                  : 'block h-auto w-auto max-h-full max-w-full object-contain select-none'
-              }
-              style={
-                portraitImgStyle ?? { display: 'block', borderRadius: radius }
-              }
-              draggable={false}
-              {...(fetchPriority ? { fetchPriority } : {})}
-            />
+            <div className="relative mx-auto h-full min-h-0 min-w-0 w-full max-w-full" style={frameStyle}>
+              <img
+                src={src}
+                alt={alt}
+                className="absolute inset-0 block h-full w-full object-contain select-none"
+                style={{ borderRadius: radius }}
+                draggable={false}
+                {...(fetchPriority ? { fetchPriority } : {})}
+              />
+            </div>
           </TransformComponent>
         </TransformWrapper>
       </div>
