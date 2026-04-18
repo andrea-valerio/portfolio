@@ -33,6 +33,14 @@ import { bundledSrc, type BundledSrc } from '../types/bundled-asset'
 const LIGHTBOX_SCRIM = 'rgba(28, 36, 42, 0.75)'
 
 /**
+ * Soft edge on carousel/lightbox `<img>` elements (not on outer wrappers), matching `.shadow-light`
+ * plus a hair inset and depth. Inset draws inside the bitmap so part of the edge stays visible even
+ * when outer box-shadow is clipped by `overflow: hidden` parents.
+ */
+const CAROUSEL_IMAGE_LAYERED_BOX_SHADOW =
+  'inset 0 0 0 1px rgba(28, 36, 42, 0.08), 0 0 2px rgba(28, 36, 42, 0.15), 0 2px 6px rgba(28, 36, 42, 0.07)'
+
+/**
  * Lightbox layout tokens.
  * Image stage uses fixed top/bottom and horizontal insets; pill is anchored to the viewport bottom.
  */
@@ -599,7 +607,7 @@ function LightboxZoomableImage({
     >
       <div
         {...(zoomEnabled ? { [LIGHTBOX_IMAGE_HIT_ATTR]: '' } : {})}
-        className="flex h-full w-full min-h-0 max-h-full max-w-full min-w-0 items-stretch justify-center overflow-hidden shadow-light"
+        className="flex h-full w-full min-h-0 max-h-full max-w-full min-w-0 items-stretch justify-center overflow-hidden"
         style={{
           borderRadius: radius,
           overscrollBehaviorX: 'contain',
@@ -643,7 +651,12 @@ function LightboxZoomableImage({
                 className={`${
                   inlineImageClassName ? `${inlineImageClassName} ` : ''
                 }absolute inset-0 block h-full w-full object-contain select-none`}
-                style={{ borderRadius: radius }}
+                style={{
+                  borderRadius: radius,
+                  ...(!inlineImageClassName
+                    ? { boxShadow: CAROUSEL_IMAGE_LAYERED_BOX_SHADOW }
+                    : {}),
+                }}
                 draggable={false}
                 {...(fetchPriority ? { fetchPriority } : {})}
               />
@@ -898,10 +911,9 @@ type CarouselProps = {
   /** When length matches `images`, used for inline and lightbox `alt` text */
   imageAlts?: string[]
   /**
-   * Extra classes for inline strip `<img>` and the same classes on lightbox `<img>` for visual parity.
-   * Corner radius and frame shadow come from `round` and the strip/lightbox wrappers (`shadow-light`); avoid
-   * combining utilities like `project-image` (fixed `rounded-*` + `shadow-light`) with a conflicting `round`,
-   * or you may get doubled shadows or mismatched radii.
+   * Extra classes for inline strip `<img>` and lightbox `<img>`. When omitted, both use
+   * `CAROUSEL_IMAGE_LAYERED_BOX_SHADOW` on the **image** (inset hairline + soft outer layers), not on wrappers.
+   * If you pass e.g. `project-image`, that supplies its own `shadow-light` / `rounded-*` — avoid conflicting `round`.
    */
   inlineImageClassName?: string
   /** When length matches `images`, sets `fetchPriority` on inline and lightbox images (top-of-page = higher). */
@@ -1258,7 +1270,7 @@ const Carousel = ({
             {imageUrls.map((src, idx) => (
               <div
                 key={idx}
-                className={`snap-center shrink-0 overflow-hidden shadow-light ${
+                className={`snap-center shrink-0 overflow-hidden ${
                   width > 0 ? '' : 'w-full min-w-full'
                 } ${lightbox ? 'cursor-pointer' : ''}`}
                 style={{
@@ -1289,6 +1301,11 @@ const Carousel = ({
                   className={`${
                     inlineImageClassName ? `${inlineImageClassName} ` : ''
                   }block h-auto w-full object-contain`}
+                  style={
+                    !inlineImageClassName
+                      ? { boxShadow: CAROUSEL_IMAGE_LAYERED_BOX_SHADOW }
+                      : undefined
+                  }
                   onLoad={syncInlineIndexFromScroll}
                   draggable={false}
                   {...(imageFetchPriorities?.length === images.length
