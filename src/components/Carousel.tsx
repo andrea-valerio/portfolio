@@ -15,6 +15,7 @@ import { animate, motion, useMotionValue, type PanInfo } from 'framer-motion'
 import {
   TransformComponent,
   TransformWrapper,
+  type ReactZoomPanPinchContentRef,
   type ReactZoomPanPinchRef,
 } from 'react-zoom-pan-pinch'
 import leftArrowOverlayDark from '../assets/icons/left-arrow-overlay-dark.svg'
@@ -522,40 +523,11 @@ function lightboxContainFrameStyle(
     : { width: '100%' }
 }
 
-function LightboxSlide({ src, alt, layout, maxWidthPx, roundRem = 1, fetchPriority }: LightboxSlideProps) {
-  const radius = `${roundRem}rem`
-  const frameStyle = lightboxContainFrameStyle(layout, maxWidthPx)
-
-  return (
-    <div className="flex h-full w-full min-h-0 min-w-0 items-center justify-center overflow-visible">
-      <div
-        {...{ [LIGHTBOX_IMAGE_HIT_ATTR]: '' }}
-        className="flex h-full w-full min-h-0 max-h-full max-w-full items-stretch justify-center overflow-hidden shadow-light"
-        style={{
-          borderRadius: radius,
-          overscrollBehaviorX: 'contain',
-        }}
-      >
-        <div
-          className="relative mx-auto h-full min-h-0 min-w-0 w-full max-w-full"
-          style={frameStyle}
-        >
-          <img
-            src={src}
-            alt={alt}
-            className="absolute inset-0 block h-full w-full object-contain"
-            style={{ borderRadius: radius }}
-            draggable={false}
-            {...(fetchPriority ? { fetchPriority } : {})}
-          />
-        </div>
-      </div>
-    </div>
-  )
-}
-
 type LightboxZoomableImageProps = LightboxSlideProps & {
-  /** Only the active slide handles pinch/pan; others render static. */
+  /**
+   * Only the active slide enables pinch/pan/wheel zoom. Inactive slides keep the same
+   * `TransformWrapper` tree (disabled + pointer-events-none) so slide changes do not remount.
+   */
   zoomEnabled: boolean
   onZoomChange: (zoomed: boolean) => void
 }
@@ -572,6 +544,7 @@ function LightboxZoomableImage({
 }: LightboxZoomableImageProps) {
   const radius = `${roundRem}rem`
   const frameStyle = lightboxContainFrameStyle(layout, maxWidthPx)
+  const rzppRef = useRef<ReactZoomPanPinchContentRef | null>(null)
 
   const [transformScale, setTransformScale] = useState(LIGHTBOX_ZOOM_MIN)
 
@@ -586,21 +559,9 @@ function LightboxZoomableImage({
   useEffect(() => {
     if (!zoomEnabled) {
       setTransformScale(LIGHTBOX_ZOOM_MIN)
+      rzppRef.current?.resetTransform(0)
     }
   }, [zoomEnabled])
-
-  if (!zoomEnabled) {
-    return (
-      <LightboxSlide
-        src={src}
-        alt={alt}
-        layout={layout}
-        maxWidthPx={maxWidthPx}
-        roundRem={roundRem}
-        fetchPriority={fetchPriority}
-      />
-    )
-  }
 
   const panningLocked = transformScale <= LIGHTBOX_ZOOM_THRESHOLD
 
@@ -628,9 +589,13 @@ function LightboxZoomableImage({
   }
 
   return (
-    <div className="flex h-full w-full min-h-0 min-w-0 items-center justify-center overflow-visible">
+    <div
+      className={`flex h-full w-full min-h-0 min-w-0 items-center justify-center overflow-visible ${
+        zoomEnabled ? '' : 'pointer-events-none'
+      }`}
+    >
       <div
-        {...{ [LIGHTBOX_IMAGE_HIT_ATTR]: '' }}
+        {...(zoomEnabled ? { [LIGHTBOX_IMAGE_HIT_ATTR]: '' } : {})}
         className="flex h-full w-full min-h-0 max-h-full max-w-full min-w-0 items-stretch justify-center overflow-hidden shadow-light"
         style={{
           borderRadius: radius,
@@ -639,19 +604,23 @@ function LightboxZoomableImage({
         role="presentation"
       >
         <TransformWrapper
+          ref={rzppRef}
           key={src}
+          disabled={!zoomEnabled}
           minScale={LIGHTBOX_ZOOM_MIN}
           maxScale={LIGHTBOX_ZOOM_MAX}
           initialScale={LIGHTBOX_ZOOM_MIN}
           limitToBounds
           centerOnInit
           smooth={false}
-          onTransform={onTransform}
-          panning={{ disabled: panningLocked }}
+          onTransform={zoomEnabled ? onTransform : undefined}
+          panning={{ disabled: !zoomEnabled || panningLocked }}
           wheel={{
             step: 0.12,
+            disabled: !zoomEnabled,
             activationKeys: lightboxWheelZoomActivationKeys,
           }}
+          pinch={{ disabled: !zoomEnabled }}
           doubleClick={{ disabled: true }}
         >
           <TransformComponent
