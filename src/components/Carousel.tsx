@@ -506,6 +506,8 @@ type LightboxSlideProps = {
   maxWidthPx?: number
   /** Matches inline strip `round` (rem); default `1` = 16px at default root font size */
   roundRem?: number
+  /** Same optional classes as inline strip `<img>` (`Carousel` `inlineImageClassName`) for parity in lightbox */
+  inlineImageClassName?: string
   fetchPriority?: ImageFetchPriorityHint
 }
 
@@ -538,6 +540,7 @@ function LightboxZoomableImage({
   layout,
   maxWidthPx,
   roundRem = 1,
+  inlineImageClassName,
   fetchPriority,
   zoomEnabled,
   onZoomChange,
@@ -637,7 +640,9 @@ function LightboxZoomableImage({
               <img
                 src={src}
                 alt={alt}
-                className="absolute inset-0 block h-full w-full object-contain select-none"
+                className={`${
+                  inlineImageClassName ? `${inlineImageClassName} ` : ''
+                }absolute inset-0 block h-full w-full object-contain select-none`}
                 style={{ borderRadius: radius }}
                 draggable={false}
                 {...(fetchPriority ? { fetchPriority } : {})}
@@ -665,6 +670,8 @@ type LightboxMotionGalleryProps = {
   horizontalInsetPx: number
   /** When length matches `images`, passed to each slide `img` */
   imageFetchPriorities?: ImageFetchPriorityHint[]
+  /** Matches `Carousel` `inlineImageClassName` for lightbox `<img>` parity with the strip */
+  inlineImageClassName?: string
 }
 
 function LightboxMotionGallery({
@@ -678,6 +685,7 @@ function LightboxMotionGallery({
   prefersReducedMotion: reducedMotion,
   horizontalInsetPx,
   imageFetchPriorities,
+  inlineImageClassName,
 }: LightboxMotionGalleryProps) {
   const stageRef = useRef<HTMLDivElement>(null)
   const [stageW, setStageW] = useState(0)
@@ -852,6 +860,7 @@ function LightboxMotionGallery({
                 layout={lightboxLayout}
                 maxWidthPx={lightboxPortraitMaxWidth}
                 roundRem={roundRem}
+                inlineImageClassName={inlineImageClassName}
                 fetchPriority={
                   imageFetchPriorities?.length === images.length
                     ? imageFetchPriorities[i]
@@ -875,7 +884,7 @@ type CarouselProps = {
    */
   images: BundledSrc[]
   width: number // image widths
-  /** Corner radius in rem for inline strip thumbnails (lightbox images are square). Default `1`. */
+  /** Corner radius in rem for inline strip thumbnails and lightbox frame (via `roundRem`). Default `1`. */
   round?: number
   /** Fullscreen lightbox on thumbnail click (backdrop click closes; image and nav arrows do not) */
   lightbox?: boolean
@@ -888,7 +897,12 @@ type CarouselProps = {
   lightboxPortraitMaxWidth?: number
   /** When length matches `images`, used for inline and lightbox `alt` text */
   imageAlts?: string[]
-  /** Extra classes for inline strip images (e.g. `project-image` for page-matched radius and shadow) */
+  /**
+   * Extra classes for inline strip `<img>` and the same classes on lightbox `<img>` for visual parity.
+   * Corner radius and frame shadow come from `round` and the strip/lightbox wrappers (`shadow-light`); avoid
+   * combining utilities like `project-image` (fixed `rounded-*` + `shadow-light`) with a conflicting `round`,
+   * or you may get doubled shadows or mismatched radii.
+   */
   inlineImageClassName?: string
   /** When length matches `images`, sets `fetchPriority` on inline and lightbox images (top-of-page = higher). */
   imageFetchPriorities?: ImageFetchPriorityHint[]
@@ -1139,6 +1153,7 @@ const Carousel = ({
                   roundRem={round}
                   prefersReducedMotion={lightboxPrefersReducedMotion}
                   horizontalInsetPx={lightboxEdgeInsetX}
+                  inlineImageClassName={inlineImageClassName}
                   imageFetchPriorities={
                     imageFetchPriorities?.length === images.length
                       ? imageFetchPriorities
@@ -1167,6 +1182,7 @@ const Carousel = ({
                     layout={lightboxLayout}
                     maxWidthPx={lightboxPortraitMaxWidth}
                     roundRem={round}
+                    inlineImageClassName={inlineImageClassName}
                     fetchPriority={imageFetchPriorities?.[0]}
                     zoomEnabled
                     onZoomChange={setLightboxSingleImageZoomed}
