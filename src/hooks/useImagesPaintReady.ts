@@ -1,5 +1,13 @@
 import { useEffect, useState } from 'react'
 
+/**
+ * Paint-gate hook (`useImagesPaintReady` + `projectPaintGateImages`) gated **Vite+React** case-study
+ * routes behind `ProjectPageSkeleton` until enough images loaded. The Astro migration renders case
+ * studies via islands (`client:load`) without that gate so content mounts immediately; to restore
+ * the old behavior, wrap the page body with the skeleton until `useImagesPaintReady` returns true
+ * (see `before_astro:src/pages/GroovePage.tsx`).
+ */
+
 /** Portion of images that must have loaded (or errored) before showing real UI. */
 export const IMAGE_PAINT_THRESHOLD = 0.8
 

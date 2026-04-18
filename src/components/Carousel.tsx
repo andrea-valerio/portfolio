@@ -187,10 +187,18 @@ function readInlineCarouselScrollState(
   return { index, atFirst, atLast }
 }
 
+/**
+ * Centers the target slide in the horizontal scroller (same math as pre-Astro Vite SPA).
+ * `scrollIntoView` was unreliable for nested overflow-x flex strips in some browsers, so we keep
+ * explicit `scrollTo` + `offsetLeft` (see `before_astro` branch).
+ */
 function scrollContainerToSlideIndex(container: HTMLDivElement, index: number) {
   const child = container.children[index] as HTMLElement | undefined
   if (!child) return
-  child.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
+  const target =
+    child.offsetLeft + child.offsetWidth / 2 - container.clientWidth / 2
+  const max = Math.max(0, container.scrollWidth - container.clientWidth)
+  container.scrollTo({ left: Math.max(0, Math.min(target, max)), behavior: 'smooth' })
 }
 
 type LightboxNav = { index: number; dir: 1 | -1 }
@@ -875,6 +883,10 @@ function LightboxMotionGallery({
 }
 
 type CarouselProps = {
+  /**
+   * Static imports from Vite/Astro (or `ImageMetadata`); **not** raw public paths.
+   * Resolve to URLs with `bundledSrc` from `types/bundled-asset` so `/portfolio/` base and hashed assets work.
+   */
   images: BundledSrc[]
   width: number // image widths
   /** Corner radius in rem for inline strip thumbnails (lightbox images are square). Default `1`. */
