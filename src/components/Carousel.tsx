@@ -508,12 +508,27 @@ type LightboxSlideProps = {
   fetchPriority?: ImageFetchPriorityHint
 }
 
+/** Portrait lightbox: fill vertical band between stage insets first; `maxWidthPx` caps width second (see plan). */
+function lightboxPortraitImgStyle(
+  layout: 'portrait' | 'landscape',
+  maxWidthPx: number | undefined,
+  radius: string
+): CSSProperties | undefined {
+  if (layout !== 'portrait') return undefined
+  return {
+    display: 'block',
+    borderRadius: radius,
+    maxHeight: '100%',
+    width: 'auto',
+    height: 'auto',
+    maxWidth: maxWidthPx != null ? `min(100%, ${maxWidthPx}px)` : '100%',
+    objectFit: 'contain',
+  }
+}
+
 function LightboxSlide({ src, alt, layout, maxWidthPx, roundRem = 1, fetchPriority }: LightboxSlideProps) {
   const radius = `${roundRem}rem`
-  const portraitMax: CSSProperties =
-    layout === 'portrait' && maxWidthPx != null
-      ? { maxWidth: `min(100%, ${maxWidthPx}px)` }
-      : {}
+  const portraitImgStyle = lightboxPortraitImgStyle(layout, maxWidthPx, radius)
 
   return (
     <div className="flex h-full w-full min-h-0 min-w-0 items-center justify-center overflow-visible">
@@ -523,14 +538,17 @@ function LightboxSlide({ src, alt, layout, maxWidthPx, roundRem = 1, fetchPriori
         style={{
           borderRadius: radius,
           overscrollBehaviorX: 'contain',
-          ...portraitMax,
         }}
       >
         <img
           src={src}
           alt={alt}
-          className="block h-auto w-auto max-h-full max-w-full object-contain"
-          style={{ display: 'block', borderRadius: radius }}
+          className={
+            layout === 'portrait'
+              ? 'mx-auto block object-contain'
+              : 'block h-auto w-auto max-h-full max-w-full object-contain'
+          }
+          style={portraitImgStyle ?? { display: 'block', borderRadius: radius }}
           draggable={false}
           {...(fetchPriority ? { fetchPriority } : {})}
         />
@@ -556,10 +574,7 @@ function LightboxZoomableImage({
   onZoomChange,
 }: LightboxZoomableImageProps) {
   const radius = `${roundRem}rem`
-  const portraitMax: CSSProperties =
-    layout === 'portrait' && maxWidthPx != null
-      ? { maxWidth: `min(100%, ${maxWidthPx}px)` }
-      : {}
+  const portraitImgStyle = lightboxPortraitImgStyle(layout, maxWidthPx, radius)
 
   const [transformScale, setTransformScale] = useState(LIGHTBOX_ZOOM_MIN)
 
@@ -623,7 +638,6 @@ function LightboxZoomableImage({
         style={{
           borderRadius: radius,
           overscrollBehaviorX: 'contain',
-          ...portraitMax,
         }}
         role="presentation"
       >
@@ -652,8 +666,14 @@ function LightboxZoomableImage({
             <img
               src={src}
               alt={alt}
-              className="block h-auto w-auto max-h-full max-w-full object-contain select-none"
-              style={{ display: 'block', borderRadius: radius }}
+              className={
+                layout === 'portrait'
+                  ? 'mx-auto block object-contain select-none'
+                  : 'block h-auto w-auto max-h-full max-w-full object-contain select-none'
+              }
+              style={
+                portraitImgStyle ?? { display: 'block', borderRadius: radius }
+              }
               draggable={false}
               {...(fetchPriority ? { fetchPriority } : {})}
             />
