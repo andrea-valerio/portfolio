@@ -539,9 +539,9 @@ type LightboxSlideProps = {
 }
 
 /**
- * Lightbox `<img>` fills the zoom stage; `object-fit: contain` scales the bitmap (including upscale)
- * until an edge meets the box. Optional `maxWidthPx` still caps the element for portrait mockups.
- * Border-radius and shadow apply to the full content box (not shrink-wrapped to bitmap bounds).
+ * Lightbox `<img>` fills the inner frame; `object-fit: contain` scales the bitmap until an edge meets
+ * the box. A wrapper `div` applies radius/shadow and also fills the zoom stage (`TransformComponent`).
+ * Optional `maxWidthPx` still caps the element for portrait mockups.
  */
 function lightboxHuggingImgStyle(
   layout: 'portrait' | 'landscape',
@@ -588,6 +588,23 @@ function LightboxZoomableImage({
 }: LightboxZoomableImageProps) {
   const radius = `${roundRem}rem`
   const huggingImgStyle = lightboxHuggingImgStyle(layout, maxWidthPx)
+  const lightboxFrameStyle: CSSProperties = {
+    boxSizing: 'border-box',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    flex: '1 1 auto',
+    alignSelf: 'stretch',
+    width: '100%',
+    height: '100%',
+    minWidth: 0,
+    minHeight: 0,
+    maxWidth: '100%',
+    maxHeight: '100%',
+    borderRadius: radius,
+    overflow: 'hidden',
+    ...(!inlineImageClassName ? { boxShadow: CAROUSEL_IMAGE_LAYERED_BOX_SHADOW } : {}),
+  }
   const rzppRef = useRef<ReactZoomPanPinchContentRef | null>(null)
 
   const [transformScale, setTransformScale] = useState(LIGHTBOX_ZOOM_MIN)
@@ -677,24 +694,21 @@ function LightboxZoomableImage({
                 wrapperStyle={rzppWrapperStyle}
                 contentStyle={rzppContentStyle}
               >
-                <img
-                  src={src}
-                  alt={alt}
-                  className={`${
-                    inlineImageClassName ? `${inlineImageClassName} ` : ''
-                  }select-none`}
-                  style={{
-                    ...huggingImgStyle,
-                    boxSizing: 'border-box',
-                    borderRadius: radius,
-                    overflow: 'hidden',
-                    ...(!inlineImageClassName
-                      ? { boxShadow: CAROUSEL_IMAGE_LAYERED_BOX_SHADOW }
-                      : {}),
-                  }}
-                  draggable={false}
-                  {...(fetchPriority ? { fetchPriority } : {})}
-                />
+                <div className="min-h-0 min-w-0 flex-1" style={lightboxFrameStyle} role="presentation">
+                  <img
+                    src={src}
+                    alt={alt}
+                    className={`${
+                      inlineImageClassName ? `${inlineImageClassName} ` : ''
+                    }select-none`}
+                    style={{
+                      ...huggingImgStyle,
+                      boxSizing: 'border-box',
+                    }}
+                    draggable={false}
+                    {...(fetchPriority ? { fetchPriority } : {})}
+                  />
+                </div>
               </TransformComponent>
             </TransformWrapper>
           </div>
