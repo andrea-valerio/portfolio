@@ -9,7 +9,7 @@ export default function VideoAnimation() {
 /*
 import React, { useRef, useState, useEffect } from 'react'
 import animationMp4     from '../assets/projects/groove/results/animation.mp4';
-import videoOverlay from '../assets/projects/groove/results/video-overlay.webp';
+import videoOverlay from '../assets/projects/groove/results/video-overlay.png';
 
 const VideoAnimation: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null)

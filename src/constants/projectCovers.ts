@@ -1,13 +1,13 @@
 import type { BundledSrc } from '../types/bundled-asset'
-import meetupCover from '../assets/projects/meetup.webp'
-import grooveCover from '../assets/projects/groove.webp'
-import thesisCover from '../assets/projects/thesis.webp'
-import ovenconfCover from '../assets/projects/ovenconf.webp'
-import citinstCover from '../assets/projects/citinst.webp'
-import ecomuseoCover from '../assets/projects/ecomuseo.webp'
-import sustsmokCover from '../assets/projects/sustsmok.webp'
-import reelsfypCover from '../assets/projects/reelsfyp.webp'
-import placeholderCover from '../assets/projects/placeholder.webp'
+import meetupCover from '../assets/projects/meetup.png'
+import grooveCover from '../assets/projects/groove.png'
+import thesisCover from '../assets/projects/thesis.png'
+import ovenconfCover from '../assets/projects/ovenconf.png'
+import citinstCover from '../assets/projects/citinst.png'
+import ecomuseoCover from '../assets/projects/ecomuseo.png'
+import sustsmokCover from '../assets/projects/sustsmok.png'
+import reelsfypCover from '../assets/projects/reelsfyp.png'
+import placeholderCover from '../assets/projects/placeholder.png'
 
 /** Case-study slug → bundled cover asset (same set as the home grid). */
 export const projectCoverBySlug: Record<string, BundledSrc> = {

@@ -1,6 +1,6 @@
 import type { BundledSrc } from '../types/bundled-asset'
-import ribbonStartup from '../assets/projects/ribbon-startup.webp'
-import ribbonMscThesis from '../assets/projects/ribbon-msc-thesis.webp'
+import ribbonStartup from '../assets/projects/ribbon-startup.png'
+import ribbonMscThesis from '../assets/projects/ribbon-msc-thesis.png'
 
 export type HomeProjectEntry = {
   name: string

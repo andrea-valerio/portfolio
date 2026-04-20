@@ -6,14 +6,14 @@ import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
 import { buildFetchPriorities } from '../hooks/useImagesPaintReady'
 import type { BundledSrc } from '../types/bundled-asset'
-import reelsfypHero from '../assets/projects/reelsfyp.webp'
-import instagramImg       from '../assets/projects/reelsfyp/instagram.webp';
-import tiktokImg          from '../assets/projects/reelsfyp/tiktok.webp';
-import questionnaireImg   from '../assets/projects/reelsfyp/questionnaire.webp';
-import kpiGeneral         from '../assets/projects/reelsfyp/results/kpi-general.webp';
-import kpiInstagram       from '../assets/projects/reelsfyp/results/kpi-instagram.webp';
-import kpiTikTok          from '../assets/projects/reelsfyp/results/kpi-tiktok.webp';
-import kpiAge             from '../assets/projects/reelsfyp/results/kpi-age.webp';
+import reelsfypHero from '../assets/projects/reelsfyp.png'
+import instagramImg       from '../assets/projects/reelsfyp/instagram.png';
+import tiktokImg          from '../assets/projects/reelsfyp/tiktok.png';
+import questionnaireImg   from '../assets/projects/reelsfyp/questionnaire.png';
+import kpiGeneral         from '../assets/projects/reelsfyp/results/kpi-general.png';
+import kpiInstagram       from '../assets/projects/reelsfyp/results/kpi-instagram.png';
+import kpiTikTok          from '../assets/projects/reelsfyp/results/kpi-tiktok.png';
+import kpiAge             from '../assets/projects/reelsfyp/results/kpi-age.png';
 
 const REELSFYP_ORDERED_IMAGES: readonly BundledSrc[] = [
   reelsfypHero,

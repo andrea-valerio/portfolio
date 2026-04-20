@@ -6,17 +6,17 @@ import DetailsText from '../components/DetailsText'
 import Carousel from '../components/Carousel'
 import { buildFetchPriorities } from '../hooks/useImagesPaintReady'
 import type { BundledSrc } from '../types/bundled-asset'
-import sustsmokHero from '../assets/projects/sustsmok.webp'
-import roveretoImg        from '../assets/projects/sustsmok/rovereto.webp';
-import povoImg           from '../assets/projects/sustsmok/povo.webp';
-import sociologyImg      from '../assets/projects/sustsmok/sociology.webp';
-import cardsImg          from '../assets/projects/sustsmok/cards.webp';
-import workshop1         from '../assets/projects/sustsmok/workshop-1.webp';
-import workshop2         from '../assets/projects/sustsmok/workshop-2.webp';
-import workshop3         from '../assets/projects/sustsmok/workshop-3.webp';
-import workshop4         from '../assets/projects/sustsmok/workshop-4.webp';
-import workshop5         from '../assets/projects/sustsmok/workshop-5.webp';
-import workshop6         from '../assets/projects/sustsmok/workshop-6.webp';
+import sustsmokHero from '../assets/projects/sustsmok.png'
+import roveretoImg        from '../assets/projects/sustsmok/rovereto.png';
+import povoImg           from '../assets/projects/sustsmok/povo.png';
+import sociologyImg      from '../assets/projects/sustsmok/sociology.png';
+import cardsImg          from '../assets/projects/sustsmok/cards.png';
+import workshop1         from '../assets/projects/sustsmok/workshop-1.png';
+import workshop2         from '../assets/projects/sustsmok/workshop-2.png';
+import workshop3         from '../assets/projects/sustsmok/workshop-3.png';
+import workshop4         from '../assets/projects/sustsmok/workshop-4.png';
+import workshop5         from '../assets/projects/sustsmok/workshop-5.png';
+import workshop6         from '../assets/projects/sustsmok/workshop-6.png';
 
 const SUSTSMOK_ORDERED_IMAGES: readonly BundledSrc[] = [
   sustsmokHero,

@@ -539,24 +539,20 @@ type LightboxSlideProps = {
 }
 
 /**
- * Lightbox `<img>` fills the inner frame; `object-fit: contain` scales the bitmap until an edge meets
- * the box. A wrapper `div` applies radius/shadow and also fills the zoom stage (`TransformComponent`).
- * Optional `maxWidthPx` still caps the element for portrait mockups.
+ * Lightbox `<img>` with intrinsic `width`/`height: auto` inside a max-bounded, centered frame so the
+ * wrapper shrink-wraps toward the laid-out bitmap (CSS-only; no explicit `aspect-ratio` from `onLoad`).
+ * Optional `maxWidthPx` caps width for portrait mockups.
  */
-function lightboxHuggingImgStyle(
+function lightboxContainedImgStyle(
   layout: 'portrait' | 'landscape',
   maxWidthPx: number | undefined
 ): CSSProperties {
   const base: CSSProperties = {
     display: 'block',
-    flex: '1 1 auto',
-    alignSelf: 'stretch',
-    minWidth: 0,
-    minHeight: 0,
-    width: '100%',
-    height: '100%',
-    maxHeight: '100%',
     maxWidth: '100%',
+    maxHeight: '100%',
+    width: 'auto',
+    height: 'auto',
     objectFit: 'contain',
     objectPosition: 'center',
   }
@@ -587,20 +583,17 @@ function LightboxZoomableImage({
   onZoomChange,
 }: LightboxZoomableImageProps) {
   const radius = `${roundRem}rem`
-  const huggingImgStyle = lightboxHuggingImgStyle(layout, maxWidthPx)
+  const containedImgStyle = lightboxContainedImgStyle(layout, maxWidthPx)
+  /** Shrink-wrap frame: no `width`/`height: 100%` so the box can follow the `<img>` layout size. */
   const lightboxFrameStyle: CSSProperties = {
     boxSizing: 'border-box',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'stretch',
-    flex: '1 1 auto',
-    alignSelf: 'stretch',
-    width: '100%',
-    height: '100%',
-    minWidth: 0,
-    minHeight: 0,
     maxWidth: '100%',
     maxHeight: '100%',
+    minWidth: 0,
+    minHeight: 0,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
     borderRadius: radius,
     overflow: 'hidden',
     ...(!inlineImageClassName ? { boxShadow: CAROUSEL_IMAGE_LAYERED_BOX_SHADOW } : {}),
@@ -640,8 +633,8 @@ function LightboxZoomableImage({
     boxSizing: 'border-box',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'stretch',
-    justifyContent: 'flex-start',
+    alignItems: 'center',
+    justifyContent: 'center',
     width: '100%',
     height: '100%',
     minWidth: 0,
@@ -690,11 +683,11 @@ function LightboxZoomableImage({
             >
               <TransformComponent
                 wrapperClass="!flex !h-full !w-full !min-h-0 !min-w-0 !flex-1 !flex-col !items-stretch"
-                contentClass="!flex !h-full !w-full !min-h-0 !min-w-0 !flex-1 !flex-col !items-stretch"
+                contentClass="!flex !h-full !w-full !min-h-0 !min-w-0 !flex-1 !flex-col !items-center !justify-center"
                 wrapperStyle={rzppWrapperStyle}
                 contentStyle={rzppContentStyle}
               >
-                <div className="min-h-0 min-w-0 flex-1" style={lightboxFrameStyle} role="presentation">
+                <div className="min-h-0 min-w-0" style={lightboxFrameStyle} role="presentation">
                   <img
                     src={src}
                     alt={alt}
@@ -702,7 +695,7 @@ function LightboxZoomableImage({
                       inlineImageClassName ? `${inlineImageClassName} ` : ''
                     }select-none`}
                     style={{
-                      ...huggingImgStyle,
+                      ...containedImgStyle,
                       boxSizing: 'border-box',
                     }}
                     draggable={false}
