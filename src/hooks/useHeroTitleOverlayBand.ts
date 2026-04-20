@@ -21,8 +21,9 @@ const sameLayout = (a: Layout, b: Layout) =>
 
 /**
  * - **Band**: fixed flex overlay for the title — clipped to viewport and above `[data-overlay-sheet]`.
- * - **Layer**: fixed hero image box tracks the in-flow spacer so initial scroll (~20vh) can show ~40vh
- *   of the 60vh band; white sheet stacks above (z-10) and covers the image when scrolling.
+ * - **Layer**: fixed hero image pinned to the viewport top (`top: 0`); height follows the in-flow spacer.
+ *   The white `[data-overlay-sheet]` body scrolls over it. The layer hides once the spacer no longer
+ *   intersects the viewport so the image does not persist under the rest of the page.
  */
 export function useHeroTitleOverlayBand(enabled: boolean) {
   const heroRef = useRef<HTMLDivElement>(null)
@@ -70,7 +71,7 @@ export function useHeroTitleOverlayBand(enabled: boolean) {
     const layer: Layer =
       rect.bottom > 0 && rect.top < vh && layerHeight > 0
         ? {
-            top: Math.round(rect.top),
+            top: 0,
             height: layerHeight,
             visible: true,
           }
@@ -117,7 +118,6 @@ export function useHeroTitleOverlayBand(enabled: boolean) {
     bandTopPx: band.top,
     bandHeightPx: band.height,
     bandVisible: band.visible,
-    layerTopPx: layer.top,
     layerHeightPx: layer.height,
     layerVisible: layer.visible,
   }

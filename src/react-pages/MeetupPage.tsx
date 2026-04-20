@@ -114,6 +114,7 @@ function MeetupPage() {
           <Carousel
             images={redesignImages}
             width={0}
+            round={1.25}
             lightbox
             lightboxLayout="landscape"
             imageAlts={redesignAlts}
@@ -147,6 +148,7 @@ function MeetupPage() {
           <Carousel
             images={growthImages}
             width={0}
+            round={1.25}
             lightbox
             lightboxLayout="landscape"
             imageAlts={growthAlts}

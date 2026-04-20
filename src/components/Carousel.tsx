@@ -33,9 +33,9 @@ import { bundledSrc, type BundledSrc } from '../types/bundled-asset'
 const LIGHTBOX_SCRIM = 'rgba(28, 36, 42, 0.75)'
 
 /**
- * Soft edge on carousel/lightbox `<img>` elements (not on outer wrappers), matching `.shadow-light`
- * plus a hair inset and depth. Inset draws inside the bitmap so part of the edge stays visible even
- * when outer box-shadow is clipped by `overflow: hidden` parents.
+ * Soft edge matching `.shadow-light` plus a hair inset and depth. Lightbox applies this on the
+ * `<img>`; the inline strip applies it on the rounded slide wrapper so `overflow: hidden` does not
+ * clip the outer shadow layers. Inset draws inside the card edge.
  */
 const CAROUSEL_IMAGE_LAYERED_BOX_SHADOW =
   'inset 0 0 0 1px rgba(28, 36, 42, 0.08), 0 0 2px rgba(28, 36, 42, 0.15), 0 2px 6px rgba(28, 36, 42, 0.07)'
@@ -47,8 +47,8 @@ const CAROUSEL_IMAGE_LAYERED_BOX_SHADOW =
 const LB = {
   /** Horizontal gutter (px) from viewport to image stage */
   edgeInsetX: 120,
-  /** Top and bottom inset (px) for the lightbox image stage */
-  imageStageInsetY: 128,
+  /** Top and bottom inset (px) for the lightbox image stage (wide viewports only; compact uses LB_COMPACT) */
+  imageStageInsetY: 80,
   /** Horizontal gap (px) between slides in the draggable lightbox strip */
   slideGap: 12,
   /** Distance (px) from viewport bottom edge to lightbox pill navigator */
@@ -106,6 +106,8 @@ function useLightboxCompactLayout() {
 /** In-page carousel: vertical gap (px) from image row to nav below — design: 20px */
 const IC = {
   stepperGapToImages: 20,
+  /** Scrollport padding (px) so layered `box-shadow` on slides stays inside `overflow-x-auto` */
+  scrollPaddingPx: 8,
 } as const
 
 /** Parent must use `group` when interactive; omit on disabled controls so hover does not dim inactive chevrons. */
@@ -520,17 +522,25 @@ type LightboxSlideProps = {
 }
 
 /**
- * Lightbox: `object-fit: contain` on an img that **fills** a definite-width × definite-height box
- * so the bitmap always touches either the full width or full height of that box (standard contain).
- * Optional portrait `maxWidthPx` shrinks the box horizontally (phone mockup cap) while keeping height.
+ * Lightbox hugging `<img>`: same contain math as the inline strip (bitmap box matches displayed
+ * aspect), not a full-bleed letterboxed rectangle — so `border-radius` hugs visible pixels.
  */
-function lightboxContainFrameStyle(
+function lightboxHuggingImgStyle(
   layout: 'portrait' | 'landscape',
   maxWidthPx: number | undefined
 ): CSSProperties {
-  return layout === 'portrait' && maxWidthPx != null
-    ? { width: '100%', maxWidth: `min(100%, ${maxWidthPx}px)` }
-    : { width: '100%' }
+  const base: CSSProperties = {
+    display: 'block',
+    width: 'auto',
+    height: 'auto',
+    maxHeight: '100%',
+    maxWidth: '100%',
+    objectFit: 'contain',
+  }
+  if (layout === 'portrait' && maxWidthPx != null) {
+    return { ...base, maxWidth: `min(100%, ${maxWidthPx}px)` }
+  }
+  return base
 }
 
 type LightboxZoomableImageProps = LightboxSlideProps & {
@@ -554,7 +564,7 @@ function LightboxZoomableImage({
   onZoomChange,
 }: LightboxZoomableImageProps) {
   const radius = `${roundRem}rem`
-  const frameStyle = lightboxContainFrameStyle(layout, maxWidthPx)
+  const huggingImgStyle = lightboxHuggingImgStyle(layout, maxWidthPx)
   const rzppRef = useRef<ReactZoomPanPinchContentRef | null>(null)
 
   const [transformScale, setTransformScale] = useState(LIGHTBOX_ZOOM_MIN)
@@ -576,7 +586,13 @@ function LightboxZoomableImage({
 
   const panningLocked = transformScale <= LIGHTBOX_ZOOM_THRESHOLD
 
-  /** Overrides library `.wrapper`/`.content` `fit-content` defaults so the stage fills the slide and gestures hit a full-size target. */
+  const stopOverlayDismissIfZoomed = useCallback((e: MouseEvent | PointerEvent) => {
+    if (transformScale > LIGHTBOX_ZOOM_THRESHOLD) {
+      e.stopPropagation()
+    }
+  }, [transformScale])
+
+  /** Overrides library `.wrapper`/`.content` `fit-content` defaults so the stage fills the slide. */
   const rzppWrapperStyle: CSSProperties = {
     boxSizing: 'border-box',
     width: '100%',
@@ -604,14 +620,13 @@ function LightboxZoomableImage({
       className={`flex h-full w-full min-h-0 min-w-0 items-center justify-center overflow-visible ${
         zoomEnabled ? '' : 'pointer-events-none'
       }`}
+      onClick={stopOverlayDismissIfZoomed}
+      onPointerDown={stopOverlayDismissIfZoomed}
     >
       <div
         {...(zoomEnabled ? { [LIGHTBOX_IMAGE_HIT_ATTR]: '' } : {})}
-        className="flex h-full w-full min-h-0 max-h-full max-w-full min-w-0 items-stretch justify-center overflow-hidden"
-        style={{
-          borderRadius: radius,
-          overscrollBehaviorX: 'contain',
-        }}
+        className="flex h-full w-full min-h-0 max-h-full max-w-full min-w-0 items-center justify-center overflow-hidden"
+        style={{ overscrollBehaviorX: 'contain' }}
         role="presentation"
       >
         <TransformWrapper
@@ -635,32 +650,30 @@ function LightboxZoomableImage({
           doubleClick={{ disabled: true }}
         >
           <TransformComponent
-            wrapperClass="!flex !h-full !w-full !min-h-0 !min-w-0 items-stretch justify-center"
-            contentClass="!flex !h-full !w-full !min-h-0 !min-w-0 items-stretch justify-center"
+            wrapperClass="!flex !h-full !w-full !min-h-0 !min-w-0 items-center justify-center"
+            contentClass="!flex !h-full !w-full !min-h-0 !min-w-0 items-center justify-center"
             wrapperStyle={rzppWrapperStyle}
-            contentStyle={{
-              ...rzppContentStyle,
-              alignItems: 'stretch',
-              justifyContent: 'center',
-            }}
+            contentStyle={rzppContentStyle}
           >
-            <div className="relative mx-auto h-full min-h-0 min-w-0 w-full max-w-full" style={frameStyle}>
-              <img
-                src={src}
-                alt={alt}
-                className={`${
-                  inlineImageClassName ? `${inlineImageClassName} ` : ''
-                }absolute inset-0 block h-full w-full object-contain select-none`}
-                style={{
-                  borderRadius: radius,
-                  ...(!inlineImageClassName
-                    ? { boxShadow: CAROUSEL_IMAGE_LAYERED_BOX_SHADOW }
-                    : {}),
-                }}
-                draggable={false}
-                {...(fetchPriority ? { fetchPriority } : {})}
-              />
-            </div>
+            <img
+              src={src}
+              alt={alt}
+              className={`${
+                inlineImageClassName ? `${inlineImageClassName} ` : ''
+              }select-none`}
+              style={{
+                ...huggingImgStyle,
+                borderRadius: radius,
+                overflow: 'hidden',
+                ...(!inlineImageClassName
+                  ? { boxShadow: CAROUSEL_IMAGE_LAYERED_BOX_SHADOW }
+                  : {}),
+              }}
+              draggable={false}
+              {...(fetchPriority ? { fetchPriority } : {})}
+              onClick={stopLightboxBubble}
+              onPointerDown={stopLightboxBubble}
+            />
           </TransformComponent>
         </TransformWrapper>
       </div>
@@ -834,8 +847,6 @@ function LightboxMotionGallery({
     <div
       ref={stageRef}
       className="pointer-events-auto relative h-full min-h-0 w-full min-w-0 overflow-hidden"
-      onClick={stopLightboxBubble}
-      onPointerDown={stopLightboxBubble}
       role="presentation"
     >
       {stageW > 0 && (
@@ -911,9 +922,10 @@ type CarouselProps = {
   /** When length matches `images`, used for inline and lightbox `alt` text */
   imageAlts?: string[]
   /**
-   * Extra classes for inline strip `<img>` and lightbox `<img>`. When omitted, both use
-   * `CAROUSEL_IMAGE_LAYERED_BOX_SHADOW` on the **image** (inset hairline + soft outer layers), not on wrappers.
-   * If you pass e.g. `project-image`, that supplies its own `shadow-light` / `rounded-*` — avoid conflicting `round`.
+   * Extra classes for inline strip `<img>` and lightbox `<img>`. When omitted, lightbox applies
+   * `CAROUSEL_IMAGE_LAYERED_BOX_SHADOW` on the `<img>`; the inline strip applies the same shadow on
+   * the rounded slide wrapper so it is not clipped. If you pass e.g. `project-image`, that supplies
+   * its own `shadow-light` / `rounded-*` — avoid conflicting `round`.
    */
   inlineImageClassName?: string
   /** When length matches `images`, sets `fetchPriority` on inline and lightbox images (top-of-page = higher). */
@@ -1180,8 +1192,6 @@ const Carousel = ({
                     paddingLeft: lightboxEdgeInsetX,
                     paddingRight: lightboxEdgeInsetX,
                   }}
-                  onClick={stopLightboxBubble}
-                  onPointerDown={stopLightboxBubble}
                   role="presentation"
                 >
                   <LightboxZoomableImage
@@ -1264,7 +1274,8 @@ const Carousel = ({
         <div className="relative w-full overflow-visible">
           <div
             ref={scrollRef}
-            className="relative z-0 flex w-full overflow-x-auto scroll-smooth gap-[3rem] px-1 pt-1 pb-1 hide-scrollbar snap-x snap-mandatory"
+            className="relative z-0 flex w-full overflow-x-auto scroll-smooth gap-[3rem] hide-scrollbar snap-x snap-mandatory"
+            style={{ padding: IC.scrollPaddingPx }}
             onScroll={onInlineScroll}
           >
             {imageUrls.map((src, idx) => (
@@ -1276,6 +1287,9 @@ const Carousel = ({
                 style={{
                   width: width > 0 ? `${width}px` : undefined,
                   borderRadius: `${round}rem`,
+                  ...(!inlineImageClassName
+                    ? { boxShadow: CAROUSEL_IMAGE_LAYERED_BOX_SHADOW }
+                    : {}),
                 }}
                 onClick={lightbox ? () => openLightbox(idx) : undefined}
                 onKeyDown={
@@ -1301,11 +1315,6 @@ const Carousel = ({
                   className={`${
                     inlineImageClassName ? `${inlineImageClassName} ` : ''
                   }block h-auto w-full object-contain`}
-                  style={
-                    !inlineImageClassName
-                      ? { boxShadow: CAROUSEL_IMAGE_LAYERED_BOX_SHADOW }
-                      : undefined
-                  }
                   onLoad={syncInlineIndexFromScroll}
                   draggable={false}
                   {...(imageFetchPriorities?.length === images.length

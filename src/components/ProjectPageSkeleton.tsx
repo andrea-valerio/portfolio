@@ -22,6 +22,7 @@ function Header() {
     return (
       <SkeletonTheme {...theme}>
         <div
+          data-hero-spacer
           className={`relative w-full flex items-center justify-center overflow-hidden ${HERO_HEIGHTS}`}
         >
           <div className="absolute inset-0">
@@ -39,9 +40,8 @@ function Header() {
     <SkeletonTheme {...theme}>
       <>
         <div
-          className="fixed inset-x-0 z-0 pointer-events-none overflow-hidden transition-none"
+          className="fixed inset-x-0 top-0 z-0 pointer-events-none overflow-hidden transition-none"
           style={{
-            top: overlay.layerTopPx,
             height: overlay.layerVisible ? overlay.layerHeightPx : 0,
             visibility: overlay.layerVisible ? 'visible' : 'hidden',
           }}
@@ -62,6 +62,7 @@ function Header() {
         </div>
         <div
           ref={overlay.heroRef}
+          data-hero-spacer
           className={`relative w-full shrink-0 ${HERO_HEIGHTS}`}
           aria-hidden
         />
