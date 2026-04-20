@@ -45,15 +45,6 @@ const LayoutWrapper = ({
   const innerColumnClass =
     'w-full max-w-[1240px] mx-auto px-5 sm:px-8 md:px-10 lg:px-20'
 
-  const mainColumn = (
-    <>
-      {content}
-      <div className="col-span-12">
-        <Footer />
-      </div>
-    </>
-  )
-
   return (
     <div className={`w-full flex flex-col items-center ${gapClass} ${className}`}>
       {contentOverlaysHero ? <InitialHeroCoverScroll active /> : null}
@@ -68,10 +59,24 @@ const LayoutWrapper = ({
             aria-hidden
             className="pointer-events-none absolute left-0 right-0 top-0 z-[2] min-h-[1.5rem] h-8 sm:h-10 md:h-14 lg:h-16 -translate-y-full bg-gradient-to-b from-white/0 to-white"
           />
-          <div className={`${innerColumnClass} relative z-[1] pt-12`}>{mainColumn}</div>
+          <div className={`${innerColumnClass} relative z-[1] pt-12`}>
+            <>
+              {content}
+              <div className="col-span-12">
+                <Footer />
+              </div>
+            </>
+          </div>
         </div>
       ) : (
-        <div className={innerColumnClass}>{mainColumn}</div>
+        <div className={innerColumnClass}>
+          <>
+            {content}
+            <div className="col-span-12">
+              <Footer />
+            </div>
+          </>
+        </div>
       )}
     </div>
   )

@@ -29,7 +29,7 @@
   }
 
   .link-nav {
-    @apply !font-normal text-black no-underline hover:underline hover:decoration-black hover:decoration-1 hover:underline-offset-2;
+    @apply font-body font-extralight text-black no-underline hover:underline hover:decoration-black/80 hover:decoration-1 hover:underline-offset-2;
   }
 }
 

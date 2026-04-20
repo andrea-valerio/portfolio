@@ -73,7 +73,6 @@ function ReelsFypPage() {
               round={1}
               lightbox
               lightboxLayout="portrait"
-              lightboxPortraitMaxWidth={400}
               imageAlts={['Instagram Reels']}
               imageFetchPriorities={REELS_PRIORITIES.slice(1, 2)}
             />
@@ -83,7 +82,6 @@ function ReelsFypPage() {
               round={1}
               lightbox
               lightboxLayout="portrait"
-              lightboxPortraitMaxWidth={400}
               imageAlts={['TikTok For You Page']}
               imageFetchPriorities={REELS_PRIORITIES.slice(2, 3)}
             />

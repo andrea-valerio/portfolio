@@ -56,7 +56,7 @@ const IndexItem = ({ children, anchorId }: IndexItemProps) => {
       onKeyDown={handleKeyDown}
     >
       <span className="flex-shrink-0 w-[0.25rem] h-[0.25rem] bg-black rounded-full mt-[0.625rem]" />
-      <div className="no-underline group-hover:underline group-hover:decoration-black group-hover:decoration-1 group-hover:underline-offset-2">
+      <div className="no-underline group-hover:underline group-hover:decoration-black/80 group-hover:decoration-1 group-hover:underline-offset-2">
         {children}
       </div>
     </div>

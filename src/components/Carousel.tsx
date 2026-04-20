@@ -47,8 +47,16 @@ const CAROUSEL_IMAGE_LAYERED_BOX_SHADOW =
 const LB = {
   /** Horizontal gutter (px) from viewport to image stage */
   edgeInsetX: 120,
-  /** Top and bottom inset (px) for the lightbox image stage (wide viewports only; compact uses LB_COMPACT) */
-  imageStageInsetY: 80,
+  /**
+   * Target viewport-to-zoom vertical inset (px) on wide viewports: stage top/bottom use this minus
+   * `imageContentPaddingPx`, then slide top/bottom padding adds it back (total stays this value).
+   */
+  imageStageInsetY: 96,
+  /**
+   * Inner inset (px) on the slide inside the absolute stage. Subtracted from stage top/bottom so
+   * viewport-to-zoom distance stays `imageStageInsetY` / compact tokens (max of stage vs this pad).
+   */
+  imageContentPaddingPx: 16,
   /** Horizontal gap (px) between slides in the draggable lightbox strip */
   slideGap: 12,
   /** Distance (px) from viewport bottom edge to lightbox pill navigator */
@@ -82,6 +90,13 @@ const LB = {
   wheelNavCooldownMs: 550,
 } as const
 
+/**
+ * Viewport-stable gutter (CSS layout px, not bitmap pixels) between the slide edge and the zoom
+ * surface. Applied on a wrapper outside `TransformWrapper` so pinch/wheel zoom does not scale this
+ * inset the way padding on the transformed `<img>` would.
+ */
+const LIGHTBOX_IMAGE_INNER_PADDING_PX = 16
+
 /** Below Tailwind `md` (768px): tighter insets so the lightbox image stage matches phone viewports. */
 const LB_COMPACT = {
   edgeInsetX: 8,
@@ -92,7 +107,9 @@ const LB_COMPACT = {
 const LIGHTBOX_COMPACT_MQ = '(max-width: 767px)'
 
 function useLightboxCompactLayout() {
-  const [compact, setCompact] = useState(false)
+  const [compact, setCompact] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia(LIGHTBOX_COMPACT_MQ).matches
+  )
   useEffect(() => {
     const mq = window.matchMedia(LIGHTBOX_COMPACT_MQ)
     const sync = () => setCompact(mq.matches)
@@ -492,7 +509,7 @@ function usePrefersReducedMotion() {
 const lightboxSpring = { type: 'spring' as const, stiffness: 380, damping: 36, mass: 0.85 }
 
 const LIGHTBOX_ZOOM_MIN = 1
-const LIGHTBOX_ZOOM_MAX = 4
+const LIGHTBOX_ZOOM_MAX = 5
 /** Treat as zoomed when scale exceeds this (disables horizontal slide drag). */
 const LIGHTBOX_ZOOM_THRESHOLD = 1.02
 
@@ -522,8 +539,9 @@ type LightboxSlideProps = {
 }
 
 /**
- * Lightbox hugging `<img>`: same contain math as the inline strip (bitmap box matches displayed
- * aspect), not a full-bleed letterboxed rectangle — so `border-radius` hugs visible pixels.
+ * Lightbox `<img>` fills the zoom stage; `object-fit: contain` scales the bitmap (including upscale)
+ * until an edge meets the box. Optional `maxWidthPx` still caps the element for portrait mockups.
+ * Border-radius and shadow apply to the full content box (not shrink-wrapped to bitmap bounds).
  */
 function lightboxHuggingImgStyle(
   layout: 'portrait' | 'landscape',
@@ -531,11 +549,16 @@ function lightboxHuggingImgStyle(
 ): CSSProperties {
   const base: CSSProperties = {
     display: 'block',
-    width: 'auto',
-    height: 'auto',
+    flex: '1 1 auto',
+    alignSelf: 'stretch',
+    minWidth: 0,
+    minHeight: 0,
+    width: '100%',
+    height: '100%',
     maxHeight: '100%',
     maxWidth: '100%',
     objectFit: 'contain',
+    objectPosition: 'center',
   }
   if (layout === 'portrait' && maxWidthPx != null) {
     return { ...base, maxWidth: `min(100%, ${maxWidthPx}px)` }
@@ -586,12 +609,6 @@ function LightboxZoomableImage({
 
   const panningLocked = transformScale <= LIGHTBOX_ZOOM_THRESHOLD
 
-  const stopOverlayDismissIfZoomed = useCallback((e: MouseEvent | PointerEvent) => {
-    if (transformScale > LIGHTBOX_ZOOM_THRESHOLD) {
-      e.stopPropagation()
-    }
-  }, [transformScale])
-
   /** Overrides library `.wrapper`/`.content` `fit-content` defaults so the stage fills the slide. */
   const rzppWrapperStyle: CSSProperties = {
     boxSizing: 'border-box',
@@ -605,8 +622,9 @@ function LightboxZoomableImage({
   const rzppContentStyle: CSSProperties = {
     boxSizing: 'border-box',
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    justifyContent: 'flex-start',
     width: '100%',
     height: '100%',
     minWidth: 0,
@@ -617,65 +635,70 @@ function LightboxZoomableImage({
 
   return (
     <div
-      className={`flex h-full w-full min-h-0 min-w-0 items-center justify-center overflow-visible ${
+      className={`flex h-full w-full min-h-0 min-w-0 flex-col items-stretch overflow-visible ${
         zoomEnabled ? '' : 'pointer-events-none'
       }`}
-      onClick={stopOverlayDismissIfZoomed}
-      onPointerDown={stopOverlayDismissIfZoomed}
     >
       <div
         {...(zoomEnabled ? { [LIGHTBOX_IMAGE_HIT_ATTR]: '' } : {})}
-        className="flex h-full w-full min-h-0 max-h-full max-w-full min-w-0 items-center justify-center overflow-hidden"
+        className="flex min-h-0 min-w-0 h-full w-full max-h-full max-w-full flex-1 flex-col items-stretch overflow-hidden"
         style={{ overscrollBehaviorX: 'contain' }}
         role="presentation"
       >
-        <TransformWrapper
-          ref={rzppRef}
-          key={src}
-          disabled={!zoomEnabled}
-          minScale={LIGHTBOX_ZOOM_MIN}
-          maxScale={LIGHTBOX_ZOOM_MAX}
-          initialScale={LIGHTBOX_ZOOM_MIN}
-          limitToBounds
-          centerOnInit
-          smooth={false}
-          onTransform={zoomEnabled ? onTransform : undefined}
-          panning={{ disabled: !zoomEnabled || panningLocked }}
-          wheel={{
-            step: 0.12,
-            disabled: !zoomEnabled,
-            activationKeys: lightboxWheelZoomActivationKeys,
-          }}
-          pinch={{ disabled: !zoomEnabled }}
-          doubleClick={{ disabled: true }}
+        <div
+          className="box-border flex min-h-0 min-w-0 h-full w-full flex-1 flex-col"
+          style={{ padding: LIGHTBOX_IMAGE_INNER_PADDING_PX }}
+          role="presentation"
         >
-          <TransformComponent
-            wrapperClass="!flex !h-full !w-full !min-h-0 !min-w-0 items-center justify-center"
-            contentClass="!flex !h-full !w-full !min-h-0 !min-w-0 items-center justify-center"
-            wrapperStyle={rzppWrapperStyle}
-            contentStyle={rzppContentStyle}
-          >
-            <img
-              src={src}
-              alt={alt}
-              className={`${
-                inlineImageClassName ? `${inlineImageClassName} ` : ''
-              }select-none`}
-              style={{
-                ...huggingImgStyle,
-                borderRadius: radius,
-                overflow: 'hidden',
-                ...(!inlineImageClassName
-                  ? { boxShadow: CAROUSEL_IMAGE_LAYERED_BOX_SHADOW }
-                  : {}),
+          <div className="flex min-h-0 min-w-0 h-full w-full flex-1 flex-col">
+            <TransformWrapper
+              ref={rzppRef}
+              key={src}
+              disabled={!zoomEnabled}
+              minScale={LIGHTBOX_ZOOM_MIN}
+              maxScale={LIGHTBOX_ZOOM_MAX}
+              initialScale={LIGHTBOX_ZOOM_MIN}
+              limitToBounds
+              centerOnInit
+              smooth={false}
+              onTransform={zoomEnabled ? onTransform : undefined}
+              panning={{ disabled: !zoomEnabled || panningLocked }}
+              wheel={{
+                step: 0.12,
+                disabled: !zoomEnabled,
+                activationKeys: lightboxWheelZoomActivationKeys,
               }}
-              draggable={false}
-              {...(fetchPriority ? { fetchPriority } : {})}
-              onClick={stopLightboxBubble}
-              onPointerDown={stopLightboxBubble}
-            />
-          </TransformComponent>
-        </TransformWrapper>
+              pinch={{ disabled: !zoomEnabled }}
+              doubleClick={{ disabled: true }}
+            >
+              <TransformComponent
+                wrapperClass="!flex !h-full !w-full !min-h-0 !min-w-0 !flex-1 !flex-col !items-stretch"
+                contentClass="!flex !h-full !w-full !min-h-0 !min-w-0 !flex-1 !flex-col !items-stretch"
+                wrapperStyle={rzppWrapperStyle}
+                contentStyle={rzppContentStyle}
+              >
+                <img
+                  src={src}
+                  alt={alt}
+                  className={`${
+                    inlineImageClassName ? `${inlineImageClassName} ` : ''
+                  }select-none`}
+                  style={{
+                    ...huggingImgStyle,
+                    boxSizing: 'border-box',
+                    borderRadius: radius,
+                    overflow: 'hidden',
+                    ...(!inlineImageClassName
+                      ? { boxShadow: CAROUSEL_IMAGE_LAYERED_BOX_SHADOW }
+                      : {}),
+                  }}
+                  draggable={false}
+                  {...(fetchPriority ? { fetchPriority } : {})}
+                />
+              </TransformComponent>
+            </TransformWrapper>
+          </div>
+        </div>
       </div>
     </div>
   )
@@ -867,11 +890,13 @@ function LightboxMotionGallery({
           {images.map((src, i) => (
             <div
               key={`${i}-${src}`}
-              className="box-border flex h-full shrink-0 items-center justify-center overflow-hidden"
+              className="box-border flex h-full shrink-0 items-stretch justify-center overflow-hidden"
               style={{
                 width: stageW,
                 paddingLeft: horizontalInsetPx,
                 paddingRight: horizontalInsetPx,
+                paddingTop: LB.imageContentPaddingPx,
+                paddingBottom: LB.imageContentPaddingPx,
               }}
             >
               <LightboxZoomableImage
@@ -910,7 +935,7 @@ type CarouselProps = {
   width: number // image widths
   /** Corner radius in rem for inline strip thumbnails and lightbox frame (via `roundRem`). Default `1`. */
   round?: number
-  /** Fullscreen lightbox on thumbnail click (backdrop click closes; image and nav arrows do not) */
+  /** Fullscreen lightbox on thumbnail click (dismiss only via the top-right close control) */
   lightbox?: boolean
   /**
    * Lightbox image sizing: `portrait` (default) caps height first like phone mockups;
@@ -1045,11 +1070,11 @@ const Carousel = ({
   const lightboxCompact = useLightboxCompactLayout()
   const lightboxEdgeInsetX = lightboxCompact ? LB_COMPACT.edgeInsetX : LB.edgeInsetX
   const lightboxImageStageInsetTop = lightboxCompact
-    ? LB_COMPACT.imageStageInsetTop
-    : LB.imageStageInsetY
+    ? LB_COMPACT.imageStageInsetTop - LB.imageContentPaddingPx
+    : LB.imageStageInsetY - LB.imageContentPaddingPx
   const lightboxImageStageInsetBottom = lightboxCompact
-    ? LB_COMPACT.imageStageInsetBottom
-    : LB.imageStageInsetY
+    ? LB_COMPACT.imageStageInsetBottom - LB.imageContentPaddingPx
+    : LB.imageStageInsetY - LB.imageContentPaddingPx
   const lightboxCloseInset = lightboxCompact
     ? LB.close.inset / 2
     : LB.close.inset
@@ -1123,10 +1148,6 @@ const Carousel = ({
   useEffect(() => {
     if (!lightboxOpen) return
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        closeLightbox()
-        return
-      }
       if (e.key === 'ArrowLeft') {
         e.preventDefault()
         lightboxPrev()
@@ -1139,7 +1160,7 @@ const Carousel = ({
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [lightboxOpen, closeLightbox, lightboxPrev, lightboxNext])
+  }, [lightboxOpen, lightboxPrev, lightboxNext])
 
   /** Lightbox loops: pill chevrons stay enabled at ends when multiple images */
   const lightboxPillAtFirst = images.length <= 1 && lightboxIndex <= 0
@@ -1153,7 +1174,6 @@ const Carousel = ({
       <div
         className="fixed inset-0 z-[9999] min-h-0 cursor-default isolate"
         style={{ background: LIGHTBOX_SCRIM }}
-        onClick={closeLightbox}
         role="presentation"
       >
         <div
@@ -1187,10 +1207,12 @@ const Carousel = ({
               ) : (
                 <div
                   ref={lightboxSingleImageRef}
-                  className="pointer-events-auto box-border flex h-full min-h-0 w-full min-w-0 items-center justify-center"
+                  className="pointer-events-auto box-border flex h-full min-h-0 w-full min-w-0 items-stretch justify-center"
                   style={{
                     paddingLeft: lightboxEdgeInsetX,
                     paddingRight: lightboxEdgeInsetX,
+                    paddingTop: LB.imageContentPaddingPx,
+                    paddingBottom: LB.imageContentPaddingPx,
                   }}
                   role="presentation"
                 >
@@ -1220,8 +1242,6 @@ const Carousel = ({
             style={{
               bottom: LB.pillViewportBottom,
             }}
-            onClick={stopLightboxBubble}
-            onPointerDown={stopLightboxBubble}
             role="presentation"
           >
             <LightboxPillNav

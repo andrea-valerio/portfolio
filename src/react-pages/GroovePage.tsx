@@ -170,7 +170,6 @@ function GroovePage() {
           round={1.625}
           lightbox
           lightboxLayout="portrait"
-          lightboxPortraitMaxWidth={400}
           imageAlts={[
             'Sign up',
             'Home',
