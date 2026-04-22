@@ -5,6 +5,7 @@ import thesisCover from '../assets/projects/thesis.png'
 import ovenconfCover from '../assets/projects/ovenconf.png'
 import citinstCover from '../assets/projects/citinst.png'
 import ecomuseoCover from '../assets/projects/ecomuseo.png'
+import loomlyCover from '../assets/projects/loomly.png'
 import sustsmokCover from '../assets/projects/sustsmok.png'
 import reelsfypCover from '../assets/projects/reelsfyp.png'
 import placeholderCover from '../assets/projects/placeholder.png'
@@ -17,6 +18,7 @@ export const projectCoverBySlug: Record<string, BundledSrc> = {
   ovenconf: ovenconfCover,
   citinst: citinstCover,
   ecomuseo: ecomuseoCover,
+  'loomly-ai': loomlyCover,
   sustsmok: sustsmokCover,
   reelsfyp: reelsfypCover,
 }

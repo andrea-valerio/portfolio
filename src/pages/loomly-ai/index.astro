@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import LoomlyAiPage from '../../react-pages/LoomlyAiPage'
+import loomlyHero from '../../assets/projects/loomly.png'
+
+const title = 'Loomly AI | Andrea Valerio'
+const description =
+  'AI product design case study: Loomly — AI-native social workflow, research, design system, and impact.'
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  ogImage={loomlyHero}
+  ogImageAlt="Loomly AI project"
+  canonicalPath="/portfolio/loomly-ai/"
+>
+  <LoomlyAiPage client:load />
+</BaseLayout>

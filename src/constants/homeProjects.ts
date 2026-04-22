@@ -13,6 +13,7 @@ export type HomeProjectEntry = {
 export const SHOW_EXTRA_HOME_PROJECTS = false
 
 const CORE_HOME_PROJECTS: HomeProjectEntry[] = [
+  { name: 'Loomly AI', desc: 'AI Product Design', slug: 'loomly-ai' },
   { name: 'Meetup', desc: 'Product Design', slug: 'meetup' },
   { name: 'Groove', desc: 'UX / UI Design', slug: 'groove', ribbonSrc: ribbonStartup },
   {
@@ -27,7 +28,6 @@ const CORE_HOME_PROJECTS: HomeProjectEntry[] = [
     desc: 'UX Research & Design',
     slug: 'citinst',
   },
-  { name: 'Ecomuseo Argentario', desc: 'UX / UI Design', slug: 'ecomuseo' },
 ]
 
 const OPTIONAL_HOME_PROJECTS: HomeProjectEntry[] = [
