@@ -59,9 +59,9 @@ function LoomlyAiPage() {
       <div className="project-content">
         <ProjectMetaStart>
           <DetailsText>
-            Loomly — Jan 2024
+            January - April 2026
             <br />
-            Product Design & Strategy
+            Product Designer @ Bending Spoons
           </DetailsText>
         </ProjectMetaStart>
 
