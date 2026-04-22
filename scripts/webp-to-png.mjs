@@ -5,13 +5,19 @@ import sharp from 'sharp'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const assetsRoot = path.join(__dirname, '..', 'src', 'assets')
+/** Archived WebPs live here; do not convert them into PNGs beside the archive. */
+const webpArchiveRoot = path.join(assetsRoot, 'webp')
 
 async function collectWebpFiles(dir, out = []) {
   const entries = await fs.readdir(dir, { withFileTypes: true })
   for (const entry of entries) {
     const full = path.join(dir, entry.name)
-    if (entry.isDirectory()) await collectWebpFiles(full, out)
-    else if (entry.isFile() && entry.name.toLowerCase().endsWith('.webp')) out.push(full)
+    if (entry.isDirectory()) {
+      if (full === webpArchiveRoot) continue
+      await collectWebpFiles(full, out)
+    } else if (entry.isFile() && entry.name.toLowerCase().endsWith('.webp')) {
+      out.push(full)
+    }
   }
   return out
 }
