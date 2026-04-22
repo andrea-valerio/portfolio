@@ -40,6 +40,9 @@ jobs:
         run: npm run build
         env:
           ASTRO_TELEMETRY_DISABLED: '1'
+          # Optional: repo Settings → Variables — set for a custom root domain, e.g. ASTRO_BASE=/, ASTRO_SITE=https://www.example.com
+          ASTRO_SITE: ${{ vars.ASTRO_SITE }}
+          ASTRO_BASE: ${{ vars.ASTRO_BASE }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
