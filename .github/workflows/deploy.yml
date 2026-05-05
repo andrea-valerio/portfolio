@@ -1,9 +1,9 @@
-# Build the Astro site and publish to the gh-pages branch for GitHub Pages.
+# Build the Astro site from main and publish to GitHub Pages (GitHub Actions).
 name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main, astro_migration]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
